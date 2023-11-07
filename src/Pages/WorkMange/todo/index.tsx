@@ -8,12 +8,9 @@ import { createStyles } from "antd-style";
 import { useState } from "react";
 const useStyle = createStyles(({ token }) => ({
   "my-modal-body": {
-    display: "grid",
-    gridTemplateColumns: `repeat(4, 1fr) !important`,
     gap: ".15rem",
     paddingInline: ".5rem !important",
-    placeItems: "center",
-    minHeight: ".99rem",
+    paddingBottom: ".3rem !important",
   },
   "my-modal-mask": {
     boxShadow: `inset 0 0 15px #fff`,
@@ -21,6 +18,7 @@ const useStyle = createStyles(({ token }) => ({
   "my-modal-header": {
     borderBottom: `1px solid var(--border-color)`,
     padding: ".2rem 0.3rem",
+    marginBottom: ".2rem !important",
   },
   "my-modal-footer": {
     padding: ".2rem .3rem .24rem",
@@ -80,7 +78,18 @@ const ModalComp = (props) => {
           <i className={styleScope["icon"]}></i>签名
         </span>
       }
-    ></ModalScope>
+    >
+      <>
+        <p className="flex items-center justify-between  text-[14px]">
+          <span className="text-[#C5CAD0]">管理员A</span>
+          <span className="text-[#333]">weeweesssssssssssssss</span>
+        </p>
+        <p className="flex items-center justify-between text-[14px] mt-[.2rem]">
+          <span className="text-[#C5CAD0]">员工ID</span>
+          <span className="text-[#333]">Alex.yu</span>
+        </p>
+      </>
+    </ModalScope>
   );
 };
 export default Todo;
