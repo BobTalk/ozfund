@@ -17,37 +17,34 @@ const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
   return (
     <Header
       style={{ padding: 0, background: colorBgContainer }}
-      className="border-b-[1px_solid_var(--border-color)] h-[65px]"
+      className="border-b-[1px_solid_var(--border-color)] h-[85px]"
     >
-      <Button
-        type="text"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={() => setCollapsed(!collapsed)}
-        style={{
-          fontSize: "16px",
-          width: 64,
-          height: 64,
-        }}
-      />
-      <div className="flex items-center justify-end pr-[.3rem]">
-        <p className={styleScope["time"]}>
-          {timeFormate(userInfo.loginTime, "YYYY-MM-DD HH:mm")}
-        </p>
-        <Badge count={0} showZero={false} className="mx-[.24rem]">
-          <Icon
-            name="h-icon-notice"
-            purity={false}
-            style={{ fontSize: ".2rem" }}
-          ></Icon>
-        </Badge>
+      <div className="flex justify-between items-center h-full pl-[.2rem] pr-[.3rem]">
+        {collapsed ? (
+          <MenuUnfoldOutlined className="text-[22px]" onClick={() => setCollapsed(!collapsed)} />
+        ) : (
+          <MenuFoldOutlined className="text-[22px]" onClick={() => setCollapsed(!collapsed)} />
+        )}
 
-        <DropDownScope userInfo={userInfo} />
+        <div className="flex items-center justify-end ">
+          <p className={styleScope["time"]}>
+            {timeFormate(userInfo.loginTime, "YYYY-MM-DD HH:mm")}
+          </p>
+          <Badge count={0} showZero={false} className="mx-[.24rem]">
+            <Icon
+              name="h-icon-notice"
+              purity={false}
+              style={{ fontSize: ".2rem" }}
+            ></Icon>
+          </Badge>
+
+          <DropDownScope userInfo={userInfo} />
+        </div>
       </div>
     </Header>
   );
 };
 const DropDownScope = (props) => {
-  console.log("props: ", props);
   let navigate = useNavigate();
   function logout() {}
   function customDropdown(menu) {

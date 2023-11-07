@@ -16,6 +16,9 @@ const LayoutPage: React.FC = () => {
     <ConfigProvider
       theme={{
         components: {
+          Breadcrumb:{
+            lastItemColor:"var(--blue)",
+          },
           Alert:{
             colorInfoBorder:"transparent"
           },

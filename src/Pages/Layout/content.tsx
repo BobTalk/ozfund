@@ -38,9 +38,9 @@ const LayoutContent = () => {
   }, []);
   return (
     <Content
-      className="overflow-y-auto"
+      className="overflow-hidden"
       style={{
-        padding: ".16rem .24rem",
+        padding: "0",
         background: "var(--gray)",
       }}
     >
@@ -53,7 +53,7 @@ const LayoutContent = () => {
             </p>
           }
           className={mergeClassName(
-            "text-[#333] mb-[.24rem]",
+            "text-[#333]",
             `${showMessage}`
           )}
           action={
@@ -72,19 +72,21 @@ const LayoutContent = () => {
           ref={messageRefs}
           message={
             <div className={styleScope["bread-crumb"]}>
-              <span className="!text-[#AAA]">当前位置：</span>
-              <Breadcrumb separator=">" items={breadcrumb} />
+              <span className="!text-[#AAA]">您的当前位置：</span>
+              <Breadcrumb separator="/" items={breadcrumb} />
             </div>
           }
-          className="text-[#333] mb-[.24rem] bg-[#FFF]"
+          className="text-[#333] bg-[#FFF] rounded-[0]"
           prvIcon={<img src={siteIcon} alt="" />}
           showIcon={true}
         />
       )}
       <div
         style={{
-          height: `calc(100% - ${contentH}px - 0.32rem)`,
+          height: `calc(100% - ${contentH}px)`,
+          padding: '.15rem'
         }}
+        className="overflow-y-auto"
       >
         <Outlet />
       </div>
