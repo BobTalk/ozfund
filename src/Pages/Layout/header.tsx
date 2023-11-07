@@ -1,19 +1,34 @@
-import { Avatar, Badge, Dropdown, Layout } from "antd";
+import { Avatar, Badge, Button, Dropdown, Layout } from "antd";
 import styleScope from "./header.module.less";
 const { Header } = Layout;
-import { UserOutlined, CaretDownOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  CaretDownOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+} from "@ant-design/icons";
 import { getSession, timeFormate } from "@/utils/base";
 import Icon from "@/Components/Icon";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const LayoutHeader = ({ colorBgContainer }: any) => {
-  let [userInfo] = useState(getSession("userInfo")??{});
+const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
+  let [userInfo] = useState(getSession("userInfo") ?? {});
 
   return (
     <Header
       style={{ padding: 0, background: colorBgContainer }}
       className="border-b-[1px_solid_var(--border-color)] h-[65px]"
     >
+      <Button
+        type="text"
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapsed(!collapsed)}
+        style={{
+          fontSize: "16px",
+          width: 64,
+          height: 64,
+        }}
+      />
       <div className="flex items-center justify-end pr-[.3rem]">
         <p className={styleScope["time"]}>
           {timeFormate(userInfo.loginTime, "YYYY-MM-DD HH:mm")}
