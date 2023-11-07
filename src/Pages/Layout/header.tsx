@@ -20,7 +20,7 @@ const LayoutHeader = ({ colorBgContainer }: any) => {
         </p>
         <Badge count={0} showZero={false} className="mx-[.24rem]">
           <Icon
-            name="h-icon-xiaoxi"
+            name="h-icon-notice"
             purity={false}
             style={{ fontSize: ".2rem" }}
           ></Icon>

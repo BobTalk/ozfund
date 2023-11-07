@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 1199363 */
-  src: url('iconfont.woff2?t=1698826590649') format('woff2'),
-       url('iconfont.woff?t=1698826590649') format('woff'),
-       url('iconfont.ttf?t=1698826590649') format('truetype');
+  font-family: "iconfont"; /* Project id 4319455 */
+  src: url('iconfont.woff2?t=1699342087745') format('woff2'),
+       url('iconfont.woff?t=1699342087745') format('woff'),
+       url('iconfont.ttf?t=1699342087745') format('truetype');
 }
 
 .iconfont {
@@ -13,87 +13,47 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.h-icon-close:before {
-  content: "\e698";
-}
-
-.h-icon-pin:before {
-  content: "\e699";
-}
-
-.h-icon-status:before {
-  content: "\e69a";
-}
-
-.h-icon-sign:before {
-  content: "\e696";
-}
-
-.h-icon-google:before {
-  content: "\e697";
-}
-
-.h-icon-cuowu:before {
-  content: "\e692";
-}
-
-.h-icon-duigouxiao:before {
-  content: "\e693";
-}
-
-.h-icon-dingdan:before {
-  content: "\e600";
-}
-
-.h-icon-bianji:before {
-  content: "\e621";
-}
-
-.h-icon-zhuanru:before {
-  content: "\e61b";
-}
-
-.h-icon-dayudengyu:before {
-  content: "\ec96";
-}
-
-.h-icon-xiaoyudengyu:before {
-  content: "\ec97";
-}
-
-.h-icon-xiaoxi:before {
-  content: "\e690";
-}
-
-.h-icon-xitongguanli:before {
-  content: "\e688";
+.h-icon-dingyueyouxiang1:before {
+  content: "\e6a3";
 }
 
 .h-icon-zichantongji:before {
-  content: "\e689";
+  content: "\e6a1";
 }
 
-.h-icon-gonggaoliebiao:before {
-  content: "\e68a";
+.h-icon-yewuguanli:before {
+  content: "\e6a2";
 }
 
-.h-icon-dizhiguanli:before {
-  content: "\e68b";
-}
-
-.h-icon-shujutongji:before {
-  content: "\e68c";
-}
-
-.h-icon-Ozbet:before {
-  content: "\e68d";
-}
-
-.h-icon-yonghuguanli:before {
-  content: "\e68e";
+.h-icon-IPguanli:before {
+  content: "\e69a";
 }
 
 .h-icon-gerenziliao:before {
-  content: "\e68f";
+  content: "\e69e";
+}
+
+.h-icon-dingyueyouxiang:before {
+  content: "\e69d";
+}
+
+.h-icon-quanxianguanli:before {
+  content: "\e69c";
+}
+
+.h-icon-rizhiguanli:before {
+  content: "\e69b";
+}
+
+.h-icon-shiwuguanli:before {
+  content: "\e69f";
+}
+
+.h-icon-wangzhanyunying:before {
+  content: "\e6a0";
+}
+
+.h-icon-notice:before {
+  content: "\e699";
 }
 

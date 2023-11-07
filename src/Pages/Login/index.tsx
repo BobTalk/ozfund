@@ -4,12 +4,11 @@ import loginBg from "@/assets/images/login-bg.svg";
 import styleScope from "./index.module.less";
 import "@/assets/style/form.less";
 import Card from "@/Components/Card";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input } from "antd";
 // import GetCodeBtn from "@/Components/GetCode";
 import { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { GetAccessKeyInterface, GetUserInfo, LoginInterFace } from "@/api";
-import { encrypt, encryptByDES, getSession, setSession } from "@/utils/base";
+import { getSession } from "@/utils/base";
 import { Navigate, useNavigate } from "react-router-dom";
 const Login = () => {
   return (
@@ -41,27 +40,7 @@ const FormComp = () => {
     emailCode: "请输入邮箱验证码",
   };
 
-  function onFinish(obj) {
-    GetAccessKeyInterface().then(({ data }) => {
-      LoginInterFace({
-        adminId: obj.username,
-        password: encryptByDES(obj.password, data),
-      }).then((res) => {
-        if (!res.status) {
-          message.error(res.message ?? "信息错误");
-        } else {
-          // 存放token
-          setSession("token", res.data);
-          GetUserInfo().then((res) => {
-            console.log("res: ", res);
-            if (!res.status) return;
-            setSession("userInfo", res);
-            navigate("/aupay/assets");
-          });
-        }
-      });
-    });
-  }
+  function onFinish(obj) {}
   return userInfo && token ? (
     <>
     <Navigate to='/aupay/assets'/>
