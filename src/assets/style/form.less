@@ -1,0 +1,69 @@
+._reset-form {
+  label {
+    width: 100%;
+    line-height: 1;
+    font-size: .16rem !important;
+    color: #333 !important;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .hidden_start {
+    label {
+      &::before {
+        content: "" !important;
+      }
+    }
+  }
+
+  .ant-form-item {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .ant-form-item-label {
+    padding: 0 0 .16rem;
+    line-height: 1;
+  }
+
+  .text-area {
+    .ant-form-item-control-input {
+      height: auto;
+      line-height: 1;
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    height: 100%;
+    line-height: 2.5;
+  }
+
+  .ant-form-item-control-input {
+    height: .48rem;
+    line-height: .48rem;
+
+    .ant-input-group-wrapper-lg {
+      height: 100%;
+
+      .ant-input-wrapper {
+        height: inherit;
+      }
+    }
+
+    .ant-form-item-control-input-content {
+      height: 100%;
+
+      .ant-select-lg {
+        height: inherit;
+      }
+
+      input,
+      button {
+        height: inherit;
+      }
+    }
+  }
+}

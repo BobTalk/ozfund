@@ -1,0 +1,45 @@
+.title {
+  display: flex;
+  font-size: .16rem;
+  color: #333;
+  margin-bottom: .3rem;
+
+  &::before {
+    display: inline-block;
+    content: '';
+    width: .06rem;
+    height: inherit;
+    background-color: var(--blue);
+    border-radius: .03rem;
+    margin-right: .1rem;
+  }
+}
+
+.info-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: .34rem;
+  gap: .24rem;
+  white-space: nowrap;
+
+  >p {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: .24rem;
+    font-size: .14rem;
+    color: var(--menu-color);
+
+    :global(.ant-input) {
+      font-size: .14rem;
+      color: #333;
+    }
+
+    >span {
+      &:not(:first-child) {
+        color: #333;
+      }
+    }
+  }
+}

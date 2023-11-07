@@ -1,0 +1,26 @@
+.menu-box {
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+
+  .icon {
+    font-size: .16rem !important;
+  }
+
+  :global(.ant-menu-submenu-inline.ant-menu-submenu-selected > .ant-menu-submenu-title) {
+    background-color: var(--blue);
+  }
+
+  :global(.ant-menu-submenu-inline.ant-menu-submenu-active) {
+    &:hover {
+      :global(.ant-menu-submenu-title) {
+        color: var(--white);
+      }
+    }
+  }
+
+  :global(.ant-menu-submenu-inline.ant-menu-submenu-selected.ant-menu-submenu-open > .ant-menu-submenu-title) {
+    background-color: var(--white);
+    color: var(--blue);
+  }
+
+}

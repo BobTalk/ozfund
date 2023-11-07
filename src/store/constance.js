@@ -1,0 +1,10 @@
+/**
+ * @summary 常量
+ */
+const ADD_BREADCRUMB = 'ADD_BREADCRUMB';
+const CHANGE_BREADCRUMB = 'CHANGE_BREADCRUMB';
+
+export {
+  ADD_BREADCRUMB,
+  CHANGE_BREADCRUMB
+};
