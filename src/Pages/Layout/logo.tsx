@@ -10,7 +10,7 @@ const LayoutLogo = ({ collapsed }:any) => {
         "grid place-content-center"
       )}
     >
-      <img src={logo} className="aspect-square" alt="logo" />
+      <img src={logo} className={mergeClassName(collapsed?styleScope['scale']:"")} alt="logo" />
     </div>
   );
 };
