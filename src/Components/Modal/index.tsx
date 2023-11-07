@@ -61,6 +61,7 @@ const ModalScope = memo(
         maskClosable={false}
         open={props.open}
         onOk={okCb}
+        centered={true}
         footer={props.showFooter ? undefined : null}
         cancelText={props.cancelText}
         okText={props.okText ?? "确定"}

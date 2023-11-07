@@ -86,7 +86,7 @@ const LayoutContent = () => {
           height: `calc(100% - ${contentH}px)`,
           padding: '.15rem'
         }}
-        className="overflow-y-auto"
+        className="overflow-y-auto bg-[var(--content-gray)]"
       >
         <Outlet />
       </div>

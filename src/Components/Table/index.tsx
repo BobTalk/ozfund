@@ -1,6 +1,7 @@
 import { ConfigProvider, Table } from "antd";
 import { ReactNode } from "react";
 import zh_CN from "antd/es/locale/zh_CN";
+import styleScope from "./table.module.less";
 type TableCompPropsType = {
   dataSource: Array<any>;
   columns: Array<any>;
@@ -9,13 +10,19 @@ type TableCompPropsType = {
   border?: boolean;
   themeObj?: Object;
   paginationThemeObj?: Object;
-  components?:Object,
-  virtual?:boolean,
+  components?: Object;
+  virtual?: boolean;
   [key: string]: any;
 };
 const TableComp = (props: TableCompPropsType) => {
-  console.log('props: ', props);
-  let { dataSource, columns, pagination, border,components: comp,virtual } = props;
+  let {
+    dataSource,
+    columns,
+    pagination,
+    border,
+    components: comp,
+    virtual,
+  } = props;
   return (
     <ConfigProvider
       theme={{
@@ -26,18 +33,20 @@ const TableComp = (props: TableCompPropsType) => {
       }}
       locale={zh_CN}
     >
-      <Table
-        components={comp}
-        virtual={virtual}
-        bordered={border}
-        scroll={{ y: 0 }}
-        pagination={pagination}
-        dataSource={dataSource}
-        columns={columns}
-        {...props}
-      >
-        {props.children}
-      </Table>
+      <div className={styleScope["table-reset_style"]}>
+        <Table
+          components={comp}
+          virtual={virtual}
+          bordered={border}
+          scroll={{ y: 0 }}
+          pagination={pagination}
+          dataSource={dataSource}
+          columns={columns}
+          {...props}
+        >
+          {props.children}
+        </Table>
+      </div>
     </ConfigProvider>
   );
 };
@@ -49,7 +58,7 @@ TableComp.defaultProps = {
   border: false,
   themeObj: {},
   paginationThemeObj: {},
-  components:{},
-  virtual:true
+  components: {},
+  virtual: true,
 };
 export default TableComp;
