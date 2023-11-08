@@ -123,7 +123,7 @@ const TableConfig = (props) => {
       bordered={false}
       dataSource={data}
       columns={columns}
-      pagination={true}
+      pagination={false}
     />
   );
 };

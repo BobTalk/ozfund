@@ -9,6 +9,7 @@ type TableCompPropsType = {
   children?: ReactNode;
   border?: boolean;
   themeObj?: Object;
+  token?:Object;
   paginationThemeObj?: Object;
   components?: Object;
   virtual?: boolean;
@@ -30,6 +31,7 @@ const TableComp = (props: TableCompPropsType) => {
           Table: props?.themeObj ?? {},
           Pagination: props?.paginationThemeObj ?? {},
         },
+        token: props?.token ?? {},
       }}
       locale={zh_CN}
     >
@@ -57,6 +59,7 @@ TableComp.defaultProps = {
   pagination: false,
   border: false,
   themeObj: {},
+  token: {},
   paginationThemeObj: {},
   components: {},
   virtual: true,
