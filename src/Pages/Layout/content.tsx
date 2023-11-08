@@ -14,10 +14,12 @@ const LayoutContent = () => {
   let messageRefs = useRef<any>({});
   let { pathname } = useLocation();
   let [contentH, setContentH] = useState(0);
-  let userInfo = getSession("userInfo")??{};
+  let userInfo = getSession("userInfo") ?? {};
   let [usename] = useState(() => userInfo["adminId"]);
   let [showMessage, setShowMessage] = useState("");
-  let [isShowLoginTip, setIsShowLoginTip] = useState<Boolean>(getSession('loginTip'));
+  let [isShowLoginTip, setIsShowLoginTip] = useState<Boolean>(
+    getSession("loginTip")
+  );
   let [breadcrumb, setBreadcrumb] = useState(
     store.getState().breadcrumbReducer
   );
@@ -25,13 +27,13 @@ const LayoutContent = () => {
   function close(e) {
     stop(e, () => {
       setShowMessage("hidden");
-      setIsShowLoginTip(true)
-      setSession('loginTip', true)
+      setIsShowLoginTip(true);
+      setSession("loginTip", true);
     });
   }
-  useEffect(()=>{
+  useEffect(() => {
     setBreadcrumb(store.getState().breadcrumbReducer);
-  },[store.getState().breadcrumbReducer])
+  }, [store.getState().breadcrumbReducer]);
   useEffect(() => {
     let { height } = messageRefs.current.getBoundingClientRect();
     setContentH(height);
@@ -44,47 +46,22 @@ const LayoutContent = () => {
         background: "var(--gray)",
       }}
     >
-      {!isShowLoginTip ? (
-        <Message
-          ref={messageRefs}
-          message={
-            <p className={styleScope["message"]}>
-              您好！欢迎您登录<span>aupay</span>后台管理：{usename}~
-            </p>
-          }
-          className={mergeClassName(
-            "text-[#333]",
-            `${showMessage}`
-          )}
-          action={
-            <img
-              src={closeIcon}
-              alt=""
-              className="cursor-pointer"
-              onClick={close}
-            />
-          }
-          prvIcon={<img src={messageIcon} alt="" />}
-          showIcon={true}
-        />
-      ) : (
-        <Message
-          ref={messageRefs}
-          message={
-            <div className={styleScope["bread-crumb"]}>
-              <span className="!text-[#AAA]">您的当前位置：</span>
-              <Breadcrumb separator="/" items={breadcrumb} />
-            </div>
-          }
-          className="text-[#333] bg-[#FFF] rounded-[0]"
-          prvIcon={<img src={siteIcon} alt="" />}
-          showIcon={true}
-        />
-      )}
+      <Message
+        ref={messageRefs}
+        message={
+          <div className={styleScope["bread-crumb"]}>
+            <span className="!text-[#AAA]">您的当前位置：</span>
+            <Breadcrumb separator="/" items={breadcrumb} />
+          </div>
+        }
+        className="text-[#333] bg-[#FFF] rounded-[0]"
+        prvIcon={<img src={siteIcon} alt="" />}
+        showIcon={true}
+      />
       <div
         style={{
           height: `calc(100% - ${contentH}px)`,
-          padding: '.15rem'
+          padding: ".15rem",
         }}
         className="overflow-y-auto bg-[var(--content-gray)]"
       >
