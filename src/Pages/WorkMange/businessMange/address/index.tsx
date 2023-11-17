@@ -66,8 +66,22 @@ const AddressAutoAirdrop = () => {
           </li>
         ))}
       </ul>
-      <Modal footer showTitleIcon title="修改空投地址" open={editorAddrOpen}>
-        <p>ssss</p>
+      <Modal
+        style={{
+          footer: {
+            marginTop: 0,
+          },
+        }}
+        body={{
+          paddingInline: ".3rem",
+          paddingBlock: ".2rem .3rem",
+        }}
+        showFooter
+        showTitleIcon
+        title="修改空投地址"
+        open={editorAddrOpen}
+      >
+        <p>sssss</p>
       </Modal>
     </>
   );

@@ -18,7 +18,6 @@ const useStyle = createStyles((obj, props: any) => {
         gridTemplateColumns: `1fr`,
         gap: ".15rem",
         paddingInline: ".5rem",
-        placeItems: "center",
         minHeight: ".99rem",
       },
       body
@@ -52,7 +51,6 @@ const useStyle = createStyles((obj, props: any) => {
   };
 });
 const ModalScope = (props: any) => {
-  console.log("props: ", props);
   const { styles } = useStyle(props);
   const classNames = {
     body: styles["my-modal-body"],
@@ -61,15 +59,10 @@ const ModalScope = (props: any) => {
     footer: styles["my-modal-footer"],
     content: styles["my-modal-content"],
   };
-  const modalStyles = {
-    header: {
-      marginBottom: ".24rem",
-    },
-    body: {
-      gridTemplateColumns: "1fr",
-      padding: 0,
-    },
-  };
+  // props.style结构 ==> {
+  //   header:{},
+  //   body:{}
+  // }
   let [stop] = useStopPropagation();
   function okCb(e) {
     stop(e, () => {
@@ -88,13 +81,13 @@ const ModalScope = (props: any) => {
       onOk={okCb}
       centered={true}
       keyboard={false}
-      footer={props.footer ? undefined : null}
+      footer={props.showFooter ? undefined : null}
       cancelText={props.cancelText ?? "取消"}
       okText={props.okText ?? "确定"}
       onCancel={cancelCb}
       title={<ModalTitle {...props} />}
       classNames={classNames}
-      styles={modalStyles}
+      styles={props.style}
     >
       {props.children}
     </Modal>
