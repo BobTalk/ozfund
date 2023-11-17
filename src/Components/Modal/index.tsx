@@ -1,5 +1,6 @@
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { Modal } from "antd";
+import styleScope from "./index.module.less";
 import { createStyles } from "antd-style";
 import { memo } from "react";
 const useStyle = createStyles((obj, props: any) => {
@@ -51,7 +52,7 @@ const useStyle = createStyles((obj, props: any) => {
   };
 });
 const ModalScope = (props: any) => {
-  console.log('props: ', props);
+  console.log("props: ", props);
   const { styles } = useStyle(props);
   const classNames = {
     body: styles["my-modal-body"],
@@ -91,12 +92,22 @@ const ModalScope = (props: any) => {
       cancelText={props.cancelText ?? "取消"}
       okText={props.okText ?? "确定"}
       onCancel={cancelCb}
-      title={props.title}
+      title={<ModalTitle {...props} />}
       classNames={classNames}
       styles={modalStyles}
     >
       {props.children}
     </Modal>
+  );
+};
+const ModalTitle = (props) => {
+  return props.showTitleIcon ? (
+    <span className="flex items-center font-normal">
+      <i className={styleScope["icon"]}></i>
+      {props.title}
+    </span>
+  ) : (
+    <>{props.title}</>
   );
 };
 export default memo(ModalScope, (prv, next) => prv.open === next.open);

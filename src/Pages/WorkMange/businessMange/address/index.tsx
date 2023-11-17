@@ -2,7 +2,7 @@ import DividerComp from "@/Components/Divider";
 import Modal from "@/Components/Modal";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { EditOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const AddressAutoAirdrop = () => {
   let [listInfo] = useState([
@@ -37,8 +37,11 @@ const AddressAutoAirdrop = () => {
       percentage: 10,
     },
   ]);
+  let [editorAddrOpen, setEditorAddrOpen] = useState<boolean>(false);
+  let crtInfo = useRef<unknown>();
   function editorCb(crt) {
-    console.log("crt: ", crt);
+    crtInfo.current = crt;
+    setEditorAddrOpen(!editorAddrOpen);
   }
   return (
     <>
@@ -63,7 +66,7 @@ const AddressAutoAirdrop = () => {
           </li>
         ))}
       </ul>
-      <Modal footer title="修改空投地址" open>
+      <Modal footer showTitleIcon title="修改空投地址" open={editorAddrOpen}>
         <p>ssss</p>
       </Modal>
     </>
