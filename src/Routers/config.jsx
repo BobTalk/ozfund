@@ -29,6 +29,10 @@ import WebsiteOperationZhCn from "@/Pages/WebsiteOperation/zh-cn";
 import WebsiteOperationZhWt from "@/Pages/WebsiteOperation/zh-wt";
 import WorkMange from "@/Pages/WorkMange";
 import WorkMangeBusinessMange from "@/Pages/WorkMange/businessMange";
+import AddressAutoAirdrop from "@/Pages/WorkMange/businessMange/address";
+import BatchTransferAccounts from "@/Pages/WorkMange/businessMange/transferAccounts";
+import DrawsContractMoney from "@/Pages/WorkMange/businessMange/draws";
+import TotoReleaseCustody from "@/Pages/WorkMange/businessMange/releaseCustody";
 import WorkMangeMangeSite from "@/Pages/WorkMange/mangeSite";
 import WorkOzcContract from "@/Pages/WorkMange/ozcContract";
 import WorkTodo from "@/Pages/WorkMange/todo";
@@ -69,7 +73,29 @@ const RouteList = [
           {
             path: 'business-mange',
             element: <WorkMangeBusinessMange />,
-            isAuth: true
+            isAuth: true,
+            children: [
+              {
+                path: "aridrop-address",
+                element: <AddressAutoAirdrop/>,
+                isAuth: true,
+              },
+              {
+                path: "batch-transfer",
+                element: <BatchTransferAccounts />,
+                isAuth: true,
+              },
+              {
+                path: "draws-contract",
+                element: <DrawsContractMoney />,
+                isAuth: true,
+              },
+              {
+                path: "release-custody",
+                element: <TotoReleaseCustody />,
+                isAuth: true,
+              },
+            ]
           },
           {
             path: 'toto-contract',
