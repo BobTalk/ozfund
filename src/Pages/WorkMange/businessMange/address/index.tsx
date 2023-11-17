@@ -1,4 +1,5 @@
 import DividerComp from "@/Components/Divider";
+import Modal from "@/Components/Modal";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
@@ -40,27 +41,32 @@ const AddressAutoAirdrop = () => {
     console.log("crt: ", crt);
   }
   return (
-    <ul className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[.15rem]">
-      {listInfo.map((item) => (
-        <li
-          className="grid grid-cols-[2rem_1fr] gap-[.3rem] items-center"
-          key={item.id}
-        >
-          <span className="whitespace-nowrap text-[14px] text-[#333]">
-            {item.title}：
-          </span>
-          <DividerComp
-            dashed
-            left={
-              <span className="text-[14px] text-[#666]">
-                {item.percentage}%
-              </span>
-            }
-            right={<RightModuleNode onEditor={() => editorCb(item)} />}
-          />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[.15rem]">
+        {listInfo.map((item) => (
+          <li
+            className="grid grid-cols-[2rem_1fr] gap-[.3rem] items-center"
+            key={item.id}
+          >
+            <span className="whitespace-nowrap text-[14px] text-[#333]">
+              {item.title}：
+            </span>
+            <DividerComp
+              dashed
+              left={
+                <span className="text-[14px] text-[#666]">
+                  {item.percentage}%
+                </span>
+              }
+              right={<RightModuleNode onEditor={() => editorCb(item)} />}
+            />
+          </li>
+        ))}
+      </ul>
+      <Modal footer title="修改空投地址" open>
+        <p>ssss</p>
+      </Modal>
+    </>
   );
 };
 const RightModuleNode = (props) => {
