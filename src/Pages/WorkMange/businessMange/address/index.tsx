@@ -2,6 +2,7 @@ import DividerComp from "@/Components/Divider";
 import Modal from "@/Components/Modal";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { EditOutlined } from "@ant-design/icons";
+import { Input } from "antd";
 import { useRef, useState } from "react";
 
 const AddressAutoAirdrop = () => {
@@ -38,7 +39,7 @@ const AddressAutoAirdrop = () => {
     },
   ]);
   let [editorAddrOpen, setEditorAddrOpen] = useState<boolean>(false);
-  let crtInfo = useRef<unknown>();
+  let crtInfo = useRef<any>();
   function editorCb(crt) {
     crtInfo.current = crt;
     setEditorAddrOpen(!editorAddrOpen);
@@ -66,23 +67,36 @@ const AddressAutoAirdrop = () => {
           </li>
         ))}
       </ul>
-      <Modal
-        style={{
-          footer: {
-            marginTop: 0,
-          },
-        }}
-        body={{
-          paddingInline: ".3rem",
-          paddingBlock: ".2rem .3rem",
-        }}
-        showFooter
-        showTitleIcon
-        title="修改空投地址"
-        open={editorAddrOpen}
-      >
-        <p>sssss</p>
-      </Modal>
+      {editorAddrOpen ? (
+        <Modal
+          onCancel={() => setEditorAddrOpen(!editorAddrOpen)}
+          onOk={() => setEditorAddrOpen(!editorAddrOpen)}
+          style={{
+            footer: {
+              marginTop: 0,
+            },
+          }}
+          body={{
+            paddingInline: ".3rem",
+            paddingBlock: ".2rem .3rem",
+          }}
+          showFooter
+          showTitleIcon
+          title="修改空投地址"
+          open={editorAddrOpen}
+        >
+          <p className="flex text-[14px] items-center justify-between pb-[.2rem] border-b border-b-[#e6e6e6]">
+            <span className="text-[var(--border-color)]">
+              {crtInfo.current.title}
+            </span>
+            <span className="text-[#333]">weeweesssssssssssssss</span>
+          </p>
+          <p className="mt-[.2rem] mb-[.1rem] text-[14px] text-[var(--border-color)]">
+            输入新地址
+          </p>
+          <Input allowClear size="large" placeholder="请输入新地址" />
+        </Modal>
+      ) : null}
     </>
   );
 };
@@ -96,7 +110,7 @@ const RightModuleNode = (props) => {
   return (
     <div onClick={editorCb} className="text-[var(--blue)] cursor-pointer">
       <EditOutlined />
-      <span className=" ml-[.1rem]">编辑</span>
+      <span className=" ml-[.1rem] font-normal">编辑</span>
     </div>
   );
 };

@@ -15,9 +15,6 @@ const useStyle = createStyles((obj, props: any) => {
     "my-modal-body": Object.assign(
       {
         display: "grid",
-        gridTemplateColumns: `1fr`,
-        gap: ".15rem",
-        paddingInline: ".5rem",
         minHeight: ".99rem",
       },
       body
