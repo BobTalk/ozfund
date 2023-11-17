@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "166177",
+      "name": "三角up",
+      "font_class": "sanjiaoup",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
       "icon_id": "38001828",
       "name": "订阅邮箱",
       "font_class": "dingyueyouxiang1",

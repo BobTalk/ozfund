@@ -95,6 +95,7 @@ const TableConfig = (props) => {
       title: "操作",
       key: "operation",
       dataIndex: "operation",
+      // width: "100",
       responsive: ["xl"],
       ellipsis: true,
       align: "left",

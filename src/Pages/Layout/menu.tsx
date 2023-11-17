@@ -47,6 +47,7 @@ const LayoutMenu = () => {
         styleScope["menu-box"],
         "pt-[.1rem] px-[.1rem]"
       )}
+      defaultOpenKeys={activePath[pathname]}
       defaultSelectedKeys={activePath[pathname]}
       items={menuList}
     />

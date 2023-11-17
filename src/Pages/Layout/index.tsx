@@ -25,6 +25,8 @@ const LayoutPage: React.FC = () => {
           Tabs: {
             colorBorderSecondary: "transparent",
             fontSize: 16,
+            inkBarColor:"var(--blue)",
+            itemSelectedColor:"var(--blue)",
             itemColor: "#666",
             cardBg: "var(--white)",
             colorTextHeading: "#666",

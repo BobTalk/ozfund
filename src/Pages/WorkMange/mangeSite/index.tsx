@@ -61,7 +61,7 @@ const MangeSite = () => {
         <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[.15rem] text-[14px] text-[#333]">
           <span>Bob.Li -超级管理员C</span>
           <span>bdjkhafheuiwfhkhiureofufherhiuehfi23fcdushod</span>
-          <span className="flex items-center cursor-pointer">
+          <span onClick={deleteCb} className="flex items-center cursor-pointer">
             <img width={15} height={15} src={closeIcon} alt="关闭" />
             <span className="ml-[.1rem]">删除</span>
           </span>
