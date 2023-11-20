@@ -99,7 +99,7 @@ const MangeSite = () => {
             </Form.Item>
           </Form>
         ) : (
-          <div className="text-center text-[14px] text-[#333]">
+          <div className="text-center text-[14px] text-[#333] grid place-items-center">
             <p className="leading-normal">确定移除管理员A</p>
             <p className="leading-normal">owrijwfnwm0isd992rsd</p>
           </div>
