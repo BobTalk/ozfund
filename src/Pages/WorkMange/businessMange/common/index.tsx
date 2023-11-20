@@ -1,14 +1,16 @@
 import DividerComp from "@/Components/Divider";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { mergeClassName } from "@/utils/base";
 import { ReactNode } from "react";
 type splitCompType = {
   list: any[];
   onEditor?: Function;
   opertion?: ReactNode | undefined;
-  className?:string
+  className?: string;
+  listClassName?: string;
 };
 const SplitComp = (props: splitCompType) => {
-  let { list, onEditor, opertion } = props
+  let { list, onEditor, opertion } = props;
   function editorCb(item: any) {
     onEditor?.(item);
   }
@@ -17,18 +19,24 @@ const SplitComp = (props: splitCompType) => {
     <ul className={props.className}>
       {list.map((item) => (
         <li
-          className="grid grid-cols-[2rem_1fr] gap-[.3rem] items-center"
+          className={mergeClassName(
+            "grid items-center",
+            `${props.listClassName ?? "grid-cols-[2rem_1fr] gap-[.3rem]"}`
+          )}
           key={item.id}
         >
           <span className="whitespace-nowrap text-[14px] text-[#333]">
-            {item.title}：
+            {item.title}
+            {item.percentage ? "：" : ""}
           </span>
           <DividerComp
             dashed
             left={
-              <span className="text-[14px] text-[#666]">
-                {item.percentage}%
-              </span>
+              item.percentage ? (
+                <span className="text-[14px] text-[#666]">
+                  {item.percentage}%
+                </span>
+              ) : null
             }
             right={
               <RightModuleNode

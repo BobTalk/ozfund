@@ -13,12 +13,12 @@ const DividerComp = (props: DividerCompType) => {
         token: {
           margin: 12,
           colorSplit: "var(--border-color)",
-          colorText:"#666"
+          colorText: "#666",
         },
       }}
     >
       <div className="flex w-full">
-        <div className="w-1/2">
+        <div className={props.right ? "w-1/2" : "w-full"}>
           <Divider
             dashed={props.dashed}
             orientation="left"
@@ -27,11 +27,10 @@ const DividerComp = (props: DividerCompType) => {
             {props.left}
           </Divider>
         </div>
-        <div className="w-1/2">
+        <div className={props.left ? "w-1/2" : "w-full"}>
           <Divider
             dashed={props.dashed}
             orientation="right"
-            className="w-1/2"
             orientationMargin={props.orientationMargin}
           >
             {props.right}
