@@ -1,10 +1,11 @@
 import TabsComp from "@/Components/Tabs";
 import { useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const BusinessMange = () => {
   const commonUrlPrefix = "/ozfund/work-mange/business-mange";
   let navigate = useNavigate();
+  let { pathname } = useLocation();
   let tabsRefs = useRef<any>();
   let [tabsHeight, setTabsHeight] = useState<number>();
   function tabClickCb(key) {
@@ -17,6 +18,7 @@ const BusinessMange = () => {
   return (
     <>
       <TabsComp
+        defaultActiveKey={pathname}
         ref={tabsRefs}
         onTabClick={tabClickCb}
         className="bg-white pt-[2px] px-[.2rem] rounded-[var(--border-radius)]"

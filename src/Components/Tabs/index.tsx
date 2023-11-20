@@ -9,6 +9,7 @@ type tabsCompType = {
   style?: CSSProperties;
   list: Array<{ label: string; key: any }>;
   onTabClick?: Function;
+  defaultActiveKey?: string;
 };
 const TabsComp = (props: tabsCompType, ref) => {
   let [stop] = useStopPropagation();
@@ -20,6 +21,7 @@ const TabsComp = (props: tabsCompType, ref) => {
   return (
     <div ref={ref}>
       <Tabs
+        defaultActiveKey={props.defaultActiveKey ?? ""}
         onTabClick={tabClickCb}
         className={mergeClassName(
           styleScope["_tabs-box"],
