@@ -3,6 +3,7 @@ import { Modal } from "antd";
 import styleScope from "./index.module.less";
 import { createStyles } from "antd-style";
 import { memo } from "react";
+import { mergeClassName } from "@/utils/base";
 const useStyle = createStyles((obj, props: any) => {
   let {
     body = {},
@@ -92,12 +93,13 @@ const ModalScope = (props: any) => {
 };
 const ModalTitle = (props) => {
   return props.showTitleIcon ? (
-    <span className="flex items-center font-normal">
-      <i className={styleScope["icon"]}></i>
+    <span className={mergeClassName("flex items-center font-normal", props.classTitleName)}>
+      <i className={mergeClassName(styleScope["icon"], props.classIconName)}></i>
       {props.title}
     </span>
   ) : (
     <>{props.title}</>
   );
 };
+export {ModalTitle}
 export default memo(ModalScope, (prv, next) => prv.open === next.open);

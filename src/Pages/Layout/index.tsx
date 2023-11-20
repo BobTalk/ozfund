@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ConfigProvider, Layout, theme } from "antd";
+import { ConfigProvider, Layout } from "antd";
 import LayoutMenu from "./menu";
 import LayoutContent from "./content";
 import LayoutHeader from "./header";
@@ -8,25 +8,22 @@ import LayoutLogo from "./logo";
 const { Sider } = Layout;
 
 const LayoutPage: React.FC = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
   return (
     <ConfigProvider
       theme={{
         components: {
-          Breadcrumb:{
-            lastItemColor:"var(--blue)",
+          Breadcrumb: {
+            lastItemColor: "var(--blue)",
           },
-          Alert:{
-            colorInfoBorder:"transparent"
+          Alert: {
+            colorInfoBorder: "transparent",
           },
           Tabs: {
             colorBorderSecondary: "transparent",
             fontSize: 16,
-            inkBarColor:"var(--blue)",
-            itemSelectedColor:"var(--blue)",
+            inkBarColor: "var(--blue)",
+            itemSelectedColor: "var(--blue)",
             itemColor: "#666",
             cardBg: "var(--white)",
             colorTextHeading: "#666",
@@ -35,7 +32,7 @@ const LayoutPage: React.FC = () => {
             colorFillAlter: "var(--white)",
             cardHeight: 60,
             margin: 0,
-            horizontalItemPadding:'17px 0'
+            horizontalItemPadding: "17px 0",
           },
           Pagination: {
             colorText: "#666",
@@ -54,14 +51,14 @@ const LayoutPage: React.FC = () => {
             colorPrimary: "var(--blue)",
           },
           Menu: {
-            itemHeight:50,
-            itemMarginBlock:0,
-            itemMarginInline:0,
+            itemHeight: 50,
+            itemMarginBlock: 0,
+            itemMarginInline: 0,
             itemHoverBg: "var(--blue)",
             itemHoverColor: "var(--white)",
             subMenuItemBg: "transparent",
             itemSelectedColor: "var(--white)",
-            itemSelectedBg:"var(--blue)",
+            itemSelectedBg: "var(--blue)",
             itemColor: "var(--menu-color)",
             itemActiveBg: "var(--blue)",
           },
@@ -84,7 +81,7 @@ const LayoutPage: React.FC = () => {
         </Sider>
         <Layout>
           <LayoutHeader
-            colorBgContainer={colorBgContainer}
+            colorBgContainer="#ffffff"
             collapsed={collapsed}
             setCollapsed={setCollapsed}
           />

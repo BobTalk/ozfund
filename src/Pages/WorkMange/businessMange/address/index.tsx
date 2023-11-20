@@ -1,9 +1,8 @@
-import DividerComp from "@/Components/Divider";
 import Modal from "@/Components/Modal";
-import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { EditOutlined } from "@ant-design/icons";
 import { ConfigProvider, Input } from "antd";
 import { useRef, useState } from "react";
+import SplitComp from "../common";
+import { EditOutlined } from "@ant-design/icons";
 
 const AddressAutoAirdrop = () => {
   let [listInfo] = useState([
@@ -46,27 +45,17 @@ const AddressAutoAirdrop = () => {
   }
   return (
     <>
-      <ul className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[.15rem]">
-        {listInfo.map((item) => (
-          <li
-            className="grid grid-cols-[2rem_1fr] gap-[.3rem] items-center"
-            key={item.id}
-          >
-            <span className="whitespace-nowrap text-[14px] text-[#333]">
-              {item.title}：
-            </span>
-            <DividerComp
-              dashed
-              left={
-                <span className="text-[14px] text-[#666]">
-                  {item.percentage}%
-                </span>
-              }
-              right={<RightModuleNode onEditor={() => editorCb(item)} />}
-            />
-          </li>
-        ))}
-      </ul>
+      <SplitComp
+        onEditor={editorCb}
+        className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[.15rem]"
+        list={listInfo}
+        opertion={
+          <>
+            <EditOutlined />
+            <span className=" ml-[.1rem] font-normal">编辑</span>
+          </>
+        }
+      />
       {editorAddrOpen ? (
         <ConfigProvider
           theme={{
@@ -111,18 +100,5 @@ const AddressAutoAirdrop = () => {
     </>
   );
 };
-const RightModuleNode = (props) => {
-  let [stop] = useStopPropagation();
-  function editorCb(e) {
-    stop(e, () => {
-      props?.onEditor?.();
-    });
-  }
-  return (
-    <div onClick={editorCb} className="text-[var(--blue)] cursor-pointer">
-      <EditOutlined />
-      <span className=" ml-[.1rem] font-normal">编辑</span>
-    </div>
-  );
-};
+
 export default AddressAutoAirdrop;

@@ -12,6 +12,8 @@ const DividerComp = (props: DividerCompType) => {
       theme={{
         token: {
           margin: 12,
+          colorSplit: "var(--border-color)",
+          colorText:"#666"
         },
       }}
     >
