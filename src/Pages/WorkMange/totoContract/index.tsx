@@ -1,10 +1,16 @@
 import { ModalTitle } from "@/Components/Modal";
-import { EditFilled, EditOutlined, SettingOutlined } from "@ant-design/icons";
+import {
+  EditFilled,
+  EditOutlined,
+  SaveOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { Button, Form, InputNumber, Switch } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import styleScope from "./index.module.less";
 const TodoContract = () => {
   let headerRefs = useRef<any>();
+
   let [headerHeight, setHeaderHeight] = useState<number>();
   useEffect(() => {
     let { height } = headerRefs.current.getBoundingClientRect();
@@ -89,6 +95,7 @@ const HeaderModule = forwardRef((props, ref: any) => {
   );
 });
 const Contentmodule = (props) => {
+  let BtnName = useRef<string>("编辑");
   let [listInfo] = useState([
     {
       id: "1",
@@ -126,6 +133,7 @@ const Contentmodule = (props) => {
   let [editorPercentage, setEditorPercentage] = useState(false);
   function editorCb() {
     setEditorPercentage(!editorPercentage);
+    BtnName.current = BtnName.current == "编辑" ? "保存" : "编辑";
   }
   function formFieldChangeCb(changedValues, allValues) {
     console.log("allValues: ", allValues);
@@ -146,9 +154,11 @@ const Contentmodule = (props) => {
               onClick={editorCb}
               className="bg-[#e6f2fd] text-[var(--blue)] hover:text-[#FFF]"
               type="primary"
-              icon={<EditFilled />}
+              icon={
+                BtnName.current == "编辑" ? <EditFilled /> : <SaveOutlined />
+              }
             >
-              编辑
+              {BtnName.current}
             </Button>
           </div>
         }
