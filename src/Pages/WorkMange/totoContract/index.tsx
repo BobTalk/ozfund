@@ -1,8 +1,8 @@
 import { ModalTitle } from "@/Components/Modal";
 import { EditFilled, EditOutlined, SettingOutlined } from "@ant-design/icons";
-import { Button, Switch } from "antd";
+import { Button, Form, InputNumber, Switch } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
-
+import styleScope from "./index.module.less";
 const TodoContract = () => {
   let headerRefs = useRef<any>();
   let [headerHeight, setHeaderHeight] = useState<number>();
@@ -93,46 +93,57 @@ const Contentmodule = (props) => {
     {
       id: "1",
       title: "长期支持者占比",
-      percentage: 15,
     },
     {
       id: "2",
       title: "OZ基金会占比",
-      percentage: 30,
     },
     {
       id: "3",
       title: "OZ团队成员占比",
-      percentage: 20,
     },
     {
       id: "4",
       title: "流动性占比",
-      percentage: 5,
     },
     {
       id: "5",
       title: "用户OZC投注主矿池挖矿",
-      percentage: 20,
     },
     {
       id: "6",
       title: "VIP用户OZC投注VIP矿池挖矿",
-      percentage: 10,
     },
   ]);
+  let [listValues] = useState({
+    percentage0: 15,
+    percentage1: 30,
+    percentage2: 20,
+    percentage3: 5,
+    percentage4: 20,
+    percentage5: 10,
+  });
+  let [editorPercentage, setEditorPercentage] = useState(false);
+  function editorCb() {
+    setEditorPercentage(!editorPercentage);
+  }
+  function formFieldChangeCb(changedValues, allValues) {
+    console.log("allValues: ", allValues);
+    console.log("changedValues: ", changedValues);
+  }
   return (
     <div
       style={{
         height: `calc(100% - ${props.headerH}px - .15rem)`,
       }}
-      className="bg-white mt-[.15rem] rounded-[var(--border-radius)]"
+      className="bg-white mt-[.15rem] rounded-[var(--border-radius)] overflow-y-auto"
     >
       <TitleComp
         title={
           <div className="flex flex-1 items-center justify-between pr-[.2rem]">
             <span>提取合约中代币</span>
             <Button
+              onClick={editorCb}
               className="bg-[#e6f2fd] text-[var(--blue)] hover:text-[#FFF]"
               type="primary"
               icon={<EditFilled />}
@@ -142,17 +153,37 @@ const Contentmodule = (props) => {
           </div>
         }
       />
-      <ul className="mt-[.2rem] px-[.3rem] pb-[.3rem]">
-        {listInfo.map((item) => (
-          <li
+      <Form
+        initialValues={listValues}
+        onValuesChange={formFieldChangeCb}
+        labelAlign="left"
+        className={styleScope["_reset-form"]}
+      >
+        {listInfo.map((item, index) => (
+          <Form.Item
+            name={`percentage` + index}
+            label={
+              <span className="text-[#333] w-[1.9rem]">{item.title}：</span>
+            }
             key={item.id}
-            className="grid grid-cols-[1.99rem_1fr] gap-x-[.3rem] not-first-of-type:mt-[.24rem] text-[14px]"
+            className="text-[14px] mb-[.14rem]"
           >
-            <span className="text-[#333]">{item.title}：</span>
-            <span className="text-[#666]">{item.percentage ?? "--"}%</span>
-          </li>
+            {!editorPercentage ? (
+              <span className="text-[#666]">
+                {listValues["percentage" + index] ?? "--"}%
+              </span>
+            ) : (
+              <InputNumber
+                max={100}
+                min={0}
+                addonAfter="%"
+                className="w-[1rem]"
+                defaultValue={listValues["percentage" + index]}
+              />
+            )}
+          </Form.Item>
         ))}
-      </ul>
+      </Form>
     </div>
   );
 };
