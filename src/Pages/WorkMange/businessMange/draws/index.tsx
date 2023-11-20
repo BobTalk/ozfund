@@ -2,6 +2,7 @@ import { ModalTitle } from "@/Components/Modal";
 import SplitComp from "../common";
 import { EditOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 const DrawsContractMoney = () => {
   let [listInfo] = useState([
     {
@@ -36,6 +37,50 @@ const DrawsContractMoney = () => {
         }
       />
       <TitleComp title="OZC" />
+      <ConfigProvider
+        theme={{
+          components: {
+            Input: {
+              paddingBlock: 6,
+            },
+            InputNumber: {
+              paddingBlock: 6,
+            },
+            Form: {
+              labelColor: "#666",
+            },
+          },
+          token: {
+            controlHeight: 36,
+            borderRadius: 2,
+          },
+        }}
+      >
+        <Form
+          layout="vertical"
+          className="grid grid-cols-2 gap-x-[.2rem] py-[.2rem] pr-[.2rem] pl-[.3rem]"
+        >
+          <Form.Item label="选择Token" className="mb-[.15rem]">
+            <Select placeholder="选择Token" options={[]} />
+          </Form.Item>
+          <Form.Item label="数量" className="mb-[.15rem]">
+            <InputNumber className="w-full" placeholder="输入数量" />
+          </Form.Item>
+          <Form.Item label="提取地址" className="mb-[.15rem]">
+            <Select placeholder="输入地址" options={[]} />
+          </Form.Item>
+          <Form.Item label="提取数量" className="mb-[.15rem]">
+            <InputNumber className="w-full" placeholder="输入数量" />
+          </Form.Item>
+          <Form.Item className="mb-0" />
+          <Form.Item className="flex justify-end mb-0">
+            <Button className="w-[.75rem] text-[#999]">取消</Button>
+            <Button className="w-[.75rem] ml-[.1rem]" type="primary">
+              确认
+            </Button>
+          </Form.Item>
+        </Form>
+      </ConfigProvider>
     </div>
   );
 };

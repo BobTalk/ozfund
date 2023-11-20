@@ -69,6 +69,7 @@ const BatchTransferAccounts = () => {
           },
           token: {
             controlHeight: 36,
+            borderRadius:2
           },
         }}
       >
