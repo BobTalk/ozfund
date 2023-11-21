@@ -28,6 +28,9 @@ const useStyle = createStyles((obj, { bool, props }) => {
       {
         borderTop: `1px solid var(--border-color)`,
         marginTop: `0 !important`,
+        button: {
+          borderRadius: "2px",
+        },
       },
       footer
     ),

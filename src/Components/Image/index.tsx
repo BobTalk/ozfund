@@ -1,5 +1,5 @@
-import { mergeClassName } from "@/utils/base";
 import { ReactNode } from "react";
+import Icon from "../Icon";
 
 export type ImageType = {
   src: string;
@@ -15,11 +15,16 @@ const Image = (props: ImageType) => {
   return (
     <figure className={props.className} style={props.style}>
       {props.top ? <figcaption>{props.top}</figcaption> : null}
-      <img
-        src={props.src}
-        className={props.imgClassName}
-        style={props.imgStyle}
-      />
+      {props.src.startsWith("h-icon") ? (
+        <Icon name={props.src} style={props.imgStyle} />
+      ) : (
+        <img
+          src={props.src}
+          className={props.imgClassName}
+          style={props.imgStyle}
+        />
+      )}
+
       {props.children ? (
         <figcaption>{props.children}</figcaption>
       ) : props.bottom ? (
