@@ -20,14 +20,14 @@ const useStyle = createStyles((obj, { bool, props }) => {
       {
         borderBottom: `1px solid var(--border-color)`,
         padding: ".2rem .3rem",
-        marginBottom: `0 !important`
+        marginBottom: `0 !important`,
       },
       header
     ),
     "my-modal-footer": Object.assign(
       {
         borderTop: `1px solid var(--border-color)`,
-        marginTop: `0 !important`
+        marginTop: `0 !important`,
       },
       footer
     ),

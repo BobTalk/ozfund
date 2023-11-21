@@ -6,19 +6,26 @@ import {
   SaveOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Button, Form, InputNumber, Switch } from "antd";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { Button, ConfigProvider, Form, InputNumber, Switch } from "antd";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { mergeClassName } from "@/utils/base";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
   let [headerHeight, setHeaderHeight] = useState<number>();
-  let [modalOpen, setModalOpen] = useState(false)
+  let [modalOpen, setModalOpen] = useState(false);
   function configCb(e, flag) {
     stop(e, () => {
       console.log("flag: ", flag);
-      setModalOpen(!modalOpen)
+      setModalOpen(!modalOpen);
     });
   }
   useEffect(() => {
@@ -29,7 +36,11 @@ const TodoContract = () => {
     <>
       <HeaderModule ref={headerRefs} onConfig={configCb} />
       <Contentmodule headerH={headerHeight} />
-      <ModalComp modalOpen={modalOpen}/>
+      <ModalComp
+        modalOpen={modalOpen}
+        onCancel={(value) => setModalOpen(value)}
+        onOk={(value) => setModalOpen(value)}
+      />
     </>
   );
 };
@@ -236,10 +247,91 @@ const TitleComp = ({ title }) => {
     </>
   );
 };
+// TOTO发行总量
+const PublishTotal = forwardRef((props, ref) => {
+  let [form] = Form.useForm();
+  let [formInitVal] = useState({
+    publishNum: "",
+  });
+  useImperativeHandle(
+    ref,
+    () => ({
+      form,
+    }),
+    [form]
+  );
+  return (
+    <>
+      <p className="flex justify-between text-[14px] pb-[.2rem] border-b border-b-[#e6e6e6]">
+        <span className="text-[var(--border-color)]">当前发行总量</span>
+        <span className="text-[#333]">100000</span>
+      </p>
+      <ConfigProvider
+        theme={{
+          token: {
+            borderRadius: 2,
+          },
+        }}
+      >
+        <Form
+          layout="vertical"
+          className="mt-[.2rem]"
+          initialValues={formInitVal}
+          form={form}
+        >
+          <Form.Item
+            className="mb-0"
+            label={<span className="text-[var(--border-color)]">输入数量</span>}
+            name="publishNum"
+          >
+            <InputNumber
+              size="large"
+              className="w-full"
+              placeholder="请输入数量"
+            />
+          </Form.Item>
+        </Form>
+      </ConfigProvider>
+    </>
+  );
+});
+// 添加TOTO
+const AddToto = () => {};
+// 生产分配比例
+const AllocationProportion = () => {};
+// TOTO调度地址
+const DispatchAddress = () => {};
+// 提示信息
+const TipMessage = () => {};
+// 增发OZC
+const addPublish = () => {};
 const ModalComp = (props) => {
+  function cancelCb(value) {
+    props?.onCancel?.(value);
+  }
+  function okCb(value) {
+    props?.onOk?.(value);
+  }
   return props.modalOpen ? (
-    <ModalScope open={true} title={props.title}>
-      <p>dddd</p>
+    <ModalScope
+      onCancel={cancelCb}
+      onOk={okCb}
+      modalOpen={true}
+      footer={{
+        paddingBlock: ".2rem",
+        paddingRight: ".28rem",
+        button: {
+          borderRadius: "2px",
+        },
+      }}
+      body={{
+        paddingInline: ".3rem",
+        paddingTop: ".2rem",
+        paddingBottom: ".3rem",
+      }}
+      title={props.title}
+    >
+      <PublishTotal />
     </ModalScope>
   ) : null;
 };

@@ -1,19 +1,18 @@
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { Modal } from "antd";
 import styleScope from "./index.module.less";
-import { createStyles } from "antd-style";
 import { memo } from "react";
 import { mergeClassName } from "@/utils/base";
 const ModalScope = (props: any) => {
   let [stop] = useStopPropagation();
   function okCb(e) {
     stop(e, () => {
-      props?.onOk();
+      props?.onOk(!props.open);
     });
   }
   function cancelCb(e) {
     stop(e, () => {
-      props?.onCancel();
+      props?.onCancel(!props.open);
     });
   }
   return (
