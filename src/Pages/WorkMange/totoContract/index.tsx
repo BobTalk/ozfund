@@ -1,4 +1,5 @@
 import { ModalTitle } from "@/Components/Modal";
+import ModalScope from "@/Pages/ModalComp";
 import {
   EditFilled,
   EditOutlined,
@@ -8,27 +9,49 @@ import {
 import { Button, Form, InputNumber, Switch } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import styleScope from "./index.module.less";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 const TodoContract = () => {
+  let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
-
   let [headerHeight, setHeaderHeight] = useState<number>();
+  let [modalOpen, setModalOpen] = useState(false)
+  function configCb(e, flag) {
+    stop(e, () => {
+      console.log("flag: ", flag);
+      setModalOpen(!modalOpen)
+    });
+  }
   useEffect(() => {
     let { height } = headerRefs.current.getBoundingClientRect();
     setHeaderHeight(height);
   }, []);
   return (
     <>
-      <HeaderModule ref={headerRefs} />
+      <HeaderModule ref={headerRefs} onConfig={configCb} />
       <Contentmodule headerH={headerHeight} />
+      <ModalComp modalOpen={modalOpen}/>
     </>
   );
 };
-const HeaderModule = forwardRef((props, ref: any) => {
+const HeaderModule = forwardRef((props: any, ref: any) => {
+  function switchCb(e) {
+    props?.onConfig?.(e, "switch");
+  }
+  function totalPublishCb(e) {
+    props?.onConfig?.(e, "total");
+  }
+  function addPublishCb(e) {
+    props?.onConfig?.(e, "add");
+  }
+  function updateAddrCb(e) {
+    props?.onConfig?.(e, "update");
+    console.log(this);
+  }
   let [moduleList] = useState([
     {
       id: 1,
       title: "开启/关闭TOTO出售",
-      operateNode: <Switch defaultChecked />,
+      operateNode: <Switch onClick={switchCb} defaultChecked />,
     },
     {
       id: 2,
@@ -36,7 +59,11 @@ const HeaderModule = forwardRef((props, ref: any) => {
       label: "当前发行总量",
       value: 10000,
       operateNode: (
-        <Button icon={<SettingOutlined />} type="primary">
+        <Button
+          onClick={totalPublishCb}
+          icon={<SettingOutlined />}
+          type="primary"
+        >
           设置
         </Button>
       ),
@@ -45,7 +72,7 @@ const HeaderModule = forwardRef((props, ref: any) => {
       id: 3,
       title: "增发TOTO",
       operateNode: (
-        <Button icon={<EditOutlined />} type="primary">
+        <Button onClick={addPublishCb} icon={<EditOutlined />} type="primary">
           增发
         </Button>
       ),
@@ -56,7 +83,7 @@ const HeaderModule = forwardRef((props, ref: any) => {
       label: "当前调度地址",
       value: "dkjahiuhf35hahd8",
       operateNode: (
-        <Button icon={<EditOutlined />} type="primary">
+        <Button onClick={updateAddrCb} icon={<EditOutlined />} type="primary">
           修改
         </Button>
       ),
@@ -208,5 +235,12 @@ const TitleComp = ({ title }) => {
       />
     </>
   );
+};
+const ModalComp = (props) => {
+  return props.modalOpen ? (
+    <ModalScope open={true} title={props.title}>
+      <p>dddd</p>
+    </ModalScope>
+  ) : null;
 };
 export default TodoContract;

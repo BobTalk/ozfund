@@ -1,35 +1,47 @@
 import ModalScope from "@/Components/Modal";
 import { createStyles } from "antd-style";
-import styleScope from "./index.module.less";
 import { memo } from "react";
-const useStyle = createStyles((obj, bool) => {
+const useStyle = createStyles((obj, { bool, props }) => {
+  // props.style结构 ==> {
+  //   header:{},
+  //   body:{}
+  // }
+  let { body = {}, mask = {}, header = {}, footer = {}, content = {} } = props;
   return {
-    "my-modal-body": {
-      gap: ".15rem",
-      paddingInline: bool ? ".5rem !important" : "0 !important",
-      paddingBottom: bool ? ".3rem !important" : "0 !important",
-    },
-    "my-modal-mask": {
-      boxShadow: `inset 0 0 15px #fff`,
-    },
-    "my-modal-header": {
-      borderBottom: `1px solid var(--border-color)`,
-      padding: ".2rem 0.3rem",
-      marginBottom: ".2rem !important",
-    },
-    "my-modal-footer": {
-      padding: ".2rem .3rem .24rem",
-      borderTop: `1px solid var(--border-color)`,
-      marginTop: `0 !important`,
-    },
-    "my-modal-content": {
-      padding: `0 !important`,
-    },
+    "my-modal-body": body,
+    "my-modal-mask": Object.assign(
+      {
+        boxShadow: `inset 0 0 15px #fff`,
+      },
+      mask
+    ),
+
+    "my-modal-header": Object.assign(
+      {
+        borderBottom: `1px solid var(--border-color)`,
+        padding: ".2rem .3rem",
+        marginBottom: `0 !important`
+      },
+      header
+    ),
+    "my-modal-footer": Object.assign(
+      {
+        borderTop: `1px solid var(--border-color)`,
+        marginTop: `0 !important`
+      },
+      footer
+    ),
+    "my-modal-content": Object.assign(
+      {
+        padding: `0 !important`,
+      },
+      content
+    ),
   };
 });
 const ModalComp = (props) => {
   let { showFooter = true } = props;
-  const { styles } = useStyle(showFooter);
+  const { styles } = useStyle({ showFooter, props });
   const classNames = {
     body: styles["my-modal-body"],
     mask: styles["my-modal-mask"],
@@ -39,18 +51,16 @@ const ModalComp = (props) => {
   };
   return (
     <ModalScope
-      cancelText="取消"
+      cancelText={props.cancelText ?? "取消"}
       onOk={props.onOk}
       onCancel={props.onCancel}
       classNames={classNames}
       showFooter={showFooter}
       open={props.modalOpen}
-      title={
-        <span className="flex items-center font-normal">
-          <i className={styleScope["icon"]}></i>
-          {props.title}
-        </span>
-      }
+      classTitleName={props.classTitleName}
+      showTitleIcon={props.showTitleIcon ?? true}
+      classIconName={props.classIconName}
+      title={props.title}
     >
       {props.children}
     </ModalScope>

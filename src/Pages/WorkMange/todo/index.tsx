@@ -3,7 +3,7 @@ import TableConfig from "./table.jsx";
 import linkIcon from "@/assets/images/link.svg";
 import { useStopPropagation } from "@/Hooks/StopPropagation.js";
 import { useState } from "react";
-import ModalComp from "@/Pages/ModalComp/index.js";
+import ModalComp from "@/Pages/ModalComp";
 
 const Todo = () => {
   let [stop] = useStopPropagation();
@@ -28,11 +28,19 @@ const Todo = () => {
       <ModalComp
         title="签名"
         modalOpen={signatureOpen}
+        body={{
+          marginInline: ".3rem",
+          marginBottom: ".3rem",
+        }}
+        footer={{
+          paddingInline: ".28rem", 
+          paddingBlock: '.2rem'
+        }}
         onOk={signatureCb}
         onCancel={signatureCb}
       >
         <>
-          <p className="flex items-center justify-between  text-[14px]">
+          <p className="flex items-center justify-between  text-[14px] mt-[.2rem]">
             <span className="text-[#C5CAD0]">管理员A</span>
             <span className="text-[#333]">weeweesssssssssssssss</span>
           </p>

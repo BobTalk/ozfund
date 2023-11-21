@@ -70,6 +70,10 @@ const MangeSite = () => {
       <ModalComp
         title={(isAddManage ? "添加" : "移除") + "管理员"}
         showFooter={!isAddManage}
+        footer={{
+          paddingInline: ".28rem",
+          paddingBlock: ".2rem",
+        }}
         modalOpen={mangeOpen}
         onOk={manageCb}
         onCancel={manageCb}
@@ -80,7 +84,7 @@ const MangeSite = () => {
               label={
                 <span className="text-[var(--border-color)]">管理员A</span>
               }
-              className="px-[.3rem]"
+              className="px-[.3rem] my-[.3rem] "
               name="name"
             >
               <Input
@@ -91,7 +95,9 @@ const MangeSite = () => {
             </Form.Item>
             <Form.Item className="border-t border-t-[var(--border-color)]">
               <div className="flex justify-end py-[.2rem] pr-[.2rem]">
-                <Button onClick={manageCb} className="mr-[.1rem]">取消</Button>
+                <Button onClick={manageCb} className="mr-[.1rem]">
+                  取消
+                </Button>
                 <Button onClick={manageCb} type="primary" htmlType="submit">
                   确定
                 </Button>
@@ -99,7 +105,7 @@ const MangeSite = () => {
             </Form.Item>
           </Form>
         ) : (
-          <div className="text-center text-[14px] text-[#333] grid place-items-center">
+          <div className="m-[.3rem] text-center text-[14px] text-[#333] grid place-items-center">
             <p className="leading-normal">确定移除管理员A</p>
             <p className="leading-normal">owrijwfnwm0isd992rsd</p>
           </div>
