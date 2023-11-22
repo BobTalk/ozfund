@@ -39,7 +39,7 @@ const LayoutPage: React.FC = () => {
             colorTextDisabled: "#B8BFCD",
           },
           Table: {
-            borderColor: "var(--border-color)",
+            borderColor: "#e9e9e9",
             colorText: "#333",
             fontWeightStrong: 400,
             headerColor: "var(--menu-color)",

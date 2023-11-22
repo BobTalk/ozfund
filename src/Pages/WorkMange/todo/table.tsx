@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import TableComp from '@/Components/Table'
 import type {ColumnsType} from '@/Components/Table'
 import { EditOutlined } from "@ant-design/icons";
