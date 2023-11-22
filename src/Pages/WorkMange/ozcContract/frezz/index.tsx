@@ -4,9 +4,6 @@ import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 import Table from "./table";
 import MoreBtn from "@/Components/MoreBtn";
 import {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";

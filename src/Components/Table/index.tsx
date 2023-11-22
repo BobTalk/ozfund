@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import zh_CN from "antd/es/locale/zh_CN";
 import styleScope from "./table.module.less";
 import type { ColumnsType as ColType } from "antd/es/table";
+import { mergeClassName } from "@/utils/base";
 export type ColumnsType = ColType<{
   title: string;
   key?: string;
@@ -40,6 +41,7 @@ const TableComp = (props: TableCompPropsType) => {
     border,
     components: comp,
     virtual,
+    className
   } = props;
   return (
     <ConfigProvider
@@ -52,7 +54,7 @@ const TableComp = (props: TableCompPropsType) => {
       }}
       locale={zh_CN}
     >
-      <div className={styleScope["table-reset_style"]}>
+      <div className={mergeClassName(styleScope["table-reset_style"], className)}>
         <Table
           components={comp}
           virtual={virtual}

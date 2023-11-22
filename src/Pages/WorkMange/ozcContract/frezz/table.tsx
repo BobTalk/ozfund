@@ -1,9 +1,8 @@
-import MoreBtn from "@/Components/MoreBtn";
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-
 import { Button, ConfigProvider, Input } from "antd";
 import dayjs from "dayjs";
+import styleScope from "./index.module.less";
 import { useState } from "react";
 const Table = () => {
   const columns: ColumnsType = [
@@ -53,7 +52,7 @@ const Table = () => {
         <Input placeholder="输入地址" className="w-[3.7rem]" />
         <Button type="primary">查询</Button>
       </div>
-      <TableComp dataSource={dataList} columns={columns} />
+      <TableComp className={styleScope["tabel_reset"]} dataSource={dataList} columns={columns} />
      
     </ConfigProvider>
   );
