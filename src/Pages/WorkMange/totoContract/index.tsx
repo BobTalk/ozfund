@@ -16,7 +16,6 @@ import {
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
-import Image from "@/Components/Image";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -190,9 +189,9 @@ const Contentmodule = (props) => {
   return (
     <div
       style={{
-        height: `calc(100% - ${props.headerH}px - .15rem)`,
+        height: `calc(100% - ${props.headerH}px - var(--mt15))`,
       }}
-      className="bg-white mt-[.15rem] rounded-[var(--border-radius)] overflow-y-auto"
+      className="bg-white mt-[var(--mt15)] rounded-[var(--border-radius)] overflow-y-auto"
     >
       <TitleComp
         title={
@@ -343,7 +342,7 @@ const AddToto = (props) => {
         form={form}
       >
         <Form.Item
-          className="mb-[.15rem] mx-[.3rem] mt-[.2rem]"
+          className="mb-[var(--mt15)] mx-[.3rem] mt-[.2rem]"
           label={
             <span className="text-[var(--border-color)]">输入增发地址</span>
           }
@@ -399,7 +398,7 @@ const AddToto = (props) => {
 //     >
 //       <Form layout="vertical" initialValues={formInitVal} form={form}>
 //         <Form.Item
-//           className="mb-[.15rem]"
+//           className="mb-[var(--mt15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">长期支持者占比</span>
 //           }
@@ -412,7 +411,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[.15rem]"
+//           className="mb-[var(--mt15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">OZ基金会占比</span>
 //           }
@@ -425,7 +424,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[.15rem]"
+//           className="mb-[var(--mt15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">OZ团队成员占比</span>
 //           }
@@ -438,7 +437,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[.15rem]"
+//           className="mb-[var(--mt15)]"
 //           label={<span className="text-[var(--border-color)]">流动性占比</span>}
 //           name="mobilityRatio"
 //         >
@@ -449,7 +448,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[.15rem]"
+//           className="mb-[var(--mt15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">
 //               用户OZC投注主矿池挖矿

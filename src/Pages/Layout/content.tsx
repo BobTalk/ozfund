@@ -61,7 +61,7 @@ const LayoutContent = () => {
       <div
         style={{
           height: `calc(100% - ${contentH}px)`,
-          padding: ".15rem",
+          padding: "var(--mt15)",
         }}
         className="overflow-y-auto bg-[var(--content-gray)]"
       >

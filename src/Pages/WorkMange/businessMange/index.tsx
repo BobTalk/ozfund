@@ -31,7 +31,7 @@ const BusinessMange = () => {
       />
       <div
         style={{
-          height: `calc(100% - ${tabsHeight}px - .15rem)`,
+          height: `calc(100% - ${tabsHeight}px - var(--mt15))`,
         }}
       >
         <Outlet />

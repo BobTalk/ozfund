@@ -2,7 +2,7 @@ import { ModalTitle } from "@/Components/Modal";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 const TotoReleaseCustody = () => {
   return (
-    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[.15rem]">
+    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--mt15)]">
       <TitleComp title="解押TOTO质押挖矿" />
       <ConfigProvider
         theme={{
@@ -27,10 +27,10 @@ const TotoReleaseCustody = () => {
           layout="vertical"
           className="grid grid-cols-2 gap-x-[.2rem] py-[.2rem] pr-[.2rem] pl-[.3rem]"
         >
-          <Form.Item label="地址" className="mb-[.15rem]">
+          <Form.Item label="地址" className="mb-[var(--mt15)]">
             <Select placeholder="选择Token" options={[]} />
           </Form.Item>
-          <Form.Item label="数量" className="mb-[.15rem]">
+          <Form.Item label="数量" className="mb-[var(--mt15)]">
             <InputNumber className="w-full" placeholder="输入数量" />
           </Form.Item>
 

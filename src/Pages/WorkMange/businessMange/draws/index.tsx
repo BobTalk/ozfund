@@ -22,7 +22,7 @@ const DrawsContractMoney = () => {
     console.log("crt: ", crt);
   }
   return (
-    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[.15rem]">
+    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--mt15)]">
       <TitleComp title="提取合约中代币" />
       <SplitComp
         listClassName="grid-cols-[.4rem_1fr] gap-[1em]"
@@ -60,16 +60,16 @@ const DrawsContractMoney = () => {
           layout="vertical"
           className="grid grid-cols-2 gap-x-[.2rem] py-[.2rem] pr-[.2rem] pl-[.3rem]"
         >
-          <Form.Item label="选择Token" className="mb-[.15rem]">
+          <Form.Item label="选择Token" className="mb-[var(--mt15)]">
             <Select placeholder="选择Token" options={[]} />
           </Form.Item>
-          <Form.Item label="数量" className="mb-[.15rem]">
+          <Form.Item label="数量" className="mb-[var(--mt15)]">
             <InputNumber className="w-full" placeholder="输入数量" />
           </Form.Item>
-          <Form.Item label="提取地址" className="mb-[.15rem]">
+          <Form.Item label="提取地址" className="mb-[var(--mt15)]">
             <Select placeholder="输入地址" options={[]} />
           </Form.Item>
-          <Form.Item label="提取数量" className="mb-[.15rem]">
+          <Form.Item label="提取数量" className="mb-[var(--mt15)]">
             <InputNumber className="w-full" placeholder="输入数量" />
           </Form.Item>
           <Form.Item className="mb-0" />

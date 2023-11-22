@@ -47,7 +47,7 @@ const AddressAutoAirdrop = () => {
     <>
       <SplitComp
         onEditor={editorCb}
-        className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[.15rem]"
+        className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[var(--mt15)]"
         list={listInfo}
         opertion={
           <>

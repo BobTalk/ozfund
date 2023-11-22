@@ -43,7 +43,7 @@ const BatchTransferAccounts = () => {
     console.log("crt: ", crt);
   }
   return (
-    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[.15rem]">
+    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--mt15)]">
       <TitleComp title="TOTO矿池资产批量转账" />
       <SplitComp
         onEditor={editorCb}
@@ -74,7 +74,7 @@ const BatchTransferAccounts = () => {
         }}
       >
         <ul className="mt-[.2rem] px-[.3rem] pb-[.3rem]">
-          <li className="flex gap-x-[.2rem] not-first-of-type:mt-[.15rem]">
+          <li className="flex gap-x-[.2rem] not-first-of-type:mt-[var(--mt15)]">
             <Input size="middle" className="flex-1" placeholder="输入地址" />
             <InputNumber
               size="middle"
@@ -92,7 +92,7 @@ const BatchTransferAccounts = () => {
               />
             </div>
           </li>
-          <li className="flex gap-x-[.2rem] not-first-of-type:mt-[.15rem]">
+          <li className="flex gap-x-[.2rem] not-first-of-type:mt-[var(--mt15)]">
             <Input size="middle" className="flex-1" placeholder="输入地址" />
             <InputNumber
               size="middle"

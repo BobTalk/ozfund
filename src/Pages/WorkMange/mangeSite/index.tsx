@@ -26,7 +26,7 @@ const MangeSite = () => {
   return (
     <>
       <ul className="h-full bg-[var(--white)] rounded-[var(--border-radius)] py-[.2rem]">
-        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[.15rem] text-[14px] text-[#333]">
+        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[var(--mt15)] text-[14px] text-[#333]">
           <span>Bob.Li -超级管理员A</span>
           <span>bdjkhafheuiwfhkhiureofufherhiuehfi23fcdushod</span>
           <span onClick={deleteCb} className="flex items-center cursor-pointer">
@@ -34,7 +34,7 @@ const MangeSite = () => {
             <span className="ml-[.1rem]">删除</span>
           </span>
         </li>
-        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[.15rem] text-[14px] text-[#333]">
+        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[var(--mt15)] text-[14px] text-[#333]">
           <span>Bob.Li -超级管理员B</span>
           <span>bdjkhafheuiwfhkhiureofufherhiuehfi23fcdushod</span>
           <span className="flex items-center cursor-pointer">
@@ -42,7 +42,7 @@ const MangeSite = () => {
             <span className="ml-[.1rem]">删除</span>
           </span>
         </li>
-        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[.15rem] text-[14px] text-[#333]">
+        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[var(--mt15)] text-[14px] text-[#333]">
           <span>管理员A</span>
           <span>暂无</span>
           <span onClick={addCb} className="flex items-center cursor-pointer">
@@ -50,7 +50,7 @@ const MangeSite = () => {
             <span className="ml-[.1rem] text-[var(--blue)]">添加</span>
           </span>
         </li>
-        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[.15rem] text-[14px] text-[#333]">
+        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[var(--mt15)] text-[14px] text-[#333]">
           <span>Bob.Li -管理员B</span>
           <span>bdjkhafheuiwfhkhiureofufherhiuehfi23fcdushod</span>
           <span className="flex items-center cursor-pointer">
@@ -58,7 +58,7 @@ const MangeSite = () => {
             <span className="ml-[.1rem]">删除</span>
           </span>
         </li>
-        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[.15rem] text-[14px] text-[#333]">
+        <li className="grid items-center ml-[.4rem] py-[.2rem] border-b border-b-[var(--border-color)] border-dashed pr-[.2rem] grid-cols-[20%_1fr_max-content] gap-[var(--mt15)] text-[14px] text-[#333]">
           <span>Bob.Li -超级管理员C</span>
           <span>bdjkhafheuiwfhkhiureofufherhiuehfi23fcdushod</span>
           <span onClick={deleteCb} className="flex items-center cursor-pointer">

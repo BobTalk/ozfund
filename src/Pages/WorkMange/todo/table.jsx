@@ -117,7 +117,7 @@ const TableConfig = (props) => {
   return (
 
     <TableComp
-      className="mt-[.15rem]"
+      className="mt-[var(--mt15)]"
       themeObj={{
         headerBorderRadius: 0,
       }}

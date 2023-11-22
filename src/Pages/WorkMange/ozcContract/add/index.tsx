@@ -26,9 +26,7 @@ const AddOzc = () => {
   }
   return (
     <>
-      <div className="mt-[.15rem] bg-white h-full">
-        <HeaderModule onConfig={configCb} />
-      </div>
+      <HeaderModule onConfig={configCb} />
       {/* 提示信息 */}
       <ModalComp
         content={moduleContent.current}
@@ -77,7 +75,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
   return (
     <ul
       ref={ref}
-      className="flex items-center gap-x-[.2rem] bg-white p-[.2rem] rounded-[var(--border-radius)]"
+      className="flex h-full gap-x-[.2rem] bg-white p-[.2rem] rounded-[var(--border-radius)]"
     >
       {moduleList.map((item, index) => (
         <li key={item.id} className={liStyleFn(index)}>
@@ -170,7 +168,7 @@ const AddOzcInfo = (props) => {
         form={form}
       >
         <Form.Item
-          className="mb-[.15rem] mx-[.3rem] mt-[.2rem]"
+          className="mb-[var(--mt15)] mx-[.3rem] mt-[.2rem]"
           label={
             <span className="text-[var(--border-color)]">输入增发地址</span>
           }

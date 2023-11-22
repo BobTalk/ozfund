@@ -15,7 +15,7 @@ const Todo = () => {
   }
   return (
     <>
-      <div className="flex justify-end bg-[var(--white)] px-[.2rem] py-[.15rem]">
+      <div className="flex justify-end bg-[var(--white)] px-[.2rem] py-[var(--mt15)] rounded-[var(--border-radius)]">
         <Button
           className="flex items-center h-[.35rem]"
           type="primary"
@@ -50,7 +50,7 @@ const Todo = () => {
           </p>
         </>
       </ModalComp>
-      <p className="py-[.14rem] bg-[var(--white)] text-center rounded-[var(--border-radius)] mt-[.15rem]">
+      <p className="py-[.14rem] bg-[var(--white)] text-center rounded-[var(--border-radius)] mt-[var(--mt15)]">
         <span className="text-[14px] text-[#999] cursor-pointer">查看更多</span>
       </p>
     </>
