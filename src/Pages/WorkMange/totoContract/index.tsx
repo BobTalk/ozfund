@@ -10,13 +10,11 @@ import { Button, ConfigProvider, Form, Input, InputNumber, Switch } from "antd";
 import {
   forwardRef,
   useEffect,
-  useImperativeHandle,
   useRef,
   useState,
 } from "react";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { mergeClassName } from "@/utils/base";
 import Icon from "@/Components/Icon";
 import Image from "@/Components/Image";
 const TodoContract = () => {
@@ -28,7 +26,6 @@ const TodoContract = () => {
   let moduleTitle = useRef<any>();
   function configCb(e, crt) {
     stop(e, () => {
-      console.log("flag: ", crt);
       moduleContent.current = crt.flag;
       moduleTitle.current = crt.title;
       setModalOpen(!modalOpen);
@@ -36,7 +33,7 @@ const TodoContract = () => {
   }
   function saveCb(e) {
     stop(e, () => {
-      moduleContent.current = AddPublish;
+      moduleContent.current = TipMessage;
       moduleTitle.current = "提示信息";
       setModalOpen(!modalOpen);
     });
@@ -555,47 +552,7 @@ const TipMessage = (props) => {
     </>
   );
 };
-// 增发OZC
-const AddPublish = (props) => {
-  let [stop] = useStopPropagation();
-  function submitCb(e) {
-    stop(e, () => {
-      props?.onOk();
-    });
-  }
-  return (
-    <>
-      {false ? (
-        <>
-          <Image
-            className="flex flex-col items-center mt-[.2rem] mb-[.3rem]"
-            src="h-icon-error"
-            imgStyle={{
-              fontSize: ".5rem",
-              color: "var(--red)",
-              marginBottom: ".1rem",
-            }}
-            bottom={
-              <span className="text-[#333]">地址无效，请验证后重新发起</span>
-            }
-          />
-        </>
-      ) : (
-        <Image
-          src="h-icon-right"
-          className="flex flex-col items-center mt-[.2rem] mb-[.3rem]"
-          imgStyle={{
-            fontSize: ".5rem",
-            color: "var(--green)",
-            marginBottom: ".1rem",
-          }}
-          bottom={<span className="text-[#333]">成功发起</span>}
-        />
-      )}
-      <ModalFooter only onSubmit={submitCb} />
-    </>
-  );
-};
+
 const ModalComp = forwardRef((props: any, ref: any) => {
   function cancelCb(value) {
     props?.onCancel?.(value);

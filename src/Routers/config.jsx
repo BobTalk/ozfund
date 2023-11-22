@@ -35,6 +35,10 @@ import DrawsContractMoney from "@/Pages/WorkMange/businessMange/draws";
 import TotoReleaseCustody from "@/Pages/WorkMange/businessMange/releaseCustody";
 import WorkMangeMangeSite from "@/Pages/WorkMange/mangeSite";
 import WorkOzcContract from "@/Pages/WorkMange/ozcContract";
+import PublishOzc from "@/Pages/WorkMange/ozcContract/add";
+import FrezzAddress from "@/Pages/WorkMange/ozcContract/frezz";
+import DestroyAddress from "@/Pages/WorkMange/ozcContract/destroy";
+import DeleteOrAdd from "@/Pages/WorkMange/ozcContract/delete";
 import WorkTodo from "@/Pages/WorkMange/todo";
 import WorkTotoContract from "@/Pages/WorkMange/totoContract";
 const RouteList = [
@@ -105,7 +109,29 @@ const RouteList = [
           {
             path: 'ozc-contract',
             element: <WorkOzcContract />,
-            isAuth: true
+            isAuth: true,
+            children:[
+              {
+                path: 'publish-ozc',
+                element: <PublishOzc />,
+                isAuth: true
+              },
+              {
+                path: 'frezz-address',
+                element: <FrezzAddress />,
+                isAuth: true
+              },
+              {
+                path: 'destroy-address',
+                element: <DestroyAddress />,
+                isAuth: true
+              },
+              {
+                path: 'add-delete',
+                element: <DeleteOrAdd />,
+                isAuth: true
+              },
+            ]
           },
         ]
       },
