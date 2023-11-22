@@ -64,9 +64,9 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
   ]);
   function liStyleFn(idx) {
     let strClassName =
-      "w-[3.02rem] h-[1.4rem] bg-[var(--gray1)] rounded-[var(--border-radius)] pb-[.2rem] px-[.3rem]";
+      "w-[3.02rem] h-[1.4rem] bg-[var(--gray1)] rounded-[var(--border-radius)] pb-[var(--gap20)] px-[var(--gap30)]";
     if (idx % 2 == 0) {
-      strClassName += " pt-[.3rem]";
+      strClassName += " pt-[var(--gap30)]";
     } else {
       strClassName += " pt-[.23rem] flex flex-col justify-between";
     }
@@ -75,13 +75,13 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
   return (
     <ul
       ref={ref}
-      className="flex h-full gap-x-[.2rem] bg-white p-[.2rem] rounded-[var(--border-radius)]"
+      className="flex h-full gap-x-[var(--gap20)] bg-white p-[var(--gap20)] rounded-[var(--border-radius)]"
     >
       {moduleList.map((item, index) => (
         <li key={item.id} className={liStyleFn(index)}>
           <p className="text-[#333] text-[16px]">{item.title}</p>
 
-          <div onClick={(e) => operationCb(e, item)} className={"pt-[.2rem]"}>
+          <div onClick={(e) => operationCb(e, item)} className={"pt-[var(--gap20)]"}>
             {item.operateNode}
           </div>
         </li>
@@ -108,7 +108,7 @@ const AddPublish = (props) => {
       {false ? (
         <>
           <Image
-            className="flex flex-col items-center mt-[.2rem] mb-[.3rem]"
+            className="flex flex-col items-center mt-[var(--gap20)] mb-[var(--gap30)]"
             src="h-icon-error"
             imgStyle={{
               fontSize: ".5rem",
@@ -123,7 +123,7 @@ const AddPublish = (props) => {
       ) : (
         <Image
           src="h-icon-right"
-          className="flex flex-col items-center mt-[.2rem] mb-[.3rem]"
+          className="flex flex-col items-center mt-[var(--gap20)] mb-[var(--gap30)]"
           imgStyle={{
             fontSize: ".5rem",
             color: "var(--green)",
@@ -168,7 +168,7 @@ const AddOzcInfo = (props) => {
         form={form}
       >
         <Form.Item
-          className="mb-[var(--mt15)] mx-[.3rem] mt-[.2rem]"
+          className="mb-[var(--gap15)] mx-[var(--gap30)] mt-[var(--gap20)]"
           label={
             <span className="text-[var(--border-color)]">输入增发地址</span>
           }
@@ -177,7 +177,7 @@ const AddOzcInfo = (props) => {
           <Input size="large" placeholder="请输入地址" />
         </Form.Item>
         <Form.Item
-          className="mb-[.2rem] mx-[.3rem]"
+          className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={
             <span className="text-[var(--border-color)]">输入增发数量</span>
           }

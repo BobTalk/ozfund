@@ -4,6 +4,7 @@ import linkIcon from "@/assets/images/link.svg";
 import { useStopPropagation } from "@/Hooks/StopPropagation.js";
 import { useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
+import MoreBtn from "@/Components/MoreBtn/index.js";
 
 const Todo = () => {
   let [stop] = useStopPropagation();
@@ -15,7 +16,7 @@ const Todo = () => {
   }
   return (
     <>
-      <div className="flex justify-end bg-[var(--white)] px-[.2rem] py-[var(--mt15)] rounded-[var(--border-radius)]">
+      <div className="flex justify-end bg-[var(--white)] px-[var(--gap20)] py-[var(--gap15)] rounded-[var(--border-radius)]">
         <Button
           className="flex items-center h-[.35rem]"
           type="primary"
@@ -29,30 +30,28 @@ const Todo = () => {
         title="签名"
         modalOpen={signatureOpen}
         body={{
-          marginInline: ".3rem",
-          marginBottom: ".3rem",
+          marginInline: "var(--gap30)",
+          marginBottom: "var(--gap30)",
         }}
         footer={{
-          paddingInline: ".28rem", 
-          paddingBlock: '.2rem'
+          paddingInline: ".28rem",
+          paddingBlock: "var(--gap20)",
         }}
         onOk={signatureCb}
         onCancel={signatureCb}
       >
         <>
-          <p className="flex items-center justify-between  text-[14px] mt-[.2rem]">
+          <p className="flex items-center justify-between  text-[14px] mt-[var(--gap20)]">
             <span className="text-[#C5CAD0]">管理员A</span>
             <span className="text-[#333]">weeweesssssssssssssss</span>
           </p>
-          <p className="flex items-center justify-between text-[14px] mt-[.2rem]">
+          <p className="flex items-center justify-between text-[14px] mt-[var(--gap20)]">
             <span className="text-[#C5CAD0]">员工ID</span>
             <span className="text-[#333]">Alex.yu</span>
           </p>
         </>
       </ModalComp>
-      <p className="py-[.14rem] bg-[var(--white)] text-center rounded-[var(--border-radius)] mt-[var(--mt15)]">
-        <span className="text-[14px] text-[#999] cursor-pointer">查看更多</span>
-      </p>
+      <MoreBtn />
     </>
   );
 };

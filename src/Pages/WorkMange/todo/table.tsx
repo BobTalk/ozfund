@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TableComp from '@/Components/Table'
+import type {ColumnsType} from '@/Components/Table'
 import { EditOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { Typography } from "antd";
@@ -36,7 +37,7 @@ const TableConfig = (props) => {
   async function submitCb(e, crt, index) {
     props?.onEditor?.(e, crt,index)
   }
-  let columns = [
+  let columns:ColumnsType = [
     {
       title: "序号",
       responsive: ["xl"],
@@ -48,7 +49,6 @@ const TableConfig = (props) => {
     },
     {
       title: "时间",
-      key: "createTime",
       dataIndex: "createTime",
       responsive: ["xl"],
       ellipsis: true,
@@ -57,7 +57,6 @@ const TableConfig = (props) => {
 
     {
       title: "事务发起人",
-      key: "tradeConfirmNum",
       dataIndex: "tradeConfirmNum",
       responsive: ["xl"],
       ellipsis: true,
@@ -66,7 +65,6 @@ const TableConfig = (props) => {
 
     {
       title: "事务类型",
-      key: "tradeConfirmNum",
       dataIndex: "tradeConfirmNum",
       responsive: ["xl"],
       ellipsis: true,
@@ -74,7 +72,6 @@ const TableConfig = (props) => {
     },
     {
       title: "事务详情",
-      key: "triggerQuantity",
       dataIndex: "triggerQuantity",
       responsive: ["xl"],
       ellipsis: true,
@@ -83,7 +80,6 @@ const TableConfig = (props) => {
     },
     {
       title: "签名人",
-      key: "supplementaryMinerFees",
       dataIndex: "supplementaryMinerFees",
       responsive: ["xl"],
       ellipsis: true,
@@ -93,7 +89,6 @@ const TableConfig = (props) => {
 
     {
       title: "操作",
-      key: "operation",
       dataIndex: "operation",
       // width: "100",
       responsive: ["xl"],
@@ -103,7 +98,7 @@ const TableConfig = (props) => {
         const editable = isEditing(record);
         return <Typography.Link
           disabled={editable}
-          className="mr-[.2rem]"
+          className="mr-[var(--gap20)]"
           onClick={(e) => submitCb(e, record, index)}
         >
           <Button className="bg-[rgba(3,133,242,0.1)] border-[rgba(3,133,242,0.1)] text-[#0385F2]" icon={<EditOutlined />}>签名</Button>
@@ -117,7 +112,7 @@ const TableConfig = (props) => {
   return (
 
     <TableComp
-      className="mt-[var(--mt15)]"
+      className="mt-[var(--gap15)]"
       themeObj={{
         headerBorderRadius: 0,
       }}

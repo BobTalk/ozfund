@@ -19,7 +19,7 @@ const useStyle = createStyles((obj, { bool, props }) => {
     "my-modal-header": Object.assign(
       {
         borderBottom: `1px solid var(--border-color)`,
-        padding: ".2rem .3rem",
+        padding: "var(--gap20) var(--gap30)",
         marginBottom: `0 !important`,
       },
       header

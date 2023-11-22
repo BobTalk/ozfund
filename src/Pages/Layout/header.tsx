@@ -19,7 +19,7 @@ const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
       style={{ padding: 0, background: colorBgContainer }}
       className="border-b-[1px_solid_var(--border-color)] h-[85px]"
     >
-      <div className="flex justify-between items-center h-full pl-[.2rem] pr-[.3rem]">
+      <div className="flex justify-between items-center h-full pl-[var(--gap20)] pr-[var(--gap30)]">
         {collapsed ? (
           <MenuUnfoldOutlined className="text-[22px]" onClick={() => setCollapsed(!collapsed)} />
         ) : (
@@ -34,7 +34,7 @@ const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
             <Icon
               name="h-icon-notice"
               purity={false}
-              style={{ fontSize: ".2rem" }}
+              style={{ fontSize: "var(--gap20)" }}
             ></Icon>
           </Badge>
 
@@ -50,12 +50,12 @@ const DropDownScope = (props) => {
   function customDropdown(menu) {
     return (
       <div className="bg-[var(--white)] p-[.1rem]">
-        <p className="hover:bg-[var(--gray)] rounded-[.06rem] cursor-pointer leading-[.3rem] my-[.1rem] text-center p-[.05rem]">
+        <p className="hover:bg-[var(--gray)] rounded-[.06rem] cursor-pointer leading-[var(--gap30)] my-[.1rem] text-center p-[.05rem]">
           个人中心
         </p>
         <p
           onClick={logout}
-          className="hover:bg-[var(--gray)] rounded-[.06rem] cursor-pointer leading-[.3rem] my-[.1rem] text-center p-[.05rem]"
+          className="hover:bg-[var(--gray)] rounded-[.06rem] cursor-pointer leading-[var(--gap30)] my-[.1rem] text-center p-[.05rem]"
         >
           退出
         </p>

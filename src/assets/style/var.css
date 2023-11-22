@@ -11,5 +11,11 @@
   --content-gray:#eef2f5;
   --red:#bf0001;
   --green:#03a471;
-  --mt15:.15rem;
+  --gap10:.1rem;
+  --gap14:.14rem;
+  --gap15:.15rem;
+  --gap17:.17rem;
+  --gap20:.2rem;
+  --gap25:.25rem;
+  --gap30:.3rem;
 }

@@ -43,11 +43,11 @@ const BatchTransferAccounts = () => {
     console.log("crt: ", crt);
   }
   return (
-    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--mt15)]">
+    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
       <TitleComp title="TOTO矿池资产批量转账" />
       <SplitComp
         onEditor={editorCb}
-        className="px-[.3rem] pt-[.2rem]"
+        className="px-[var(--gap30)] pt-[var(--gap20)]"
         list={listInfo}
         opertion={
           <>
@@ -73,8 +73,8 @@ const BatchTransferAccounts = () => {
           },
         }}
       >
-        <ul className="mt-[.2rem] px-[.3rem] pb-[.3rem]">
-          <li className="flex gap-x-[.2rem] not-first-of-type:mt-[var(--mt15)]">
+        <ul className="mt-[var(--gap20)] px-[var(--gap30)] pb-[var(--gap30)]">
+          <li className="flex gap-x-[var(--gap20)] not-first-of-type:mt-[var(--gap15)]">
             <Input size="middle" className="flex-1" placeholder="输入地址" />
             <InputNumber
               size="middle"
@@ -92,7 +92,7 @@ const BatchTransferAccounts = () => {
               />
             </div>
           </li>
-          <li className="flex gap-x-[.2rem] not-first-of-type:mt-[var(--mt15)]">
+          <li className="flex gap-x-[var(--gap20)] not-first-of-type:mt-[var(--gap15)]">
             <Input size="middle" className="flex-1" placeholder="输入地址" />
             <InputNumber
               size="middle"
@@ -110,7 +110,7 @@ const BatchTransferAccounts = () => {
               />
             </div>
           </li>
-          <li className="flex justify-end mt-[.2rem] gap-[.1rem]">
+          <li className="flex justify-end mt-[var(--gap20)] gap-[.1rem]">
             <Button className="w-[1rem] text-[#999]">取消</Button>
             <Button className="w-[1rem]" type="primary">
               发起转账
@@ -126,7 +126,7 @@ const TitleComp = ({ title }) => {
     <ModalTitle
       showTitleIcon
       title={title}
-      classTitleName="py-[.2rem] ml-[.3rem]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
+      classTitleName="py-[var(--gap20)] ml-[var(--gap30)]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
       classIconName="w-[.03rem] h-[.13rem]"
     />
   );

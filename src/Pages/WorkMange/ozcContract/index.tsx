@@ -21,7 +21,7 @@ const OzcContract = () => {
         ref={tabsRefs}
         defaultActiveKey={pathname}
         onTabClick={tabClickCb}
-        className="bg-white pt-[2px] px-[.2rem] rounded-[var(--border-radius)]"
+        className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
         list={[
           { label: "增发OZC", key: `${commonUrlPrefix}/publish-ozc` },
           { label: "冻结地址", key: `${commonUrlPrefix}/frezz-address` },
@@ -33,9 +33,9 @@ const OzcContract = () => {
         ]}
       />
       <div
-        className="mt-[var(--mt15)] h-full"
+        className="mt-[var(--gap15)]"
         style={{
-          height: `calc(100% - ${tabsHeight}px - var(--mt15))`,
+          height: `calc(100% - ${tabsHeight}px - var(--gap15))`,
         }}
       >
         <Outlet />

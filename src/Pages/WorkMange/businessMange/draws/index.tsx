@@ -22,12 +22,12 @@ const DrawsContractMoney = () => {
     console.log("crt: ", crt);
   }
   return (
-    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--mt15)]">
+    <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
       <TitleComp title="提取合约中代币" />
       <SplitComp
         listClassName="grid-cols-[.4rem_1fr] gap-[1em]"
         onEditor={editorCb}
-        className="px-[.3rem] pt-[.2rem]"
+        className="px-[var(--gap30)] pt-[var(--gap20)]"
         list={listInfo}
         opertion={
           <>
@@ -58,18 +58,18 @@ const DrawsContractMoney = () => {
       >
         <Form
           layout="vertical"
-          className="grid grid-cols-2 gap-x-[.2rem] py-[.2rem] pr-[.2rem] pl-[.3rem]"
+          className="grid grid-cols-2 gap-x-[var(--gap20)] py-[var(--gap20)] pr-[var(--gap20)] pl-[var(--gap30)]"
         >
-          <Form.Item label="选择Token" className="mb-[var(--mt15)]">
+          <Form.Item label="选择Token" className="mb-[var(--gap15)]">
             <Select placeholder="选择Token" options={[]} />
           </Form.Item>
-          <Form.Item label="数量" className="mb-[var(--mt15)]">
+          <Form.Item label="数量" className="mb-[var(--gap15)]">
             <InputNumber className="w-full" placeholder="输入数量" />
           </Form.Item>
-          <Form.Item label="提取地址" className="mb-[var(--mt15)]">
+          <Form.Item label="提取地址" className="mb-[var(--gap15)]">
             <Select placeholder="输入地址" options={[]} />
           </Form.Item>
-          <Form.Item label="提取数量" className="mb-[var(--mt15)]">
+          <Form.Item label="提取数量" className="mb-[var(--gap15)]">
             <InputNumber className="w-full" placeholder="输入数量" />
           </Form.Item>
           <Form.Item className="mb-0" />
@@ -89,7 +89,7 @@ const TitleComp = ({ title }) => {
     <ModalTitle
       showTitleIcon
       title={title}
-      classTitleName="py-[.2rem] ml-[.3rem]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
+      classTitleName="py-[var(--gap20)] ml-[var(--gap30)]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
       classIconName="w-[.03rem] h-[.13rem]"
     />
   );

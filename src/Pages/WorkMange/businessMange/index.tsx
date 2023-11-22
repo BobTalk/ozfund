@@ -21,7 +21,7 @@ const BusinessMange = () => {
         defaultActiveKey={pathname}
         ref={tabsRefs}
         onTabClick={tabClickCb}
-        className="bg-white pt-[2px] px-[.2rem] rounded-[var(--border-radius)]"
+        className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
         list={[
           { label: "自动空投地址", key: `${commonUrlPrefix}/aridrop-address` },
           { label: "批量转账", key: `${commonUrlPrefix}/batch-transfer` },
@@ -31,7 +31,7 @@ const BusinessMange = () => {
       />
       <div
         style={{
-          height: `calc(100% - ${tabsHeight}px - var(--mt15))`,
+          height: `calc(100% - ${tabsHeight}px - var(--gap15))`,
         }}
       >
         <Outlet />

@@ -21,7 +21,7 @@ const SplitComp = (props: splitCompType) => {
         <li
           className={mergeClassName(
             "grid items-center",
-            `${props.listClassName ?? "grid-cols-[2rem_1fr] gap-[.3rem]"}`
+            `${props.listClassName ?? "grid-cols-[2rem_1fr] gap-[var(--gap30)]"}`
           )}
           key={item.id}
         >

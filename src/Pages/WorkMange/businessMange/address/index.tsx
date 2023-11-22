@@ -47,7 +47,7 @@ const AddressAutoAirdrop = () => {
     <>
       <SplitComp
         onEditor={editorCb}
-        className="p-[.3rem] bg-white h-full rounded-[var(--border-radius)] mt-[var(--mt15)]"
+        className="p-[var(--gap30)] bg-white h-full rounded-[var(--border-radius)] mt-[var(--gap15)]"
         list={listInfo}
         opertion={
           <>
@@ -76,21 +76,21 @@ const AddressAutoAirdrop = () => {
               },
             }}
             body={{
-              paddingInline: ".3rem",
-              paddingBlock: ".2rem .3rem",
+              paddingInline: "var(--gap30)",
+              paddingBlock: "var(--gap20) var(--gap30)",
             }}
             showFooter
             showTitleIcon
             title="修改空投地址"
             open={editorAddrOpen}
           >
-            <p className="flex text-[14px] items-center justify-between pb-[.2rem] border-b border-b-[#e6e6e6]">
+            <p className="flex text-[14px] items-center justify-between pb-[var(--gap20)] border-b border-b-[#e6e6e6]">
               <span className="text-[var(--border-color)]">
                 {crtInfo.current.title}
               </span>
               <span className="text-[#333]">weeweesssssssssssssss</span>
             </p>
-            <p className="mt-[.2rem] mb-[.1rem] text-[14px] text-[var(--border-color)]">
+            <p className="mt-[var(--gap20)] mb-[.1rem] text-[14px] text-[var(--border-color)]">
               输入新地址
             </p>
             <Input allowClear size="large" placeholder="请输入新地址" />

@@ -32,7 +32,7 @@ const GetCodeBtn = (props: any) => {
   return (
     <p
       onClick={getEmailCode}
-      className="whitespace-nowrap text-[.3rem] text-[#1C63FF] ml-[.3rem]"
+      className="whitespace-nowrap text-[var(--gap30)] text-[#1C63FF] ml-[var(--gap30)]"
       color="primary"
     >
       {codeMessage}

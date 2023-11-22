@@ -59,7 +59,7 @@ const PersonalInfo = () => {
         title="账户管理"
         className="mt-[.16rem]"
         style={{
-          height: `calc(100% - 1.2rem)`,
+          height: `calc(100% - 1var(--gap20))`,
         }}
       >
         <div className="flex items-start not-first:mt-[.25rem]">
@@ -67,14 +67,14 @@ const PersonalInfo = () => {
             name="h-icon-status"
             purity={false}
             style={{
-              fontSize: ".3rem",
+              fontSize: "var(--gap30)",
               marginRight: ".1rem",
             }}
           />
-          <div className="flex flex-1 leading-[.3rem] items-center justify-between  pb-[.2rem] border-b border-[#C5CAD0] border-dashed">
+          <div className="flex flex-1 leading-[var(--gap30)] items-center justify-between  pb-[var(--gap20)] border-b border-[#C5CAD0] border-dashed">
             <span className="text-[14px] text-[#666]">邮箱</span>
             <p className="text-[14px]">
-              <span className="text-[#333] mr-[.2rem]">
+              <span className="text-[#333] mr-[var(--gap20)]">
                 13423234424@163.com
               </span>
             </p>
@@ -85,11 +85,11 @@ const PersonalInfo = () => {
             name="h-icon-sign"
             purity={false}
             style={{
-              fontSize: ".3rem",
+              fontSize: "var(--gap30)",
               marginRight: ".1rem",
             }}
           />
-          <p className="flex justify-between items-center text-[14px] flex-1 leading-[.3rem] pb-[.2rem] border-b border-[#C5CAD0] border-dashed">
+          <p className="flex justify-between items-center text-[14px] flex-1 leading-[var(--gap30)] pb-[var(--gap20)] border-b border-[#C5CAD0] border-dashed">
             <span className="text-[#666]">登录密码</span>
             <span>
               <span className="mr-[.24rem] text-[#333]">******</span>
@@ -102,11 +102,11 @@ const PersonalInfo = () => {
             name="h-icon-pin"
             purity={false}
             style={{
-              fontSize: ".3rem",
+              fontSize: "var(--gap30)",
               marginRight: ".1rem",
             }}
           />
-          <p className="flex justify-between items-center text-[14px] flex-1 leading-[.3rem] pb-[.2rem] border-b border-[#C5CAD0] border-dashed">
+          <p className="flex justify-between items-center text-[14px] flex-1 leading-[var(--gap30)] pb-[var(--gap20)] border-b border-[#C5CAD0] border-dashed">
             <span className="text-[#666]">PIN码</span>
             <span>
               <span className="mr-[.24rem] text-[#333]">******</span>
@@ -119,11 +119,11 @@ const PersonalInfo = () => {
             name="h-icon-google"
             purity={false}
             style={{
-              fontSize: ".3rem",
+              fontSize: "var(--gap30)",
               marginRight: ".1rem",
             }}
           />
-          <p className="flex justify-between items-center text-[14px] flex-1 leading-[.3rem] pb-[.2rem] border-b border-[#C5CAD0] border-dashed">
+          <p className="flex justify-between items-center text-[14px] flex-1 leading-[var(--gap30)] pb-[var(--gap20)] border-b border-[#C5CAD0] border-dashed">
             <span className="text-[#666]">Google验证器</span>
             <span className="text-[#0385F2] cursor-pointer">未绑定</span>
           </p>

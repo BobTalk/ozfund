@@ -104,9 +104,9 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
   ]);
   function liStyleFn(idx) {
     let strClassName =
-      "w-[3.02rem] h-[1.4rem] bg-[var(--gray1)] rounded-[var(--border-radius)] pb-[.2rem] px-[.3rem]";
+      "w-[3.02rem] h-[1.4rem] bg-[var(--gray1)] rounded-[var(--border-radius)] pb-[var(--gap20)] px-[var(--gap30)]";
     if (idx % 2 == 0) {
-      strClassName += " pt-[.3rem]";
+      strClassName += " pt-[var(--gap30)]";
     } else {
       strClassName += " pt-[.23rem] flex flex-col justify-between";
     }
@@ -115,7 +115,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
   return (
     <ul
       ref={ref}
-      className="flex items-center gap-x-[.2rem] bg-white p-[.2rem] rounded-[var(--border-radius)]"
+      className="flex items-center gap-x-[var(--gap20)] bg-white p-[var(--gap20)] rounded-[var(--border-radius)]"
     >
       {moduleList.map((item, index) => (
         <li key={item.id} className={liStyleFn(index)}>
@@ -128,7 +128,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
           ) : null}
           <div
             onClick={(e) => operationCb(e, item)}
-            className={item.label ? "pt-[.1rem]" : "pt-[.2rem]"}
+            className={item.label ? "pt-[.1rem]" : "pt-[var(--gap20)]"}
           >
             {item.operateNode}
           </div>
@@ -189,13 +189,13 @@ const Contentmodule = (props) => {
   return (
     <div
       style={{
-        height: `calc(100% - ${props.headerH}px - var(--mt15))`,
+        height: `calc(100% - ${props.headerH}px - var(--gap15))`,
       }}
-      className="bg-white mt-[var(--mt15)] rounded-[var(--border-radius)] overflow-y-auto"
+      className="bg-white mt-[var(--gap15)] rounded-[var(--border-radius)] overflow-y-auto"
     >
       <TitleComp
         title={
-          <div className="flex flex-1 items-center justify-between pr-[.2rem]">
+          <div className="flex flex-1 items-center justify-between pr-[var(--gap20)]">
             <span>提取合约中代币</span>
             <Button
               onClick={editorCb}
@@ -250,7 +250,7 @@ const TitleComp = ({ title }) => {
       <ModalTitle
         showTitleIcon
         title={title}
-        classTitleName="py-[.25rem] ml-[.3rem]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
+        classTitleName="py-[.25rem] ml-[var(--gap30)]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
         classIconName="w-[.03rem] h-[.13rem]"
       />
     </>
@@ -273,7 +273,7 @@ const PublishTotal = (props) => {
   }
   return (
     <>
-      <p className="flex justify-between mx-[.3rem] text-[14px] py-[.2rem] border-b border-b-[#e6e6e6]">
+      <p className="flex justify-between mx-[var(--gap30)] text-[14px] py-[var(--gap20)] border-b border-b-[#e6e6e6]">
         <span className="text-[var(--border-color)]">当前发行总量</span>
         <span className="text-[#333]">100000</span>
       </p>
@@ -286,13 +286,13 @@ const PublishTotal = (props) => {
       >
         <Form
           layout="vertical"
-          className="mt-[.2rem]"
+          className="mt-[var(--gap20)]"
           onFinish={submitCb}
           initialValues={formInitVal}
           form={form}
         >
           <Form.Item
-            className="mb-[.2rem] mx-[.3rem]"
+            className="mb-[var(--gap20)] mx-[var(--gap30)]"
             label={<span className="text-[var(--border-color)]">输入数量</span>}
             name="publishNum"
           >
@@ -342,7 +342,7 @@ const AddToto = (props) => {
         form={form}
       >
         <Form.Item
-          className="mb-[var(--mt15)] mx-[.3rem] mt-[.2rem]"
+          className="mb-[var(--gap15)] mx-[var(--gap30)] mt-[var(--gap20)]"
           label={
             <span className="text-[var(--border-color)]">输入增发地址</span>
           }
@@ -351,7 +351,7 @@ const AddToto = (props) => {
           <Input size="large" placeholder="请输入地址" />
         </Form.Item>
         <Form.Item
-          className="mb-[.2rem] mx-[.3rem]"
+          className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={
             <span className="text-[var(--border-color)]">输入增发数量</span>
           }
@@ -398,7 +398,7 @@ const AddToto = (props) => {
 //     >
 //       <Form layout="vertical" initialValues={formInitVal} form={form}>
 //         <Form.Item
-//           className="mb-[var(--mt15)]"
+//           className="mb-[var(--gap15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">长期支持者占比</span>
 //           }
@@ -411,7 +411,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[var(--mt15)]"
+//           className="mb-[var(--gap15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">OZ基金会占比</span>
 //           }
@@ -424,7 +424,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[var(--mt15)]"
+//           className="mb-[var(--gap15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">OZ团队成员占比</span>
 //           }
@@ -437,7 +437,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[var(--mt15)]"
+//           className="mb-[var(--gap15)]"
 //           label={<span className="text-[var(--border-color)]">流动性占比</span>}
 //           name="mobilityRatio"
 //         >
@@ -448,7 +448,7 @@ const AddToto = (props) => {
 //           />
 //         </Form.Item>
 //         <Form.Item
-//           className="mb-[var(--mt15)]"
+//           className="mb-[var(--gap15)]"
 //           label={
 //             <span className="text-[var(--border-color)]">
 //               用户OZC投注主矿池挖矿
@@ -499,7 +499,7 @@ const DispatchAddress = (props) => {
   }
   return (
     <>
-      <p className="flex justify-between mx-[.3rem] text-[14px] py-[.2rem] border-b border-b-[#e6e6e6]">
+      <p className="flex justify-between mx-[var(--gap30)] text-[14px] py-[var(--gap20)] border-b border-b-[#e6e6e6]">
         <span className="text-[var(--border-color)]">当前调度地址</span>
         <span className="text-[#333]">100000</span>
       </p>
@@ -513,12 +513,12 @@ const DispatchAddress = (props) => {
         <Form
           onFinish={submitCb}
           layout="vertical"
-          className="mt-[.2rem]"
+          className="mt-[var(--gap20)]"
           initialValues={formInitVal}
           form={form}
         >
           <Form.Item
-            className="mb-[.2rem] mx-[.3rem]"
+            className="mb-[var(--gap20)] mx-[var(--gap30)]"
             label={
               <span className="text-[var(--border-color)]">输入新调度地址</span>
             }
@@ -544,7 +544,7 @@ const TipMessage = (props) => {
   }
   return (
     <>
-      <p className="p-[.3rem] text-center">
+      <p className="p-[var(--gap30)] text-center">
         合计生产分配比例必须为100%，请检查后重新输入
       </p>
       <ModalFooter only onSubmit={submitCb} />
