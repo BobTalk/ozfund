@@ -54,7 +54,7 @@ const Table = () => {
         <Button type="primary">查询</Button>
       </div>
       <TableComp dataSource={dataList} columns={columns} />
-      <MoreBtn />
+     
     </ConfigProvider>
   );
 };

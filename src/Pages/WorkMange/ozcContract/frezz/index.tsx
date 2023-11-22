@@ -1,6 +1,7 @@
 import { ModalTitle } from "@/Components/Modal";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 import Table from "./table";
+import MoreBtn from "@/Components/MoreBtn";
 
 const Frezz = () => {
   return (
@@ -56,10 +57,13 @@ const TopModule = () => {
 
 const ListModule = () => {
   return (
-    <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)]">
-      <TitleComp title="冻结地址列表" />
-      <Table/>
-    </div>
+    <>
+      <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap14)]">
+        <TitleComp title="冻结地址列表" />
+        <Table />
+      </div>
+      <MoreBtn />
+    </>
   );
 };
 const LabelComp = ({ title }) => {

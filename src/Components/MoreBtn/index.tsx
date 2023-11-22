@@ -11,12 +11,16 @@ const MoreBtn = (props: MoreBtnType) => {
     });
   }
   return (
-    <p
-      onClick={moreCb}
-      className="py-[var(--gap14)] bg-[var(--white)] text-center rounded-[var(--border-radius)] mt-[var(--gap15)]"
-    >
-      <span className="text-[14px] text-[#999] cursor-pointer">查看更多</span>
-    </p>
+    <div className="py-[var(--gap15)] ">
+      <p className="grid place-items-center bg-[var(--white)] h-[.48rem] rounded-[var(--border-radius)]">
+        <span
+          onClick={moreCb}
+          className="text-[14px] text-[#999] cursor-pointer"
+        >
+          查看更多
+        </span>
+      </p>
+    </div>
   );
 };
 export default MoreBtn;
