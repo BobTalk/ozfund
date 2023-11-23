@@ -1,5 +1,5 @@
-
+import { Outlet } from "react-router-dom";
 const ZhCN = () => {
-  return <>ZhCN</>
+  return <Outlet/>
 }
 export default ZhCN;

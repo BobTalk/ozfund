@@ -1,5 +1,6 @@
+import { Outlet } from "react-router-dom";
 
 const En = () => {
-  return <>EN</>
+  return <Outlet/>
 }
 export default En;

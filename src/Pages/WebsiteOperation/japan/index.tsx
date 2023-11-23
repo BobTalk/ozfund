@@ -1,5 +1,6 @@
+import { Outlet } from "react-router-dom";
 
 const Japan = () => {
-  return <>Japan</>
+  return <Outlet/>
 }
 export default Japan;
