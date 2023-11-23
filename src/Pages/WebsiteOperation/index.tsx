@@ -1,11 +1,19 @@
 import Tabs from "@/Components/Tabs";
+import { getSession } from "@/utils/base";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const WebSiteOperation = () => {
-  let commonUrlPrefix = "/ozfund/work-mange/ozc-contract";
   let tabsRefs = useRef<any>();
   let { pathname } = useLocation();
+  let splitRouter = [];
+  let lastName = "";
+  let crtRouter = getSession("_crtRouter");
+  if (crtRouter) {
+    splitRouter = crtRouter?.split("/");
+    lastName = splitRouter?.at(-1);
+  }
+  let commonUrlPrefix = `/ozfund/website-operation/${lastName}`;
   let navigate = useNavigate();
   let [tabsHeight, setTabsHeight] = useState(0);
 
@@ -24,12 +32,12 @@ const WebSiteOperation = () => {
         onTabClick={tabClickCb}
         className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
         list={[
-          { label: "增发OZC", key: `${commonUrlPrefix}/publish-ozc` },
-          { label: "冻结地址", key: `${commonUrlPrefix}/frezz-address` },
-          { label: "销毁地址", key: `${commonUrlPrefix}/destroy-address` },
+          { label: "进程", key: `${commonUrlPrefix}/process` },
+          { label: "动态", key: `${commonUrlPrefix}/trends` },
+          { label: "公告", key: `${commonUrlPrefix}/notice` },
           {
-            label: "可兑换代币新增与移除",
-            key: `${commonUrlPrefix}/add-delete`,
+            label: "常见问题",
+            key: `${commonUrlPrefix}/problem`,
           },
         ]}
       />

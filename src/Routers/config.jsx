@@ -27,6 +27,10 @@ import WebsiteOperationEn from "@/Pages/WebsiteOperation/en";
 import WebsiteOperationJapan from "@/Pages/WebsiteOperation/japan";
 import WebsiteOperationZhCn from "@/Pages/WebsiteOperation/zh-cn";
 import WebsiteOperationZhWt from "@/Pages/WebsiteOperation/zh-wt";
+import WebsiteNotice from "@/Pages/WebsiteOperation/common/notice";
+import WebsiteProblem from "@/Pages/WebsiteOperation/common/problem";
+import WebsiteProcess from "@/Pages/WebsiteOperation/common/process";
+import WebsiteTrends from "@/Pages/WebsiteOperation/common/trends";
 import WorkMange from "@/Pages/WorkMange";
 import WorkMangeBusinessMange from "@/Pages/WorkMange/businessMange";
 import AddressAutoAirdrop from "@/Pages/WorkMange/businessMange/address";
@@ -41,6 +45,29 @@ import DestroyAddress from "@/Pages/WorkMange/ozcContract/destroy";
 import DeleteOrAdd from "@/Pages/WorkMange/ozcContract/delete";
 import WorkTodo from "@/Pages/WorkMange/todo";
 import WorkTotoContract from "@/Pages/WorkMange/totoContract";
+
+const websiteOperationChildRouter = [
+  {
+    path: 'process',
+    isAuth: true,
+    element: <WebsiteProcess />
+  },
+  {
+    path: 'trends',
+    isAuth: true,
+    element: <WebsiteTrends />
+  },
+  {
+    path: 'notice',
+    isAuth: true,
+    element: <WebsiteNotice />
+  },
+  {
+    path: 'problem',
+    isAuth: true,
+    element: <WebsiteProblem />
+  },
+]
 const RouteList = [
   {
     path: "/",
@@ -81,7 +108,7 @@ const RouteList = [
             children: [
               {
                 path: "aridrop-address",
-                element: <AddressAutoAirdrop/>,
+                element: <AddressAutoAirdrop />,
                 isAuth: true,
               },
               {
@@ -110,7 +137,7 @@ const RouteList = [
             path: 'ozc-contract',
             element: <WorkOzcContract />,
             isAuth: true,
-            children:[
+            children: [
               {
                 path: 'publish-ozc',
                 element: <PublishOzc />,
@@ -144,21 +171,25 @@ const RouteList = [
             path: "zh-cn",
             element: <WebsiteOperationZhCn />,
             isAuth: true,
+            children: websiteOperationChildRouter
           },
           {
             path: "zh-wt",
             element: <WebsiteOperationZhWt />,
             isAuth: true,
+            children: websiteOperationChildRouter
           },
           {
             path: "en",
             element: <WebsiteOperationEn />,
             isAuth: true,
+            children: websiteOperationChildRouter
           },
           {
             path: "japan",
             element: <WebsiteOperationJapan />,
             isAuth: true,
+            children: websiteOperationChildRouter
           },
         ]
       },
