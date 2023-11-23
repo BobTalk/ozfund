@@ -1,12 +1,11 @@
 import { ModalTitle } from "@/Components/Modal";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
-import Table from "./table";
 import MoreBtn from "@/Components/MoreBtn";
-import { useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
+import Table from "./table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-
 const Delete = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
@@ -25,8 +24,8 @@ const Delete = () => {
 const TopModule = (props) => {
   let [form] = Form.useForm();
   let [formInitVal] = useState({
-    address: "",
-    num: 0,
+    tokenName: "",
+    currencyType: "",
   });
   function finishCb(values) {
     props?.onFinish?.(values);
@@ -58,14 +57,17 @@ const TopModule = (props) => {
           onFinish={finishCb}
           className="grid grid-cols-2 gap-x-[var(--gap20)] pt-[var(--gap20)] ml-[var(--gap30)] mr-[var(--gap20)]"
         >
-          <Form.Item name="address" label={<LabelComp title="Token名称" />}>
+          <Form.Item name="tokenName" label={<LabelComp title="Token名称" />}>
             <Select
               className="w-full"
               placeholder="选择Token名称"
               options={[]}
             />
           </Form.Item>
-          <Form.Item name="num" label={<LabelComp title="加密货币种类" />}>
+          <Form.Item
+            name="currencyType"
+            label={<LabelComp title="加密货币种类" />}
+          >
             <InputNumber className="w-full" placeholder="输入加密货币种类" />
           </Form.Item>
           <Form.Item />
@@ -157,7 +159,7 @@ const ListModule = () => {
   return (
     <>
       <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap14)]">
-        <Table />
+          <Table />
       </div>
       <MoreBtn />
     </>
