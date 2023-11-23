@@ -40,7 +40,7 @@ const Table = (props) => {
             {index % 2 ? (
               <div
                 onClick={(e) => deleteCb(e, record)}
-                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E] hover:text-[#fff]"
+                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
               >
                 <DeleteOutlined className="mr-[8px]" />
                 <span>删除</span>

@@ -1,12 +1,8 @@
 import { ModalTitle } from "@/Components/Modal";
-import Modal from "@/Pages/ModalComp";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 import Table from "./table";
 import MoreBtn from "@/Components/MoreBtn";
-import {
-  useRef,
-  useState,
-} from "react";
+import { useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -14,10 +10,6 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Delete = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
-  let moduleTitle = useRef<any>("冻结地址");
-  function submitFrezzCb(values: any) {
-    console.log("submitFrezzCb: ", values);
-  }
   function finishCb(values) {
     moduleContent.current = FrezzModal;
     setModalOpen(!modalOpen);
@@ -26,14 +18,6 @@ const Delete = () => {
     <div className="h-full">
       <TopModule onFinish={finishCb} />
       <ListModule />
-      <ModalComp
-        content={moduleContent.current}
-        title={moduleTitle.current}
-        footer={false}
-        modalOpen={modalOpen}
-        onCancel={() => setModalOpen(!modalOpen)}
-        onOk={(values) => submitFrezzCb(values)}
-      />
     </div>
   );
 };
@@ -75,7 +59,11 @@ const TopModule = (props) => {
           className="grid grid-cols-2 gap-x-[var(--gap20)] pt-[var(--gap20)] ml-[var(--gap30)] mr-[var(--gap20)]"
         >
           <Form.Item name="address" label={<LabelComp title="Token名称" />}>
-            <Select className="w-full" placeholder="选择Token名称" options={[]} />
+            <Select
+              className="w-full"
+              placeholder="选择Token名称"
+              options={[]}
+            />
           </Form.Item>
           <Form.Item name="num" label={<LabelComp title="加密货币种类" />}>
             <InputNumber className="w-full" placeholder="输入加密货币种类" />
@@ -191,28 +179,5 @@ const TitleComp = ({ title }) => {
       classIconName="w-[.03rem] h-[.13rem]"
     />
   );
-};
-const ModalComp = (props: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <Modal
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </Modal>
-  ) : null;
 };
 export default Delete;
