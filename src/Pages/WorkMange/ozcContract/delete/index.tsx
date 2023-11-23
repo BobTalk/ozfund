@@ -1,7 +1,7 @@
 import { ModalTitle } from "@/Components/Modal";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 import MoreBtn from "@/Components/MoreBtn";
-import { Suspense, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import Table from "./table";
@@ -159,7 +159,7 @@ const ListModule = () => {
   return (
     <>
       <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap14)]">
-          <Table />
+        <Table />
       </div>
       <MoreBtn />
     </>

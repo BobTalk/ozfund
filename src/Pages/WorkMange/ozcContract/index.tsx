@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const OzcContract = () => {
-  const commonUrlPrefix = "/ozfund/work-mange/ozc-contract";
+  let commonUrlPrefix = "/ozfund/work-mange/ozc-contract";
   let { pathname } = useLocation();
   let navigate = useNavigate();
   let tabsRefs = useRef<any>();
