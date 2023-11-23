@@ -1,3 +1,17 @@
+function activeAddr(type, name='') {
+  const commonPath = `/ozfund/website-operation`
+  const childRoute = ['process', 'trends', 'notice', 'problem']
+  const childRouteName = ['进程', '动态', '公告', '常见问题']
+  const pathList = {}
+  const nameList = {}
+  for (let index = 0; index < childRoute.length; index++) {
+    const item = childRoute[index];
+    let key = `${commonPath}/${type}/${item}`
+    pathList[key] = [`${commonPath}`, `${commonPath}/${type}`, `${key}`]
+    nameList[key] = ["Ozfund网站运营", name, childRouteName[index]]
+  }
+  return {pathList,nameList }
+}
 export const activePath = {
   "/ozfund/work-mange": ["/ozfund/work-mange"],
   "/ozfund/work-mange/todo": ["/ozfund/work-mange", "/ozfund/work-mange/todo"],
@@ -15,6 +29,7 @@ export const activePath = {
   "/ozfund/work-mange/ozc-contract/add-delete": ["/ozfund/work-mange", "/ozfund/work-mange/ozc-contract", "/ozfund/work-mange/ozc-contract/add-delete"],
   "/ozfund/website-operation": ["/ozfund/website-operation"],
   "/ozfund/website-operation/zh-cn": ["/ozfund/website-operation", "/ozfund/website-operation/zh-cn"],
+  ...activeAddr('zh-cn').pathList,
   "/ozfund/website-operation/zh-wt": ["/ozfund/website-operation", "/ozfund/website-operation/zh-wt"],
   "/ozfund/website-operation/en": ["/ozfund/website-operation", "/ozfund/website-operation/en"],
   "/ozfund/website-operation/japan": ["/ozfund/website-operation", "/ozfund/website-operation/japan"],
@@ -39,7 +54,6 @@ export const activePath = {
   "/ozfund/logs/work": ["/ozfund/logs", "/ozfund/logs/work"],
   "/ozfund/business": ["/ozfund/business"],
   "/ozfund/personal": ["/ozfund/personal"],
-
 };
 export const activePathToName = {
   "/ozfund/work-mange": ["Ozfund事务管理"],
@@ -54,6 +68,7 @@ export const activePathToName = {
   "/ozfund/work-mange/ozc-contract/add-delete": ["Ozfund事务管理", "OZC合约设置", "可兑换代币新增与移除"],
   "/ozfund/website-operation": ["Ozfund网站运营"],
   "/ozfund/website-operation/zh-cn": ["Ozfund网站运营", "简体中文"],
+  ...activeAddr('zh-cn', '简体中文').nameList,
   "/ozfund/website-operation/zh-wt": ["Ozfund网站运营", "繁体中文"],
   "/ozfund/website-operation/en": ["Ozfund网站运营", "English"],
   "/ozfund/website-operation/japan": ["Ozfund网站运营", "しろうと"],
