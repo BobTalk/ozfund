@@ -1,10 +1,11 @@
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Input, Typography } from "antd";
+import { ConfigProvider, Typography } from "antd";
 import dayjs from "dayjs";
+import styleScope from "./index.module.less";
 import { useState } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
@@ -13,20 +14,12 @@ const Table = (props) => {
       render: (_) => dayjs(_).format("YYYY.MM.DD HH:mm:ss"),
     },
     {
-      title: "地址",
+      title: "Token",
       dataIndex: "address",
     },
     {
-      title: "数量",
+      title: "代币种类",
       dataIndex: "num",
-    },
-    {
-      title: "备注",
-      dataIndex: "notes",
-    },
-    {
-      title: "员工ID",
-      dataIndex: "staffId",
     },
     {
       title: "操作",
@@ -37,17 +30,13 @@ const Table = (props) => {
         const editable = isEditing(record);
         return (
           <Typography.Link disabled={editable}>
-            {index % 2 ? (
-              <div
-                onClick={(e) => deleteCb(e, record)}
-                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E] hover:text-[#fff]"
-              >
-                <DeleteOutlined className="mr-[8px]" />
-                <span>删除</span>
-              </div>
-            ) : (
-              <span className="text-[14px] text-[#666]">已销毁</span>
-            )}
+            <div
+              onClick={(e) => deleteCb(e, record)}
+              className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E] hover:text-[#fff]"
+            >
+              <DeleteOutlined className="mr-[8px]" />
+              <span>移除</span>
+            </div>
           </Typography.Link>
         );
       },
@@ -56,14 +45,6 @@ const Table = (props) => {
   const [dataList, setDataList] = useState<any>([
     {
       key: 1,
-      frezzTime: new Date(),
-      address: "djahoaic4234kahdiuahdajag",
-      num: 439487,
-      notes: "Ozfund投注挖矿：sifjsidijjisd-Ozfund投注挖矿：Aioeowie",
-      staffId: "xiaowu",
-    },
-    {
-      key: 2,
       frezzTime: new Date(),
       address: "djahoaic4234kahdiuahdajag",
       num: 439487,
@@ -88,11 +69,11 @@ const Table = (props) => {
         },
       }}
     >
-      <div className="flex items-center gap-[var(--gap10)] mt-[var(--gap20)] mb-[var(--gap17)] ml-[var(--gap30)]">
-        <Input placeholder="输入地址" className="w-[3.7rem]" />
-        <Button type="primary">查询</Button>
-      </div>
-      <TableComp dataSource={dataList} columns={columns} />
+      <TableComp
+        className={styleScope["tabel_reset"]}
+        dataSource={dataList}
+        columns={columns}
+      />
     </ConfigProvider>
   );
 };
