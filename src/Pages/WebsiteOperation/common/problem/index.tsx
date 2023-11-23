@@ -18,8 +18,8 @@ const Problem = () => {
     stop(e, () => {
       moduleContent.current = EditorOrAddProblem;
       moduleTitle.current = "新增问题分类";
-      // setAddProblemInfoOpen(!addProblemInfoOpen);
-      setShowFilterComp(!showFilterComp);
+      setAddProblemInfoOpen(!addProblemInfoOpen);
+      // setShowFilterComp(!showFilterComp);
     });
   }
   function lookCb(e, crt, index) {
