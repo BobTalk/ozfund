@@ -1,7 +1,6 @@
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider, Switch, Typography } from "antd";
-import styleScope from "./index.module.less";
 import { useState } from "react";
 import { DeleteOutlined, EditOutlined, EyeFilled } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -89,7 +88,7 @@ const TableProcess = (props) => {
       }}
     >
       <TableComp
-        className={styleScope["tabel_reset"]}
+        className="_reset-tabel"
         dataSource={dataList}
         columns={columns}
       />

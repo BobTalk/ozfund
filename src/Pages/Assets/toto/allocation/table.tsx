@@ -5,19 +5,43 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-const TableEmailList = (props) => {
+const TableAllocation = (props) => {
   const columns: ColumnsType = [
     {
-      title: "订阅时间",
+      title: "日期",
       dataIndex: "frezzTime",
       render: (_, record, index) => index + 1,
     },
     {
-      title: "邮箱",
+      title: "链上时间(天）",
       dataIndex: "address",
     },
     {
-      title: "分类",
+      title: "新增(TOTO)",
+      dataIndex: "num",
+    },
+    {
+      title: "基金会(30%)",
+      dataIndex: "num",
+    },
+    {
+      title: "Oz团队(20%)",
+      dataIndex: "num",
+    },
+    {
+      title: "长期支持者(15%)",
+      dataIndex: "num",
+    },
+    {
+      title: "OZC质押(5%)",
+      dataIndex: "num",
+    },
+    {
+      title: "Ozfund挖矿(30%)",
+      dataIndex: "num",
+    },
+    {
+      title: "Ozfund VIP挖矿(30%)",
       dataIndex: "num",
     },
   ];
@@ -34,6 +58,12 @@ const TableEmailList = (props) => {
   return (
     <ConfigProvider
       theme={{
+        components: {
+          Table: {
+            headerColor: "#333",
+            colorText:"#666",
+          },
+        },
         token: {
           borderRadius: 2,
           controlHeight: 36,
@@ -49,4 +79,4 @@ const TableEmailList = (props) => {
   );
 };
 
-export default TableEmailList;
+export default TableAllocation;

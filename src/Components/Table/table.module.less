@@ -1,12 +1,24 @@
-.table-reset_style{
-  :global(.ant-table-thead>tr>th){
+.table-reset_style {
+  :global(.ant-table-thead>tr>th) {
     padding: 19px 16px;
     font-size: 16px;
+
+    &:first-child {
+      padding-left: var(--gap30)
+    }
   }
-  :global(.ant-table-cell){
-    padding: 11px 16px;
+
+  :global(.ant-table-wrapper .ant-table-cell) {
+    &:first-child {
+      padding-left: var(--gap30)
+    }
   }
-  :global(.ant-table){
+
+  :global(.ant-table-tbody .ant-table-cell) {
+    padding-block: 11px;
+  }
+
+  :global(.ant-table) {
     border-radius: 0 0 var(--border-radius) var(--border-radius);
   }
 }

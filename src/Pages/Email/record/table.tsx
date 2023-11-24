@@ -1,7 +1,6 @@
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider } from "antd";
-import styleScope from "./index.module.less";
 import { useState } from "react";
 const TableProcess = (props) => {
   const columns: ColumnsType = [
@@ -57,7 +56,7 @@ const TableProcess = (props) => {
       }}
     >
       <TableComp
-        className={styleScope["tabel_reset"]}
+        className="_reset-tabel"
         dataSource={dataList}
         columns={columns}
       />

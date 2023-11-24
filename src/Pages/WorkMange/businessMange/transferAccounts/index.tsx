@@ -3,7 +3,6 @@ import SplitComp from "../common";
 import { useState } from "react";
 import { ModalTitle } from "@/Components/Modal";
 import { Button, ConfigProvider, Input, InputNumber } from "antd";
-import closeIcon from "@/assets/images/close.svg";
 import Icon from "@/Components/Icon";
 
 const BatchTransferAccounts = () => {

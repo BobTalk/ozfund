@@ -2,7 +2,7 @@ import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider, Switch, Typography } from "antd";
 import dayjs from "dayjs";
-import styleScope from "./index.module.less";
+
 import { useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -36,9 +36,9 @@ const TableProcess = (props) => {
     {
       title: "置顶",
       dataIndex: "num",
-      render:(_,record, index)=>{
-        return <Switch checked/>
-      }
+      render: (_, record, index) => {
+        return <Switch checked />;
+      },
     },
     {
       title: "操作",
@@ -47,24 +47,23 @@ const TableProcess = (props) => {
       align: "left",
       render: (_, record, index) => {
         const editable = isEditing(record);
-        return (<div className="flex gap-[var(--gap10)]">
-          <Typography.Link disabled={editable}>
-            <div
-              className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--green1)] rounded-[4px] text-[var(--green2)]"
-            >
-              <EditOutlined className="mr-[8px]" />
-              <span>编辑</span>
-            </div>
-          </Typography.Link>
-          <Typography.Link disabled={editable}>
-            <div
-              onClick={(e) => deleteCb(e, record)}
-              className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
-            >
-              <DeleteOutlined className="mr-[8px]" />
-              <span>移除</span>
-            </div>
-          </Typography.Link>
+        return (
+          <div className="flex gap-[var(--gap10)]">
+            <Typography.Link disabled={editable}>
+              <div className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--green1)] rounded-[4px] text-[var(--green2)]">
+                <EditOutlined className="mr-[8px]" />
+                <span>编辑</span>
+              </div>
+            </Typography.Link>
+            <Typography.Link disabled={editable}>
+              <div
+                onClick={(e) => deleteCb(e, record)}
+                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
+              >
+                <DeleteOutlined className="mr-[8px]" />
+                <span>移除</span>
+              </div>
+            </Typography.Link>
           </div>
         );
       },
@@ -98,7 +97,7 @@ const TableProcess = (props) => {
       }}
     >
       <TableComp
-        className={styleScope["tabel_reset"]}
+        className="_reset-tabel"
         dataSource={dataList}
         columns={columns}
       />
