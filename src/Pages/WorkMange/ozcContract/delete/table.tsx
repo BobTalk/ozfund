@@ -31,7 +31,7 @@ const Table = (props) => {
           <Typography.Link disabled={editable}>
             <div
               onClick={(e) => deleteCb(e, record)}
-              className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
+              className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
             >
               <DeleteOutlined className="mr-[8px]" />
               <span>移除</span>
@@ -69,7 +69,7 @@ const Table = (props) => {
       }}
     >
       <TableComp
-        className="_reset-tabel"
+        className="_reset-table__btn"
         dataSource={dataList}
         columns={columns}
       />

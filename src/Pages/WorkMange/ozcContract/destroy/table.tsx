@@ -40,13 +40,13 @@ const Table = (props) => {
             {index % 2 ? (
               <div
                 onClick={(e) => deleteCb(e, record)}
-                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
+                className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
               >
                 <DeleteOutlined className="mr-[8px]" />
                 <span>删除</span>
               </div>
             ) : (
-              <span className="text-[14px] text-[#666]">已销毁</span>
+              <span className="text-[14px] btn text-[#666]">已销毁</span>
             )}
           </Typography.Link>
         );
@@ -92,7 +92,11 @@ const Table = (props) => {
         <Input placeholder="输入地址" className="w-[3.7rem]" />
         <Button type="primary">查询</Button>
       </div>
-      <TableComp dataSource={dataList} columns={columns} />
+      <TableComp
+        className="_reset-table__btn"
+        dataSource={dataList}
+        columns={columns}
+      />
     </ConfigProvider>
   );
 };

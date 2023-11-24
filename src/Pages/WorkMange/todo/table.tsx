@@ -112,7 +112,7 @@ const TableConfig = (props) => {
   return (
 
     <TableComp
-      className="mt-[var(--gap15)]"
+      className="mt-[var(--gap15)] _reset-table__btn"
       themeObj={{
         headerBorderRadius: 0,
       }}

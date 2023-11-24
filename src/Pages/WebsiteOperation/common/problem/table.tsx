@@ -34,14 +34,14 @@ const TableProcess = (props) => {
             <Typography.Link disabled={editable}>
               <div
                 onClick={(e) => props?.onLook?.(e, record, index)}
-                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--blue1)] rounded-[4px] text-[var(--blue)]"
+                className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--blue1)] rounded-[4px] text-[var(--blue)]"
               >
                 <EyeFilled className="mr-[8px]" />
                 <span>查看</span>
               </div>
             </Typography.Link>
             <Typography.Link disabled={editable}>
-              <div className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--green1)] rounded-[4px] text-[var(--green2)]">
+              <div className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--green1)] rounded-[4px] text-[var(--green2)]">
                 <EditOutlined className="mr-[8px]" />
                 <span>编辑</span>
               </div>
@@ -49,7 +49,7 @@ const TableProcess = (props) => {
             <Typography.Link disabled={editable}>
               <div
                 onClick={(e) => deleteCb(e, record)}
-                className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
+                className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
               >
                 <DeleteOutlined className="mr-[8px]" />
                 <span>移除</span>
@@ -88,7 +88,7 @@ const TableProcess = (props) => {
       }}
     >
       <TableComp
-        className="_reset-tabel"
+        className="_reset-table__btn"
         dataSource={dataList}
         columns={columns}
       />

@@ -45,7 +45,7 @@ const TableProcess = (props) => {
         return (<div className="flex gap-[var(--gap10)]">
           <Typography.Link disabled={editable}>
             <div
-              className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--green1)] rounded-[4px] text-[var(--green2)]"
+              className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--green1)] rounded-[4px] text-[var(--green2)]"
             >
               <EditOutlined className="mr-[8px]" />
               <span>编辑</span>
@@ -54,7 +54,7 @@ const TableProcess = (props) => {
           <Typography.Link disabled={editable}>
             <div
               onClick={(e) => deleteCb(e, record)}
-              className="flex items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
+              className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
             >
               <DeleteOutlined className="mr-[8px]" />
               <span>移除</span>
@@ -93,7 +93,7 @@ const TableProcess = (props) => {
       }}
     >
       <TableComp
-        className="_reset-tabel"
+        className="_reset-table__btn"
         dataSource={dataList}
         columns={columns}
       />
