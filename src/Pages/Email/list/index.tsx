@@ -14,7 +14,7 @@ const List = () => {
             },
           }}
         >
-          <Select className="w-[1.63rem] h-[.36rem]" options={[]} />
+          <Select placeholder="请选择" className="w-[1.63rem] h-[.36rem]" options={[]} />
         </ConfigProvider>
       </div>
       <div
