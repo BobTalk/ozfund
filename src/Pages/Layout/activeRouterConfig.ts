@@ -1,4 +1,4 @@
-function activeAddr(type, name='') {
+function activeAddr(type, name = '') {
   const commonPath = `/ozfund/website-operation`
   const childRoute = ['process', 'trends', 'notice', 'problem']
   const childRouteName = ['进程', '动态', '公告', '常见问题']
@@ -10,7 +10,7 @@ function activeAddr(type, name='') {
     pathList[key] = [`${commonPath}`, `${commonPath}/${type}`, `${key}`]
     nameList[key] = ["Ozfund网站运营", name, childRouteName[index]]
   }
-  return {pathList,nameList }
+  return { pathList, nameList }
 }
 export const activePath = {
   "/ozfund/work-mange": ["/ozfund/work-mange"],
@@ -40,6 +40,8 @@ export const activePath = {
   "/ozfund/email/record": ["/ozfund/email", "/ozfund/email/record"],
   "/ozfund/assets": ["/ozfund/assets"],
   "/ozfund/assets/toto": ["/ozfund/assets", "/ozfund/assets/toto"],
+  "/ozfund/assets/toto/allocation-statistics": ["/ozfund/assets", "/ozfund/assets/toto", "/ozfund/assets/toto/allocation-statistics"],
+  "/ozfund/assets/toto/assets-statistics": ["/ozfund/assets", "/ozfund/assets/toto", "/ozfund/assets/toto/assets-statistics"],
   "/ozfund/assets/ozc": ["/ozfund/assets", "/ozfund/assets/ozc"],
   "/ozfund/assets/toto-price": ["/ozfund/assets", "/ozfund/assets/toto-price"],
   "/ozfund/assets/toto_ozc": ["/ozfund/assets", "/ozfund/assets/toto_ozc"],
@@ -79,6 +81,8 @@ export const activePathToName = {
   "/ozfund/email/record": ["Ozfund订阅邮箱", "邮件发送记录"],
   "/ozfund/assets": ["资产统计"],
   "/ozfund/assets/toto": ["资产统计", "TOTO"],
+  "/ozfund/assets/toto/assets-statistics": ["资产统计", "TOTO", "TOTO资产统计"],
+  "/ozfund/assets/toto/allocation-statistics": ["资产统计", "TOTO", "TOTO分配统计"],
   "/ozfund/assets/ozc": ["资产统计", "OZC资产统计"],
   "/ozfund/assets/toto-price": ["资产统计", "TOTO兑换价格核算"],
   "/ozfund/assets/toto_ozc": ["资产统计", "TOTO/OZC价格统计"],

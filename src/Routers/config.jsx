@@ -5,6 +5,8 @@ import PersonalInfo from "@/Pages/Personal";
 import Assets from "@/Pages/Assets";
 import AssetsOzc from "@/Pages/Assets/ozc";
 import AssetsToto from "@/Pages/Assets/toto";
+import AllocationToto from "@/Pages/Assets/toto/allocation";
+import ChildAssetsToto from "@/Pages/Assets/toto/childAssets";
 import AssetsTotoOzc from "@/Pages/Assets/totoOzc";
 import AssetsTotoPrice from "@/Pages/Assets/totoPrice";
 import Business from "@/Pages/Business";
@@ -229,6 +231,18 @@ const RouteList = [
             path: 'toto',
             element: <AssetsToto />,
             isAuth: true,
+            children:[
+              {
+                path:'allocation-statistics',
+                isAuth: true,
+                element:<AllocationToto/>
+              },
+              {
+                path:'assets-statistics',
+                isAuth: true,
+                element:<ChildAssetsToto/>
+              }
+            ]
           },
           {
             path: 'ozc',
