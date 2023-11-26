@@ -48,7 +48,10 @@ const Ozc = (props) => {
       </div>
       <div
         className="w-full bg-white py-[.3rem] pr-[.2rem] pl-[.3rem] rounded-[var(--border-radius)]"
-        style={{ height: `calc(100% - ${tableHeight}px - .15rem)` }}
+        style={{
+          height: `calc(100% - ${tableHeight}px - .15rem)`,
+          minHeight: "3.5rem",
+        }}
       >
         <ChartAssetsOzc data={chartsData} />
       </div>
