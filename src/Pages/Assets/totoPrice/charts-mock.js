@@ -5,7 +5,8 @@ export default {
     source: []
   },
   tooltip: {
-    show: true
+    show: true,
+    trigger: 'axis'
   },
   xAxis: {
     type: 'category',
@@ -26,12 +27,9 @@ export default {
     }
   },
   legend: {
-    show: true,
     bottom: 0,
     left: 'center',
-    icon: 'rect',
-    itemHeight: 12,
-    itemWidth: 12
+    icon: 'circle',
   },
   grid: {
     top: 10,
@@ -40,16 +38,17 @@ export default {
     right: 0,
     containLabel: true
   },
-  series: formatSeriesList(["bar", "bar", "bar"])
+  series: formatSeriesList(["line", "line", "line"])
 }
 function formatSeriesList(arrType) {
   return arrType.map(item => ({
     type: item,
-    barWidth: 12,
-    // barCategoryGap: '5px',
-    barGap: .5,
-    itemStyle: {
-      borderRadius: item == "bar" ? [6, 6, 0, 0] : 0
-    },
+    smooth: true,
+    showSymbol: false,
+    // symbol: 'circle',
+    symbolSize: 10,
+    lineStyle: {
+      width: 2
+    }
   }))
 }

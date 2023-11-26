@@ -62,7 +62,7 @@ const TopModule = () => {
           <div className="flex flex-1 items-center justify-between">
             <p className="text-[16px] text-[#333]">TOTO发行量：9999</p>
             <span className="text-[14px] text-[#666] mr-[var(--gap20)]">
-              2022.05.10{" "}
+              2022.05.10
             </span>
           </div>
         }
