@@ -46,7 +46,7 @@ const Table = (props) => {
         return (
           <Typography.Link disabled={editable}>
             <div
-                onClick={(e) => deleteCb(e, record)}
+                onClick={(e) => lookCb(e, record)}
                 className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--blue1)] rounded-[4px] text-[var(--blue)]"
               >
                 <EyeFilled className="mr-[8px]" />
@@ -78,9 +78,9 @@ const Table = (props) => {
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
-  function deleteCb(e, crt) {
+  function lookCb(e, crt) {
     stop(e, () => {
-      props?.onDelete(crt);
+      props?.onLook(crt);
     });
   }
   return (
