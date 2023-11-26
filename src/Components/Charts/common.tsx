@@ -1,10 +1,11 @@
 import ReactECharts from "echarts-for-react";
-import { forwardRef } from "react";
 type CommonPropsType = {
   option: {};
+  className?: string;
+  style?: {};
 };
-const CommonChart = (props: CommonPropsType, ref: any) => {
-  let { option } = props;
+const CommonChart = (props: CommonPropsType) => {
+  let { option, className: classNameProps, style: styleProps } = props;
   function onChartReadyCallback(chart) {
     setTimeout(() => {
       chart.resize();
@@ -20,13 +21,14 @@ const CommonChart = (props: CommonPropsType, ref: any) => {
   }
   return (
     <ReactECharts
-      ref={ref}
       onEvents={{
         click: onChartClick,
         legendselectchanged: onChartLegendSelectChanged,
       }}
+      className={classNameProps}
       style={{
         height: "inherit",
+        ...styleProps,
       }}
       opts={{ renderer: "svg" }}
       onChartReady={onChartReadyCallback}
@@ -34,4 +36,4 @@ const CommonChart = (props: CommonPropsType, ref: any) => {
     />
   );
 };
-export default forwardRef(CommonChart);
+export default CommonChart;
