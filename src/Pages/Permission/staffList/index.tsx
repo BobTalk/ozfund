@@ -6,11 +6,19 @@ import MoreBtn from "@/Components/MoreBtn";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { forwardRef, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 const StaffList = () => {
-  return (
+  let navigate = useNavigate();
+  let { pathname } = useLocation();
+  function lookCb(crt) {
+    navigate("/ozfund/permission/staff-list/staff-detail", { state: crt });
+  }
+  return pathname == "/ozfund/permission/staff-list/staff-detail" ? (
+    <Outlet />
+  ) : (
     <>
       <FilterComp />
-      <TableComp />
+      <TableComp onLook={lookCb} />
     </>
   );
 };

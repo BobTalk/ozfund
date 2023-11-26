@@ -24,6 +24,7 @@ import LogsSign from "@/Pages/logs/sign";
 import LogsWork from "@/Pages/logs/work";
 import Permission from "@/Pages/Permission";
 import PermissionStaffList from "@/Pages/Permission/staffList";
+import StaffDetail from "@/Pages/Permission/staffList/detail";
 import WebsiteOperation from "@/Pages/WebsiteOperation";
 import WebsiteOperationEn from "@/Pages/WebsiteOperation/en";
 import WebsiteOperationJapan from "@/Pages/WebsiteOperation/japan";
@@ -270,6 +271,13 @@ const RouteList = [
             path: 'staff-list',
             element: <PermissionStaffList />,
             isAuth: true,
+            children:[
+              {
+                path:'staff-detail',
+                element: <StaffDetail />,
+            isAuth: true,
+              }
+            ]
           },
         ]
       },
