@@ -8,12 +8,18 @@ import { forwardRef, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 const StaffList = () => {
+  let urlPrev = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
   let { pathname } = useLocation();
   function lookCb(crt) {
-    navigate("/ozfund/permission/staff-list/staff-detail", { state: crt });
+    navigate(urlPrev, { state: crt });
   }
-  return pathname == "/ozfund/permission/staff-list/staff-detail" ? (
+  return [
+    urlPrev,
+    `${urlPrev}/staff-info`,
+    `${urlPrev}/rights-adjust`,
+    `${urlPrev}/account`,
+  ].includes(pathname) ? (
     <Outlet />
   ) : (
     <>

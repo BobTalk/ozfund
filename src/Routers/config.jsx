@@ -25,6 +25,9 @@ import LogsWork from "@/Pages/logs/work";
 import Permission from "@/Pages/Permission";
 import PermissionStaffList from "@/Pages/Permission/staffList";
 import StaffDetail from "@/Pages/Permission/staffList/detail";
+import StaffStaffInfo from "@/Pages/Permission/staffList/detail/staffInfo";
+import StaffRightsAdjust from "@/Pages/Permission/staffList/detail/rightsAdjust";
+import StaffAccountManage from "@/Pages/Permission/staffList/detail/accountManage";
 import WebsiteOperation from "@/Pages/WebsiteOperation";
 import WebsiteOperationEn from "@/Pages/WebsiteOperation/en";
 import WebsiteOperationJapan from "@/Pages/WebsiteOperation/japan";
@@ -232,16 +235,16 @@ const RouteList = [
             path: 'toto',
             element: <AssetsToto />,
             isAuth: true,
-            children:[
+            children: [
               {
-                path:'allocation-statistics',
+                path: 'allocation-statistics',
                 isAuth: true,
-                element:<AllocationToto/>
+                element: <AllocationToto />
               },
               {
-                path:'assets-statistics',
+                path: 'assets-statistics',
                 isAuth: true,
-                element:<ChildAssetsToto/>
+                element: <ChildAssetsToto />
               }
             ]
           },
@@ -271,11 +274,28 @@ const RouteList = [
             path: 'staff-list',
             element: <PermissionStaffList />,
             isAuth: true,
-            children:[
+            children: [
               {
-                path:'staff-detail',
+                path: 'staff-detail',
                 element: <StaffDetail />,
-            isAuth: true,
+                isAuth: true,
+                children: [
+                  {
+                    path: 'staff-info',
+                    element: <StaffStaffInfo />,
+                    isAuth: true,
+                  },
+                  {
+                    path: 'rights-adjust',
+                    element: <StaffRightsAdjust />,
+                    isAuth: true,
+                  },
+                  {
+                    path: 'account',
+                    element: <StaffAccountManage />,
+                    isAuth: true,
+                  },
+                ]
               }
             ]
           },
