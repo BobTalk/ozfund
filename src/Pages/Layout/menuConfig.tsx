@@ -19,7 +19,7 @@ export const menuList = [
       {
         key: "/ozfund/work-mange/business-mange",
         icon: <></>,
-        label: "TOTO业务管理",
+        label: "TOTO业务管理",                                                                                                                                    
       },
       {
         key: "/ozfund/work-mange/toto-contract",

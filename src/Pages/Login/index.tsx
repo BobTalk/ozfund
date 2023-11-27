@@ -43,7 +43,7 @@ const FormComp = () => {
   function onFinish(obj) {}
   return userInfo && token ? (
     <>
-    <Navigate to='/aupay/assets'/>
+    {/* <Navigate to='/aupay/assets'/> */}
     </>
   ) : (
     <Form

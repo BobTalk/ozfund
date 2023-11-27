@@ -1,0 +1,36 @@
+.reset-tree {
+  margin-top: var(--gap15);
+  height: calc(100% - 35px - .55rem);
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  padding: var(--gap30);
+  .center {
+    display: flex;
+    align-items: center;
+  }
+
+  :global(.ant-tree-treenode) {
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
+
+  :global(.ant-tree-switcher) {
+    display: flex;
+    align-items: center;
+  }
+
+  :global(.ant-tree-checkbox) {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    margin-top: 0;
+  }
+
+  :global(.ant-tree-node-content-wrapper) {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+}
