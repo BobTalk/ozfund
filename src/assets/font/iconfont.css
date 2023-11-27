@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4319455 */
-  src: url('iconfont.woff2?t=1700546625557') format('woff2'),
-       url('iconfont.woff?t=1700546625557') format('woff'),
-       url('iconfont.ttf?t=1700546625557') format('truetype');
+  src: url('iconfont.woff2?t=1701068677202') format('woff2'),
+       url('iconfont.woff?t=1701068677202') format('woff'),
+       url('iconfont.ttf?t=1701068677202') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.h-icon-email:before {
+  content: "\e6a8";
+}
+
+.h-icon-status:before {
+  content: "\e6a7";
+}
+
+.h-icon-sign:before {
+  content: "\e696";
+}
+
+.h-icon-close1:before {
+  content: "\e698";
 }
 
 .h-icon-add:before {
