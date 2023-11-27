@@ -1,9 +1,8 @@
 import Icon from "@/Components/Icon";
-import { Button, ConfigProvider, Switch } from "antd";
+import { Button, ConfigProvider, Form, Input, Switch } from "antd";
 import ModalScope from "@/Pages/ModalComp";
 import { forwardRef, useRef, useState } from "react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import React from "react";
 const AccountManage = () => {
   let [stop] = useStopPropagation();
   let moduleContent = useRef<any>();
@@ -26,6 +25,10 @@ const AccountManage = () => {
       moduleContent.current = ResetPwdTip;
       setModalOpen(!modalOpen);
     });
+  }
+  function colseAccountCb(value) {
+    moduleContent.current = CloseAccountModle;
+    setCustomFooterModalOpen(!customFooterModalOpen);
   }
   return (
     <>
@@ -88,7 +91,10 @@ const AccountManage = () => {
             />
             <div className="flex border-b border-dashed border-b-[var(--border-color)] py-[var(--gap25)] justify-between">
               <span className="text-[#666]">登录密码</span>
-              <span className="text-[#0459BF] cursor-pointer" onClick={resetPwdCb}>
+              <span
+                className="text-[#0459BF] cursor-pointer"
+                onClick={resetPwdCb}
+              >
                 重置
               </span>
             </div>
@@ -106,7 +112,7 @@ const AccountManage = () => {
                 <span className="mr-[var(--gap10)]">关闭账户</span>
                 <span className="text-[var(--blue)]">账户关闭后将无法使用</span>
               </span>
-              <Switch />
+              <Switch onChange={colseAccountCb} />
             </div>
           </li>
         </ConfigProvider>
@@ -224,6 +230,49 @@ function ResetPwdTip() {
   return tipMessage(
     "<p>确认要重置登录密码，密码将重置为</p>123456，请及时修改密码"
   )();
+}
+function CloseAccountModle(props) {
+  let [stop] = useStopPropagation();
+  function cancelCb(e) {
+    stop(e, () => {
+      props?.onCancel?.();
+    });
+  }
+  return (
+    <div className="pt-[var(--gap30)]">
+      <p className="text-center pb-[var(--gap20)] border-b border-b-[#e6e6e6] mx-[var(--gap30)]">
+        确认要关闭此员工账户，关闭后将无法恢复？
+      </p>
+      <ConfigProvider
+        theme={{
+          components: {
+            Form: {
+              itemMarginBottom: 30,
+            },
+            Input: {
+              controlHeight: 42,
+            },
+          },
+        }}
+      >
+        <Form
+          onFinish={props.onOk}
+          layout="vertical"
+          className="mt-[var(--gap20)]"
+        >
+          <Form.Item
+            className="mx-[var(--gap30)]"
+            label={<span className="text-[var(--border-color)]">请输入确认关闭</span>}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item className="mb-0">
+            <ModalFooter onCancel={(e) => cancelCb(e)} />
+          </Form.Item>
+        </Form>
+      </ConfigProvider>
+    </div>
+  );
 }
 function tipMessage(summary) {
   return () => (
