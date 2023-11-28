@@ -1,5 +1,4 @@
 import { ModalTitle } from "@/Components/Modal";
-import ModalScope from "@/Pages/ModalComp";
 import {
   EditFilled,
   EditOutlined,
@@ -12,6 +11,7 @@ import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
 import ModalFooter from "@/Components/ModalFooterBtn";
+import ModalScopeComp from "@/Pages/ModalScope";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -41,7 +41,7 @@ const TodoContract = () => {
     <>
       <HeaderModule ref={headerRefs} onConfig={configCb} />
       <Contentmodule headerH={headerHeight} onSave={saveCb} />
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalOpen}
@@ -547,29 +547,5 @@ const TipMessage = (props) => {
     </>
   );
 };
-
-const ModalComp = forwardRef((props: any, ref: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <ModalScope
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </ModalScope>
-  ) : null;
-});
 
 export default TodoContract;

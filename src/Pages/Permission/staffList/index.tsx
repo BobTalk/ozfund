@@ -1,13 +1,13 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input, Select } from "antd";
 import Table from "./table";
-import ModalScope from "@/Pages/ModalComp";
 import MoreBtn from "@/Components/MoreBtn";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ModalFooter from "@/Components/ModalFooterBtn";
+import ModalScopeComp from "@/Pages/ModalScope";
 const StaffList = () => {
   let urlPrev = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
@@ -107,7 +107,7 @@ const FilterComp = () => {
         </div>
       </ConfigProvider>
       {/* 信息收集 */}
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalOpen}
@@ -215,29 +215,6 @@ const AddonBeforePhone = (props) => {
     </div>
   );
 };
-const ModalComp = forwardRef((props: any, ref: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <ModalScope
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </ModalScope>
-  ) : null;
-});
 const TableComp = (props) => {
   function lookCb(crt) {
     props?.onLook?.(crt);

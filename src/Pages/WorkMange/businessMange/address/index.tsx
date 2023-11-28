@@ -1,5 +1,5 @@
 import Modal from "@/Pages/ModalComp";
-import { Button, ConfigProvider, Form, Input } from "antd";
+import { ConfigProvider, Form, Input } from "antd";
 import { useRef, useState } from "react";
 import SplitComp from "../common";
 import { EditOutlined } from "@ant-design/icons";

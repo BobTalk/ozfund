@@ -1,10 +1,10 @@
 import Icon from "@/Components/Icon";
 import Image from "@/Components/Image";
-import ModalScope from "@/Pages/ModalComp";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { Button, ConfigProvider, Form, Input, InputNumber } from "antd";
 import { forwardRef, useRef, useState } from "react";
 import ModalFooter from "@/Components/ModalFooterBtn";
+import ModalScopeComp from "@/Pages/ModalScope";
 
 const AddOzc = () => {
   let [stop] = useStopPropagation();
@@ -29,7 +29,7 @@ const AddOzc = () => {
     <>
       <HeaderModule onConfig={configCb} />
       {/* 提示信息 */}
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalTipOpen}
@@ -37,7 +37,7 @@ const AddOzc = () => {
         onOk={(values) => setModalTipOpen(!modalTipOpen)}
       />
       {/* 信息收集 */}
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalOpen}
@@ -198,27 +198,4 @@ const AddOzcInfo = (props) => {
   );
 };
 
-const ModalComp = forwardRef((props: any, ref: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <ModalScope
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </ModalScope>
-  ) : null;
-});
 export default AddOzc;

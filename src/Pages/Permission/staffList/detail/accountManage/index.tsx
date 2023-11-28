@@ -1,9 +1,9 @@
 import Icon from "@/Components/Icon";
-import { Button, ConfigProvider, Form, Input, Switch } from "antd";
-import ModalScope from "@/Pages/ModalComp";
-import { forwardRef, useRef, useState } from "react";
+import { ConfigProvider, Form, Input, Switch } from "antd";
+import { useRef, useState } from "react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import ModalFooter from "@/Components/ModalFooterBtn";
+import ModalScopeComp from "@/Pages/ModalScope";
 const AccountManage = () => {
   let [stop] = useStopPropagation();
   let moduleContent = useRef<any>();
@@ -118,7 +118,7 @@ const AccountManage = () => {
           </li>
         </ConfigProvider>
       </ul>
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalOpen}
@@ -126,7 +126,7 @@ const AccountManage = () => {
         onCancel={() => setModalOpen(!modalOpen)}
         onOk={(values) => submitModalCb(values)}
       />
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={customFooterModalOpen}
@@ -137,35 +137,6 @@ const AccountManage = () => {
     </>
   );
 };
-const ModalComp = forwardRef((props: any, ref: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <ModalScope
-      onCancel={cancelCb}
-      onOk={okCb}
-      showFooter={props.showFooter ?? false}
-      modalOpen={true}
-      body={{
-        paddingInline: 0,
-        paddingBlock: 0,
-      }}
-      footer={{
-        paddingInline: props.showFooter ? 20 : 0,
-        paddingBlock: props.showFooter ? 20 : 0,
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </ModalScope>
-  ) : null;
-});
-
 function resTip(params) {
   let [stop] = useStopPropagation();
   return (props) => {

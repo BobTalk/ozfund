@@ -2,11 +2,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input } from "antd";
 import TableProblem from "./table";
 import MoreBtn from "@/Components/MoreBtn";
-import { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { mergeClassName } from "@/utils/base";
-import ModalScope from "@/Pages/ModalComp";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import ModalFooter from "@/Components/ModalFooterBtn";
+import ModalScopeComp from "@/Pages/ModalScope";
 const Problem = () => {
   let [addProblemInfoOpen, setAddProblemInfoOpen] = useState(false);
   let [showFilterComp, setShowFilterComp] = useState(false);
@@ -50,7 +50,7 @@ const Problem = () => {
         <ContentModule onLook={lookCb} />
       )}
 
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={addProblemInfoOpen}
@@ -175,27 +175,4 @@ const EditorOrAddProblem = (props) => {
   );
 };
 
-const ModalComp = forwardRef((props: any, ref: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <ModalScope
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </ModalScope>
-  ) : null;
-});
 export default Problem;
