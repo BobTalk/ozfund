@@ -2,8 +2,9 @@ import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider, Switch, Typography } from "antd";
 import { useState } from "react";
-import { DeleteOutlined, EditOutlined, EyeFilled } from "@ant-design/icons";
+import { EditOutlined, EyeFilled } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import Icon from "@/Components/Icon";
 const TableProcess = (props) => {
   const columns: ColumnsType = [
     {
@@ -51,7 +52,7 @@ const TableProcess = (props) => {
                 onClick={(e) => deleteCb(e, record)}
                 className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
               >
-                <DeleteOutlined className="mr-[8px]" />
+                <Icon className="mr-[8px]" name="h-icon-delete"/>
                 <span>移除</span>
               </div>
             </Typography.Link>

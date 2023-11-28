@@ -93,7 +93,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
       label: "当前调度地址",
       value: "dkjahiuhf35hahd8",
       operateNode: (
-        <Button icon={<EditOutlined />} type="primary">
+        <Button icon={<EditFilled />} type="primary">
           修改
         </Button>
       ),

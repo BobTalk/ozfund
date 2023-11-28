@@ -3,8 +3,8 @@ import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider, Typography } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import Icon from "@/Components/Icon";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
@@ -33,7 +33,7 @@ const Table = (props) => {
               onClick={(e) => deleteCb(e, record)}
               className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
             >
-              <DeleteOutlined className="mr-[8px]" />
+              <Icon className="mr-[8px]" name="h-icon-delete"/>
               <span>移除</span>
             </div>
           </Typography.Link>

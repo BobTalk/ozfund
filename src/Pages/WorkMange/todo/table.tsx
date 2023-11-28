@@ -1,9 +1,10 @@
 import { useState } from "react";
-import TableComp from '@/Components/Table'
-import type {ColumnsType} from '@/Components/Table'
+import TableComp from "@/Components/Table";
+import type { ColumnsType } from "@/Components/Table";
 import { EditOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { Typography } from "antd";
+import Icon from "@/Components/Icon";
 const TableConfig = (props) => {
   let [data, setData] = useState([
     {
@@ -35,17 +36,17 @@ const TableConfig = (props) => {
   ]);
   // 保存编辑信息
   async function submitCb(e, crt, index) {
-    props?.onEditor?.(e, crt,index)
+    props?.onEditor?.(e, crt, index);
   }
-  let columns:ColumnsType = [
+  let columns: ColumnsType = [
     {
       title: "序号",
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
       render: (_, record, index) => {
-        return index + 1
-      }
+        return index + 1;
+      },
     },
     {
       title: "时间",
@@ -76,7 +77,6 @@ const TableConfig = (props) => {
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
-
     },
     {
       title: "签名人",
@@ -84,7 +84,6 @@ const TableConfig = (props) => {
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
-
     },
 
     {
@@ -96,21 +95,26 @@ const TableConfig = (props) => {
       align: "left",
       render: (_, record, index) => {
         const editable = isEditing(record);
-        return <Typography.Link
-          disabled={editable}
-          className="mr-[var(--gap20)]"
-          onClick={(e) => submitCb(e, record, index)}
-        >
-          <Button className="bg-[rgba(3,133,242,0.1)] border-[rgba(3,133,242,0.1)] text-[#0385F2]" icon={<EditOutlined />}>签名</Button>
-        </Typography.Link>
-
+        return (
+          <Typography.Link
+            disabled={editable}
+            className="mr-[var(--gap20)]"
+            onClick={(e) => submitCb(e, record, index)}
+          >
+            <Button
+              className="bg-[rgba(3,133,242,0.1)] border-[rgba(3,133,242,0.1)] text-[#0385F2]"
+              icon={<Icon name="h-icon-qianming" style={{fontSize: "16px"}} />}
+            >
+              签名
+            </Button>
+          </Typography.Link>
+        );
       },
     },
   ];
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
   return (
-
     <TableComp
       className="mt-[var(--gap15)] _reset-table__btn"
       themeObj={{

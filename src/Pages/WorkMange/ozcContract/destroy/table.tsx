@@ -1,7 +1,7 @@
+import Icon from "@/Components/Icon";
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { DeleteOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Typography } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -42,7 +42,7 @@ const Table = (props) => {
                 onClick={(e) => deleteCb(e, record)}
                 className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
               >
-                <DeleteOutlined className="mr-[8px]" />
+                <Icon className="mr-[8px]" name="h-icon-delete"/>
                 <span>删除</span>
               </div>
             ) : (
