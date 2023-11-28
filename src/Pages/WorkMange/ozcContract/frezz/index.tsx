@@ -10,6 +10,8 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import ModalScopeComp from "@/Pages/ModalScope";
+import ModalFooter from "@/Components/ModalFooterBtn";
 
 const Frezz = () => {
   let [modalOpen, setModalOpen] = useState(false);
@@ -26,7 +28,7 @@ const Frezz = () => {
     <div className="h-full">
       <TopModule onFinish={finishCb} />
       <ListModule />
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         footer={false}
@@ -151,13 +153,14 @@ const FrezzModal = (props) => {
             <TextArea />
           </Form.Item>
 
-          <Form.Item className="flex justify-end mt-0 border-t border-t-[var(--border-color)] py-[var(--gap20)] mr-[var(--gap30)]">
-            <Button onClick={cancelCb} className="mr-[var(--gap10)]">
+          <Form.Item>
+            {/* <Button onClick={cancelCb} className="mr-[var(--gap10)]">
               取消
             </Button>
             <Button type="primary" htmlType="submit">
               确定
-            </Button>
+            </Button> */}
+            <ModalFooter onCancel={cancelCb}/>
           </Form.Item>
         </Form>
       </ConfigProvider>
@@ -192,28 +195,5 @@ const TitleComp = ({ title }) => {
       classIconName="w-[.03rem] h-[.13rem]"
     />
   );
-};
-const ModalComp = (props: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <Modal
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </Modal>
-  ) : null;
 };
 export default Frezz;

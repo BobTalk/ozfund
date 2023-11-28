@@ -6,10 +6,12 @@ import { Button, ConfigProvider, Form } from "antd";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
+import ModalScopeComp from "@/Pages/ModalScope";
+import ModalFooter from "@/Components/ModalFooterBtn";
 const Destory = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
-  let moduleTitle = useRef<any>("冻结地址");
+  let moduleTitle = useRef<any>("销毁地址");
   function submitFrezzCb(values: any) {
     console.log("submitDestroyCb: ", values);
   }
@@ -21,7 +23,7 @@ const Destory = () => {
   return (
     <div className="h-full">
       <ListModule onDelete={deleteCb} />
-      <ModalComp
+      <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         footer={false}
@@ -45,29 +47,6 @@ const ListModule = (props) => {
       <MoreBtn onMore={moreCb} />
     </>
   );
-};
-const ModalComp = (props: any) => {
-  function cancelCb(value) {
-    props?.onCancel?.(value);
-  }
-  function okCb(values) {
-    props?.onOk?.(values);
-  }
-  let CompName = props.content;
-  return props.modalOpen ? (
-    <Modal
-      onCancel={cancelCb}
-      showFooter={false}
-      modalOpen={true}
-      body={{
-        paddingInline: "0",
-        paddingBlock: "0",
-      }}
-      title={props.title}
-    >
-      <CompName onCancel={cancelCb} onOk={okCb} />
-    </Modal>
-  ) : null;
 };
 const DestoryModal = (props) => {
   let [form] = Form.useForm();
@@ -129,13 +108,14 @@ const DestoryModal = (props) => {
             <TextArea />
           </Form.Item>
 
-          <Form.Item className="flex justify-end mt-0 border-t border-t-[var(--border-color)] py-[var(--gap20)] mr-[var(--gap30)]">
-            <Button onClick={cancelCb} className="mr-[var(--gap10)]">
+          <Form.Item>
+            {/* <Button onClick={cancelCb} className="mr-[var(--gap10)]">
               取消
             </Button>
             <Button type="primary" htmlType="submit">
               确定
-            </Button>
+            </Button> */}
+            <ModalFooter onCancel={cancelCb}/>
           </Form.Item>
         </Form>
       </ConfigProvider>

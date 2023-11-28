@@ -21,6 +21,7 @@ const TodoContract = () => {
   let moduleTitle = useRef<any>();
   function configCb(e, crt) {
     stop(e, () => {
+      if(crt.flag === 'switch') return
       moduleContent.current = crt.flag;
       moduleTitle.current = crt.title;
       setModalOpen(!modalOpen);
