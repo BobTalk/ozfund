@@ -154,12 +154,6 @@ const FrezzModal = (props) => {
           </Form.Item>
 
           <Form.Item>
-            {/* <Button onClick={cancelCb} className="mr-[var(--gap10)]">
-              取消
-            </Button>
-            <Button type="primary" htmlType="submit">
-              确定
-            </Button> */}
             <ModalFooter onCancel={cancelCb}/>
           </Form.Item>
         </Form>
