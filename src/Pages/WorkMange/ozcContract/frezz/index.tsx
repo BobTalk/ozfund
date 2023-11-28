@@ -3,10 +3,7 @@ import Modal from "@/Pages/ModalComp";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
 import Table from "./table";
 import MoreBtn from "@/Components/MoreBtn";
-import {
-  useRef,
-  useState,
-} from "react";
+import { useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -150,11 +147,16 @@ const FrezzModal = (props) => {
               <LabelComp title="备注" className="text-[var(--border-color)]" />
             }
           >
-            <TextArea />
+            <TextArea
+              autoSize={{
+                minRows: 4,
+                maxRows: 6,
+              }}
+            />
           </Form.Item>
 
           <Form.Item>
-            <ModalFooter onCancel={cancelCb}/>
+            <ModalFooter onCancel={cancelCb} />
           </Form.Item>
         </Form>
       </ConfigProvider>

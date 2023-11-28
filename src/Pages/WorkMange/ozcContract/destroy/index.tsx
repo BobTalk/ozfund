@@ -105,7 +105,10 @@ const DestoryModal = (props) => {
               <LabelComp title="备注" className="text-[var(--border-color)]" />
             }
           >
-            <TextArea />
+            <TextArea autoSize={{
+              minRows: 4,
+              maxRows: 6,
+            }}/>
           </Form.Item>
 
           <Form.Item>

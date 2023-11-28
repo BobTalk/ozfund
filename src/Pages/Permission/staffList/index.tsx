@@ -186,7 +186,7 @@ const AddStaffInfo = (props) => {
         >
           <TextArea
             autoSize={{
-              minRows: 2,
+              minRows: 4,
               maxRows: 6,
             }}
           />
