@@ -40,9 +40,9 @@ const LayoutPage: React.FC = () => {
           },
           Table: {
             borderColor: "#e9e9e9",
-            colorText: "#333",
+            colorText: "#666",
             fontWeightStrong: 400,
-            headerColor: "var(--menu-color)",
+            headerColor: "#333",
             headerBg: "var(--table-head_gray)",
             headerSplitColor: "transparent",
             rowHoverBg: "var(--table-hover)",
@@ -63,6 +63,9 @@ const LayoutPage: React.FC = () => {
             itemActiveBg: "var(--blue)",
           },
         },
+        token:{
+          fontFamily: "PingFangSC-Regular"
+        }
       }}
     >
       <Layout className="h-[100vh]">
