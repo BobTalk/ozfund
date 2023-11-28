@@ -3,6 +3,7 @@ import { Button, ConfigProvider, Form, Input, Switch } from "antd";
 import ModalScope from "@/Pages/ModalComp";
 import { forwardRef, useRef, useState } from "react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import ModalFooter from "@/Components/ModalFooterBtn";
 const AccountManage = () => {
   let [stop] = useStopPropagation();
   let moduleContent = useRef<any>();
@@ -164,36 +165,7 @@ const ModalComp = forwardRef((props: any, ref: any) => {
     </ModalScope>
   ) : null;
 });
-const ModalFooter = (props) => {
-  return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-        },
-      }}
-    >
-      <div className="flex justify-end py-[.28rem] pr-[.28rem] border-t border-t-[#e6e6e6]">
-        {props.only ? (
-          <>
-            <Button type="primary" onClick={(e) => props?.onSubmit(e)}>
-              确定
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button onClick={(e) => props?.onCancel(e)} className="mr-[.1rem]">
-              取消
-            </Button>
-            <Button type="primary" htmlType="submit">
-              确定
-            </Button>
-          </>
-        )}
-      </div>
-    </ConfigProvider>
-  );
-};
+
 function resTip(params) {
   let [stop] = useStopPropagation();
   return (props) => {

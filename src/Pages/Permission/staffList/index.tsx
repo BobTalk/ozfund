@@ -7,6 +7,7 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { forwardRef, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import ModalFooter from "@/Components/ModalFooterBtn";
 const StaffList = () => {
   let urlPrev = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
@@ -116,28 +117,7 @@ const FilterComp = () => {
     </>
   );
 };
-const ModalFooter = (props) => {
-  return (
-    <div className="flex justify-end py-[.28rem] pr-[.28rem] border-t border-t-[#e6e6e6]">
-      {props.only ? (
-        <>
-          <Button type="primary" onClick={(e) => props?.onSubmit(e)}>
-            确定
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button onClick={(e) => props?.onCancel(e)} className="mr-[.1rem]">
-            取消
-          </Button>
-          <Button type="primary" htmlType="submit">
-            确定
-          </Button>
-        </>
-      )}
-    </div>
-  );
-};
+
 const AddStaffInfo = (props) => {
   let [stop] = useStopPropagation();
   let [form] = Form.useForm();

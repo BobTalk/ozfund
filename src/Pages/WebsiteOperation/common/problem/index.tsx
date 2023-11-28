@@ -6,6 +6,7 @@ import { forwardRef, useRef, useState } from "react";
 import { mergeClassName } from "@/utils/base";
 import ModalScope from "@/Pages/ModalComp";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import ModalFooter from "@/Components/ModalFooterBtn";
 const Problem = () => {
   let [addProblemInfoOpen, setAddProblemInfoOpen] = useState(false);
   let [showFilterComp, setShowFilterComp] = useState(false);
@@ -173,28 +174,7 @@ const EditorOrAddProblem = (props) => {
     </ConfigProvider>
   );
 };
-const ModalFooter = (props) => {
-  return (
-    <div className="flex justify-end py-[.28rem] pr-[.28rem] border-t border-t-[#e6e6e6]">
-      {props.only ? (
-        <>
-          <Button type="primary" onClick={(e) => props?.onSubmit(e)}>
-            确定
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button onClick={(e) => props?.onCancel(e)} className="mr-[.1rem]">
-            取消
-          </Button>
-          <Button type="primary" htmlType="submit">
-            确定
-          </Button>
-        </>
-      )}
-    </div>
-  );
-};
+
 const ModalComp = forwardRef((props: any, ref: any) => {
   function cancelCb(value) {
     props?.onCancel?.(value);

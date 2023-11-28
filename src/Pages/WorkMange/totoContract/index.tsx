@@ -7,15 +7,11 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input, InputNumber, Switch } from "antd";
-import {
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
+import ModalFooter from "@/Components/ModalFooterBtn";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -575,26 +571,5 @@ const ModalComp = forwardRef((props: any, ref: any) => {
     </ModalScope>
   ) : null;
 });
-const ModalFooter = (props) => {
-  return (
-    <div className="flex justify-end py-[.28rem] pr-[.28rem] border-t border-t-[#e6e6e6]">
-      {props.only ? (
-        <>
-          <Button type="primary" onClick={(e) => props?.onSubmit(e)}>
-            确定
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button onClick={(e) => props?.onCancel(e)} className="mr-[.1rem]">
-            取消
-          </Button>
-          <Button type="primary" htmlType="submit">
-            确定
-          </Button>
-        </>
-      )}
-    </div>
-  );
-};
+
 export default TodoContract;

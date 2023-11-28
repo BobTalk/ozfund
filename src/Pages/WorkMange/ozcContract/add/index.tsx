@@ -4,6 +4,7 @@ import ModalScope from "@/Pages/ModalComp";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { Button, ConfigProvider, Form, Input, InputNumber } from "antd";
 import { forwardRef, useRef, useState } from "react";
+import ModalFooter from "@/Components/ModalFooterBtn";
 
 const AddOzc = () => {
   let [stop] = useStopPropagation();
@@ -196,28 +197,7 @@ const AddOzcInfo = (props) => {
     </ConfigProvider>
   );
 };
-const ModalFooter = (props) => {
-  return (
-    <div className="flex justify-end py-[.28rem] pr-[.28rem] border-t border-t-[#e6e6e6]">
-      {props.only ? (
-        <>
-          <Button type="primary" onClick={(e) => props?.onSubmit(e)}>
-            确定
-          </Button>
-        </>
-      ) : (
-        <>
-          <Button onClick={(e) => props?.onCancel(e)} className="mr-[.1rem]">
-            取消
-          </Button>
-          <Button type="primary" htmlType="submit">
-            确定
-          </Button>
-        </>
-      )}
-    </div>
-  );
-};
+
 const ModalComp = forwardRef((props: any, ref: any) => {
   function cancelCb(value) {
     props?.onCancel?.(value);
