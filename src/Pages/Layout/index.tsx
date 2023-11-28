@@ -14,7 +14,7 @@ const LayoutPage: React.FC = () => {
       theme={{
         components: {
           Breadcrumb: {
-            lastItemColor: "var(--blue)",
+            lastItemColor: "#0385F2",
           },
           Alert: {
             colorInfoBorder: "transparent",
@@ -22,14 +22,14 @@ const LayoutPage: React.FC = () => {
           Tabs: {
             colorBorderSecondary: "transparent",
             fontSize: 16,
-            inkBarColor: "var(--blue)",
-            itemSelectedColor: "var(--blue)",
+            inkBarColor: "#0385F2",
+            itemSelectedColor: "#0385F2",
             itemColor: "#666",
-            cardBg: "var(--white)",
+            cardBg: "#fff",
             colorTextHeading: "#666",
             colorText: "#666",
-            itemHoverColor: "var(--blue)",
-            colorFillAlter: "var(--white)",
+            itemHoverColor: "#0385F2",
+            colorFillAlter: "#fff",
             cardHeight: 60,
             margin: 0,
             horizontalItemPadding: "17px 0",
@@ -43,36 +43,39 @@ const LayoutPage: React.FC = () => {
             colorText: "#666",
             fontWeightStrong: 400,
             headerColor: "#333",
-            headerBg: "var(--table-head_gray)",
+            headerBg: "#FAFAFA",
             headerSplitColor: "transparent",
-            rowHoverBg: "var(--table-hover)",
+            rowHoverBg: "#F4F6FB",
           },
           Button: {
-            colorPrimary: "var(--blue)",
+            colorPrimary: "#0385F2",
           },
           Menu: {
             itemHeight: 50,
             itemMarginBlock: 0,
             itemMarginInline: 0,
-            itemHoverBg: "var(--blue)",
-            itemHoverColor: "var(--white)",
+            itemHoverBg: "#0385F2",
+            itemHoverColor: "#fff",
             subMenuItemBg: "transparent",
-            itemSelectedColor: "var(--white)",
-            itemSelectedBg: "var(--blue)",
-            itemColor: "var(--menu-color)",
-            itemActiveBg: "var(--blue)",
+            itemSelectedColor: "#fff",
+            itemSelectedBg: "#0385F2",
+            itemColor: "#546078",
+            itemActiveBg: "#0385F2",
           },
         },
-        token:{
-          fontFamily: "PingFangSC-Regular"
-        }
+        token: {
+          fontFamily: "PingFangSC-Regular",
+          colorBorder: "#C5CAD0",
+          colorPrimary: '#0385F2',
+          colorTextPlaceholder:"#C5CAD0"
+        },
       }}
     >
       <Layout className="h-[100vh]">
         <Sider
           style={{
             backgroundColor: "#fff",
-            borderRight: "1px solid var(--border-color)",
+            borderRight: "1px solid #C5CAD0",
           }}
           width={300}
           trigger={null}

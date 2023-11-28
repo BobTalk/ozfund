@@ -1,7 +1,7 @@
 @charset "utf-8";
 @font-face{
   font-family: "PingFangSC-Regular";
-  src: url('/public/PingFang-SC-Regular.ttf');
+  src: url('./PingFang-SC-Regular.ttf');
 }
 @layer {
   * {
