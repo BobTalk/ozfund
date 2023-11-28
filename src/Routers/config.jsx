@@ -10,6 +10,7 @@ import ChildAssetsToto from "@/Pages/Assets/toto/childAssets";
 import AssetsTotoOzc from "@/Pages/Assets/totoOzc";
 import AssetsTotoPrice from "@/Pages/Assets/totoPrice";
 import Business from "@/Pages/Business";
+import BusinessList from "@/Pages/Business/list";
 import Email from "@/Pages/Email";
 import EmailList from "@/Pages/Email/list";
 import EmailSend from "@/Pages/Email/send";
@@ -393,7 +394,15 @@ const RouteList = [
         path: 'business',
         element: <Business />,
         isAuth: true,
-        title: "业务管理"
+        title: "业务管理",
+        children:[
+          {
+            path:'list',
+            element: <BusinessList />,
+            isAuth: true,
+            title: "业务列表",
+          }
+        ]
       },
       {
         path: 'personal',

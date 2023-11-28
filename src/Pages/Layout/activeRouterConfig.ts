@@ -59,6 +59,7 @@ export const activePath = {
   "/ozfund/logs/operation": ["/ozfund/logs", "/ozfund/logs/operation"],
   "/ozfund/logs/work": ["/ozfund/logs", "/ozfund/logs/work"],
   "/ozfund/business": ["/ozfund/business"],
+  "/ozfund/business/list": ["/ozfund/business", '/ozfund/business/list'],
   "/ozfund/personal": ["/ozfund/personal"],
 };
 export const activePathToName = {
@@ -104,5 +105,6 @@ export const activePathToName = {
   "/ozfund/logs/operation": ["日志管理", "操作日志"],
   "/ozfund/logs/work": ["日志管理", "事务日志"],
   "/ozfund/business": ["业务管理"],
+  "/ozfund/business/list": ["业务管理", '业务列表'],
   "/ozfund/personal": ["个人资料"],
 };

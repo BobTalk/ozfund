@@ -1,10 +1,10 @@
 import RangePicker from "@/Components/RangePicker";
-import { Button, ConfigProvider, Select } from "antd";
+import { Button, ConfigProvider, Input, Select } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import Table from "./table";
 import MoreBtn from "@/Components/MoreBtn";
 
-const ChangeRecord = () => {
+const Work = () => {
   let topModuleRefs = useRef<any>();
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   useEffect(() => {
@@ -37,12 +37,8 @@ const TopModule = forwardRef((props: any, ref: any) => {
         className="bg-white p-[var(--gap20)] rounded-[var(--border-radius)]"
       >
         <div className="flex items-center gap-[var(--gap10)]">
-          <p className="text-[#666]">配置搜索</p>
-          <Select
-            placeholder="请选择"
-            className="mr-[var(--gap10)] w-[1.63rem]"
-            options={[]}
-          />
+          <p className="text-[#666] whitespace-nowrap">类型</p>
+          <Select className="w-[1.63rem]" placeholder='请选择' options={[]}/>
           <RangePicker />
           <Button type="primary">查询</Button>
         </div>
@@ -65,4 +61,4 @@ function TableModule(props: any) {
     </div>
   );
 }
-export default ChangeRecord;
+export default Work;

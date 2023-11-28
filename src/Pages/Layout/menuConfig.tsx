@@ -169,6 +169,13 @@ export const menuList = [
     key: "/ozfund/business",
     icon: <Icon name="h-icon-yewuguanli" className={styleScope["icon"]} />,
     label: "业务管理",
+    children:[
+      {
+        key: "/ozfund/business/list",
+        icon: <></>,
+        label: "业务列表",
+      }
+    ]
   },
   {
     key: "/ozfund/personal",
