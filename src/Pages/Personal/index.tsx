@@ -69,27 +69,7 @@ const Personal = () => {
     </div>
   );
 };
-const AddonBeforePhone = (props) => {
-  function selectChangeCb(val) {
-    props?.onCountryCodeCb?.(val);
-  }
-  return (
-    <div className="flex items-center">
-      <PlusOutlined className="text-[14px] text-[#333]" />
-      <Select
-        className="text-[14px] text-[#333]"
-        size="large"
-        defaultValue="86"
-        onChange={selectChangeCb}
-        options={[{ value: "86", label: "86" }]}
-      />
-    </div>
-  );
-};
 const ListItem = (props) => {
-  function countryCodeCb(val) {
-    console.log("国家编号: ", val);
-  }
   return (
     <ul className="border border-[var(--border-color)]">
       <li className="grid grid-cols-[1.5rem_1fr_1.5rem_1fr] h-[.47rem] not-last:border-b border-[var(--border-color)]">
@@ -117,7 +97,7 @@ const ListItem = (props) => {
         <span className="flex items-center pl-[.4rem]">+8617601630423</span>
       </li>
       <li className="grid grid-cols-[1.5rem_1fr_1.5rem_1fr] h-[.47rem] not-last:border-b border-[var(--border-color)]">
-        <span className="bg-[#f8f9fa] text-[#666] flex items-center justify-center border-r border-l border-[var(--border-color)]">
+        <span className="bg-[#f8f9fa] text-[#666] flex items-center justify-center border-r border-[var(--border-color)]">
           联系方式
         </span>
         <span className="flex items-center pl-[.4rem] border-r border-[var(--border-color)]">
