@@ -11,7 +11,7 @@ import { UpdatePermissionInterface } from "@/api";
 import { useLocation } from "react-router-dom";
 const RightsAdjust = (props) => {
   let routerMapIdCp = JSON.parse(JSON.stringify(routerMapId));
-  let activePath = getSession("activePath_ozfund");
+  let activePath = getSession("activePath");
   let [stop] = useStopPropagation();
   let [userInfo] = useState(props);
   let { state } = useLocation();
@@ -50,7 +50,7 @@ const RightsAdjust = (props) => {
     if(status){
       message.success(tipInfo)
       setTreeDisabled(!treeDisabled);
-      setSession("activePath_ozfund", activeTreeNode)
+      setSession("activePath", activeTreeNode)
     }else{
       message.error(tipInfo)
     }

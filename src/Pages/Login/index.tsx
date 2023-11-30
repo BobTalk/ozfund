@@ -6,7 +6,7 @@ import "@/assets/style/form.less";
 import Card from "@/Components/Card";
 import { Button, Form, Input, message } from "antd";
 // import GetCodeBtn from "@/Components/GetCode";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { encryptByDES, getSession, setSession } from "@/utils/base";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,8 @@ import {
   LoginInterface,
 } from "@/api";
 const Login = () => {
+  
+  let crtIndex = useRef(0)
   return (
     <Card bgImg={loginBg} bgColor="#f6f7f9" className="w-[100vw] h-[100vh]">
       <div className="grid w-full h-full place-items-center">
@@ -32,6 +34,17 @@ const Login = () => {
 };
 
 const FormComp = () => {
+  let jumpPath = [
+    "/ozfund",
+    "/ozfund/website-operation",
+    "/ozfund/work-mange",
+    "/ozfund/email",
+    "/ozfund/assets",
+    "/ozfund/permission",
+    "/ozfund/IP",
+    "/ozfund/logs",
+    "/ozfund/business",
+  ]
   let navigate = useNavigate();
   let userInfo = getSession("userInfo");
   let token = getSession("token");
@@ -69,6 +82,9 @@ const FormComp = () => {
       message.error(info);
     }
   }
+  function includesPath(routerList=[]){
+    return routerList.find(item => !jumpPath.includes(item))
+  }
   function getPagePermission() {
     GetPermissionInterface().then((res) => {
       if (res.status) {
@@ -80,24 +96,10 @@ const FormComp = () => {
           },
           { activePath: [], permissions: {} }
         );
-        setSession("activePath_ozfund", JSON.stringify(activePath));
-        setSession("permissions_ozfund", JSON.stringify(permissions));
+        setSession("activePath", JSON.stringify(activePath));
+        setSession("permissions", JSON.stringify(permissions));
         if (activePath.length) {
-          if (
-            [
-              "/ozfund/website-operation",
-              "/ozfund/work-mange",
-              "/ozfund/email",
-              "/ozfund/assets",
-              "/ozfund/permission",
-              "/ozfund/IP",
-              "/ozfund/logs",
-              "/ozfund/business",
-            ].includes(activePath[0])
-          ) {
-            navigate(activePath[1]);
-          } else {
-          }
+          navigate(includesPath(activePath))
         } else {
           navigate("/denied");
         }

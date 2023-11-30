@@ -48,6 +48,9 @@ const decrypt = (message: string | null | undefined, key: string = AseKey) => {
  * @param {*} name 
  */
 function getSession(name: string) {
+  if (!name.endsWith("_ozfund")) {
+    name = name + "_ozfund"
+  }
   let value: any = decrypt(SessionStorage.getItem(name))
   try {
     value = JSON.parse(value)
@@ -67,6 +70,9 @@ function getSession(name: string) {
 function setSession(name: string, value: any) {
   if (dataType(value) === 'boolean') value = JSON.stringify({ _flag: 'boolean', val: Number(value) })
   else if (dataType(value) === 'object') value = JSON.stringify({ ...value, _flag: 'object' })
+  if (!name.endsWith("_ozfund")) {
+    name = name + "_ozfund"
+  }
   return SessionStorage.setItem(name, encrypt(value))
 }
 /**
@@ -99,7 +105,7 @@ const thousands = (num: number): string => {
 
 // 日期处理
 const timeFormate = (time: string | Date, format: string = 'YYYY-MM-DD'): string => {
-  if(!time) return "--";
+  if (!time) return "--";
   return dayjs(time).format(format)
 }
 
