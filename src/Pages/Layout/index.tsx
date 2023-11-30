@@ -13,6 +13,9 @@ const LayoutPage: React.FC = () => {
     <ConfigProvider
       theme={{
         components: {
+          Input:{
+            // colorBgContainer: 'red'
+          },
           Breadcrumb: {
             lastItemColor: "#0385F2",
           },

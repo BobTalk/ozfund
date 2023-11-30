@@ -8,17 +8,17 @@ export type ColumnsType = ColType<{
   title: string;
   key?: string;
   dataIndex: string;
-  responsive?: Array<'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs'>;
+  responsive?: Array<"xxl" | "xl" | "lg" | "md" | "sm" | "xs">;
   align?: "left" | "center" | "right";
-  className?:string;
-  ellipsis?:boolean;
-  fixed?:boolean|string;
-  render?:Function;
-  onHeaderCell?:Function;
-  onCell?:Function;
-  width?:string | number;
-  rowScope?:string | number;
-}>
+  className?: string;
+  ellipsis?: boolean;
+  fixed?: boolean | string;
+  render?: Function;
+  onHeaderCell?: Function;
+  onCell?: Function;
+  width?: string | number;
+  rowScope?: string | number;
+}>;
 type TableCompPropsType = {
   dataSource: Array<any>;
   columns: ColumnsType;
@@ -41,7 +41,7 @@ const TableComp = (props: TableCompPropsType) => {
     border,
     components: comp,
     virtual,
-    className
+    className,
   } = props;
   return (
     <ConfigProvider
@@ -54,11 +54,16 @@ const TableComp = (props: TableCompPropsType) => {
       }}
       locale={zh_CN}
     >
-      <div className={mergeClassName(styleScope["table-reset_style"], className)}>
+      <div
+        className={mergeClassName(styleScope["table-reset_style"], className)}
+      >
         <Table
+          className="w-full"
+          rowKey="dataIndex"
           components={comp}
           virtual={virtual}
           bordered={border}
+          loading={false}
           scroll={{ y: 0 }}
           pagination={pagination}
           dataSource={dataSource}
