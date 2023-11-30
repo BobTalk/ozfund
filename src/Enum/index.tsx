@@ -51,3 +51,9 @@ export enum routerMapId {
   "/ozfund/business" = 18,
   "/ozfund/personal" = 19,
 }
+
+export enum userAcountStateEnum {
+  正常 = 1,
+  冻结 = 2,
+  关闭 = 3
+}

@@ -1,7 +1,6 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input, Select } from "antd";
 import Table from "./table";
-import MoreBtn from "@/Components/MoreBtn";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
@@ -25,7 +24,7 @@ const StaffList = () => {
   ) : (
     <>
       <FilterComp />
-      <TableComp onLook={lookCb} />
+      <Table onLook={lookCb} />
     </>
   );
 };
@@ -213,19 +212,6 @@ const AddonBeforePhone = (props) => {
         options={[{ value: "86", label: "86" }]}
       />
     </div>
-  );
-};
-const TableComp = (props) => {
-  function lookCb(crt) {
-    props?.onLook?.(crt);
-  }
-  return (
-    <>
-      <div className="pb-[.25rem] bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
-        <Table onLook={lookCb} />
-      </div>
-      <MoreBtn />
-    </>
   );
 };
 export default StaffList;

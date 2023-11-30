@@ -7,11 +7,14 @@ import { cloneDeep } from "lodash";
 import { routerMapId } from "@/Enum";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { UpdatePermissionInterface } from "@/api";
+import { useLocation } from "react-router-dom";
 const RightsAdjust = (props) => {
   let routerMapIdCp = JSON.parse(JSON.stringify(routerMapId));
-  let activePath = getSession("activePath");
+  let activePath = getSession("activePath_ozfund");
   let [stop] = useStopPropagation();
-  let [userInfo, setUserInfo] = useState(props);
+  let [userInfo] = useState(props);
+  let { state } = useLocation();
   let [treeDisabled, setTreeDisabled] = useState(true);
   let [activeTreeNode, setActiveTreeNode] = useState(activePath);
   const filterRouter = useCallback((routerList = [], parentPath = null) => {
@@ -31,6 +34,26 @@ const RightsAdjust = (props) => {
   const treeData = filterRouter(cloneDeep(RouteList)).filter(Boolean);
   function treeCheckCb(keyList, info) {
     setActiveTreeNode(keyList);
+  }
+  async function updatePermissCb() {
+    let idList = [];
+    for (const key of activeTreeNode) {
+      if (!idList.includes(routerMapIdCp[key])) {
+        idList.push(routerMapIdCp[key]);
+      }
+    }
+
+   let {status, message:tipInfo} =  await UpdatePermissionInterface({
+     adminId: state.adminId,
+     permissions: idList.filter(Boolean),
+    });
+    if(status){
+      message.success(tipInfo)
+      setTreeDisabled(!treeDisabled);
+      setSession("activePath_ozfund", activeTreeNode)
+    }else{
+      message.error(tipInfo)
+    }
   }
   function changeCb(e) {
     stop(e, () => {
@@ -67,7 +90,7 @@ const RightsAdjust = (props) => {
           ) : (
             <>
               <Button
-                onClick={changeCb}
+                onClick={updatePermissCb}
                 className="text-[var(--green)] border-[var(--green)]"
                 icon={<SaveOutlined />}
               >

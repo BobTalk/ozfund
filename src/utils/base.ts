@@ -99,6 +99,7 @@ const thousands = (num: number): string => {
 
 // 日期处理
 const timeFormate = (time: string | Date, format: string = 'YYYY-MM-DD'): string => {
+  if(!time) return "--";
   return dayjs(time).format(format)
 }
 

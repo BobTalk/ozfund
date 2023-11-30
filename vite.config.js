@@ -31,7 +31,7 @@ export default defineConfig({
     open: true,
     proxy: {
       "/admin": {
-        target: "http://192.168.50.162:9000",
+        target: "http://192.168.50.162:8080",
         changeOrigin: true,
       },
       "/operate": {

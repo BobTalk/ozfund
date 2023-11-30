@@ -1,9 +1,18 @@
 import denied from "@/assets/images/access-denied.svg";
 import styleScope from "./index.module.less";
-import { Fragment, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "@/Components/Image";
+import { GetCrtIpAddreaaInterface } from "@/api";
+import { clearSession } from "@/utils/base";
 const Denied = () => {
-  let [currentIp] = useState("128.152.38.51");
+  let [currentIp, setCurrentIp] = useState("");
+  useEffect(() => {
+    GetCrtIpAddreaaInterface().then((res) => {
+      setCurrentIp(res.data);
+      clearSession()
+    });
+  }, []);
+
   //获取用户本地ip的方法
   return (
     <Image src={denied} className="grid place-content-center h-[100vh]">

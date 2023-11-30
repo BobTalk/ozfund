@@ -1,40 +1,45 @@
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { FindListInterface } from "@/api";
 import { EyeFilled } from "@ant-design/icons";
-import { ConfigProvider, Typography } from "antd";
-import dayjs from "dayjs";
-import { useState } from "react";
+import { ConfigProvider, Pagination, Typography, message } from "antd";
+import { timeFormate } from "@/utils/base";
+import { userAcountStateEnum } from "@/Enum";
+import { useLayoutEffect, useState } from "react";
+import MoreBtn from "@/Components/MoreBtn";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
       title: "员工ID",
-      dataIndex: "frezzTime",
-      render: (_) => dayjs(_).format("YYYY.MM.DD HH:mm:ss"),
+      dataIndex: "adminId",
     },
     {
       title: "备注",
-      dataIndex: "address",
+      dataIndex: "note",
     },
     {
       title: "创建时间",
-      dataIndex: "num",
+      dataIndex: "createTime",
+      render: (_) => timeFormate(_),
     },
     {
       title: "联系方式",
-      dataIndex: "notes",
+      dataIndex: "mobile",
     },
     {
       title: "邮箱",
-      dataIndex: "staffId",
+      dataIndex: "email",
     },
     {
       title: "账户状态",
-      dataIndex: "staffId",
+      dataIndex: "state",
+      render: (_) => userAcountStateEnum[_],
     },
     {
       title: "最近登录时间",
-      dataIndex: "staffId",
+      dataIndex: "loginTime",
+      render: (_) => timeFormate(_),
     },
     {
       title: "操作",
@@ -46,43 +51,67 @@ const Table = (props) => {
         return (
           <Typography.Link disabled={editable}>
             <div
-                onClick={(e) => lookCb(e, record)}
-                className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--blue1)] rounded-[4px] text-[var(--blue)]"
-              >
-                <EyeFilled className="mr-[8px]" />
-                <span>查看</span>
-              </div>
+              onClick={(e) => lookCb(e, record)}
+              className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--blue1)] rounded-[4px] text-[var(--blue)]"
+            >
+              <EyeFilled className="mr-[8px]" />
+              <span>查看</span>
+            </div>
           </Typography.Link>
         );
       },
     },
   ];
-  const [dataList, setDataList] = useState<any>([
-    {
-      key: 1,
-      frezzTime: new Date(),
-      address: "djahoaic4234kahdiuahdajag",
-      num: 439487,
-      notes: "Ozfund投注挖矿：",
-      staffId: "xiaowu",
-    },
-    {
-      key: 2,
-      frezzTime: new Date(),
-      address: "djahoaic4234kahdiuahdajag",
-      num: 439487,
-      notes: "Ozfund投注挖矿：",
-      staffId: "xiaowu",
-    },
-  ]);
+  const [dataList, setDataList] = useState<any>([]);
+  let [onceExc, setOnceExc] = useState(true);
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
+  let [paginationInfo, setPaginationInfo] = useState<any>({
+    pageSize: 10,
+    pageNo: 1,
+  });
   let isEditing = (record) => record.key === editingKey;
   function lookCb(e, crt) {
     stop(e, () => {
       props?.onLook(crt);
     });
   }
+  async function getPermissionList() {
+    if (!onceExc) return;
+    let {
+      status,
+      data = [],
+      message: tipInfo,
+      conditions,
+      rank,
+      code,
+      ...pgt
+    } = await FindListInterface({
+      pageNo: paginationInfo.pageNo,
+      pageSize: paginationInfo.pageSize,
+    });
+    if (status) {
+      setOnceExc(false);
+      setPaginationInfo(pgt);
+      setDataList((oldArr: Array<any>) => {
+        return oldArr.concat(
+          data.map((item) => ((item.key = item.adminId), item))
+        );
+      });
+    } else {
+      message.error(tipInfo);
+    }
+  }
+  function moreCb() {
+    setOnceExc(true);
+    setPaginationInfo((paginationInfo) => ({
+      ...paginationInfo,
+      pageNo: ++paginationInfo.pageNo,
+    }));
+  }
+  useLayoutEffect(() => {
+    getPermissionList();
+  }, [JSON.stringify(paginationInfo)]);
   return (
     <ConfigProvider
       theme={{
@@ -92,11 +121,16 @@ const Table = (props) => {
         },
       }}
     >
-      <TableComp
-        className="_reset-table__btn"
-        dataSource={dataList}
-        columns={columns}
-      />
+      <div className="pb-[.25rem] bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
+        <TableComp
+          className="_reset-table__btn"
+          dataSource={dataList}
+          columns={columns}
+        />
+      </div>
+      {paginationInfo.pageNo < paginationInfo.pageTotal ? (
+        <MoreBtn onMore={moreCb} />
+      ) : null}
     </ConfigProvider>
   );
 };

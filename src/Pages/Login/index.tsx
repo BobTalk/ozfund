@@ -4,12 +4,18 @@ import loginBg from "@/assets/images/login-bg.svg";
 import styleScope from "./index.module.less";
 import "@/assets/style/form.less";
 import Card from "@/Components/Card";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 // import GetCodeBtn from "@/Components/GetCode";
 import { useState } from "react";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { getSession } from "@/utils/base";
-import { Navigate, useNavigate } from "react-router-dom";
+import { encryptByDES, getSession, setSession } from "@/utils/base";
+import { useNavigate } from "react-router-dom";
+import {
+  GetAccessKeyInterface,
+  GetAdminInfoInterface,
+  GetPermissionInterface,
+  LoginInterface,
+} from "@/api";
 const Login = () => {
   return (
     <Card bgImg={loginBg} bgColor="#f6f7f9" className="w-[100vw] h-[100vh]">
@@ -40,11 +46,68 @@ const FormComp = () => {
     emailCode: "请输入邮箱验证码",
   };
 
-  function onFinish(obj) {}
+  async function onFinish(formObj) {
+    let { data } = await GetAccessKeyInterface();
+    let {
+      status,
+      data: loginData,
+      message: info,
+    }: any = await LoginInterface({
+      adminId: formObj.username,
+      password: encryptByDES(formObj.password, data),
+    });
+
+    if (status) {
+      setSession("token", loginData);
+      let userInfo = await GetAdminInfoInterface();
+      let { code, status, ...userInfoObj } = userInfo;
+      if (status) {
+        setSession("userInfo", userInfoObj);
+        getPagePermission();
+      }
+    } else {
+      message.error(info);
+    }
+  }
+  function getPagePermission() {
+    GetPermissionInterface().then((res) => {
+      if (res.status) {
+        let { activePath, permissions } = res.data.reduce(
+          (prv, next) => {
+            prv.activePath.push(next.key);
+            prv.permissions[next["key"]] = next.permission;
+            return prv;
+          },
+          { activePath: [], permissions: {} }
+        );
+        setSession("activePath_ozfund", JSON.stringify(activePath));
+        setSession("permissions_ozfund", JSON.stringify(permissions));
+        if (activePath.length) {
+          if (
+            [
+              "/ozfund/website-operation",
+              "/ozfund/work-mange",
+              "/ozfund/email",
+              "/ozfund/assets",
+              "/ozfund/permission",
+              "/ozfund/IP",
+              "/ozfund/logs",
+              "/ozfund/business",
+            ].includes(activePath[0])
+          ) {
+            navigate(activePath[1]);
+          } else {
+          }
+        } else {
+          navigate("/denied");
+        }
+      } else {
+        message.error(res.message);
+      }
+    });
+  }
   return userInfo && token ? (
-    <>
-    {/* <Navigate to='/aupay/assets'/> */}
-    </>
+    <>{getPagePermission()}</>
   ) : (
     <Form
       autoComplete="off"

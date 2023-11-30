@@ -5,11 +5,11 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 const StaffDetail = () => {
   const commonUrlPrefix = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
-  let { pathname } = useLocation();
+  let { pathname,state } = useLocation();
   let tabsRefs = useRef<any>();
   let [tabsHeight, setTabsHeight] = useState<number>();
   function tabClickCb(key) {
-    navigate(key);
+    navigate(key,{state});
   }
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();

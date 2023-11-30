@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { PendingType } from './type';
-import { getSession, removeSession } from '@/utils/base';
+import { clearSession, getSession, removeSession } from '@/utils/base';
 // 取消重复请求
 const pending: Array<PendingType> = [];
 const CancelToken = axios.CancelToken;
@@ -43,7 +43,13 @@ instance.interceptors.request.use(
 // 添加响应拦截器
 instance.interceptors.response.use(
   (response: any) => {
+    let code = response.data.code
     // removePending(response.config);
+    if(code !== 200){
+      clearSession()
+      window.location.reload()
+      return
+    }
     return response
   },
   (error: any) => {
