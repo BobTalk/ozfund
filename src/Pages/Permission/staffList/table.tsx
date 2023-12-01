@@ -6,9 +6,15 @@ import { EyeFilled } from "@ant-design/icons";
 import { ConfigProvider, Pagination, Typography, message } from "antd";
 import { timeFormate } from "@/utils/base";
 import { userAcountStateEnum } from "@/Enum";
-import { useLayoutEffect, useState } from "react";
+import {
+  forwardRef,
+  useImperativeHandle,
+  useLayoutEffect,
+  useState,
+} from "react";
 import MoreBtn from "@/Components/MoreBtn";
-const Table = (props) => {
+import { uniqBy } from "lodash";
+const Table = (props, ref) => {
   const columns: ColumnsType = [
     {
       title: "员工ID",
@@ -94,8 +100,9 @@ const Table = (props) => {
       setOnceExc(false);
       setPaginationInfo(pgt);
       setDataList((oldArr: Array<any>) => {
-        return oldArr.concat(
-          data.map((item) => ((item.key = item.adminId), item))
+        return uniqBy(
+          oldArr.concat(data.map((item) => ((item.key = item.adminId), item))),
+          "adminId"
         );
       });
     } else {
@@ -109,9 +116,20 @@ const Table = (props) => {
       pageNo: ++paginationInfo.pageNo,
     }));
   }
+  function updateList() {
+    setOnceExc(true);
+    getPermissionList();
+  }
   useLayoutEffect(() => {
     getPermissionList();
   }, [JSON.stringify(paginationInfo)]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      updateList,
+    }),
+    []
+  );
   return (
     <ConfigProvider
       theme={{
@@ -135,4 +153,4 @@ const Table = (props) => {
   );
 };
 
-export default Table;
+export default forwardRef(Table);

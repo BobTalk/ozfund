@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Form, Input, Select } from "antd";
+import { Button, ConfigProvider, Form, Input, Select, message } from "antd";
 import Table from "./table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useRef, useState } from "react";
@@ -11,9 +11,13 @@ import { AddStaffInterface } from "@/api";
 const StaffList = () => {
   let urlPrev = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
+  let tableRefs = useRef<any>();
   let { pathname } = useLocation();
   function lookCb(crt) {
     navigate(urlPrev, { state: crt });
+  }
+  function updateListCb() {
+    tableRefs.current.updateList();
   }
   return [
     urlPrev,
@@ -24,12 +28,12 @@ const StaffList = () => {
     <Outlet />
   ) : (
     <>
-      <FilterComp />
-      <Table onLook={lookCb} />
+      <FilterComp onUpdate={updateListCb} />
+      <Table onLook={lookCb} ref={tableRefs} />
     </>
   );
 };
-const FilterComp = () => {
+const FilterComp = (props) => {
   let [stop] = useStopPropagation();
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
@@ -39,15 +43,20 @@ const FilterComp = () => {
   });
   let [modalOpen, setModalOpen] = useState(false);
 
-  async function submitCb({ staffId, email, mobile, note }) {
-    let addStaffRes = await AddStaffInterface({
+  async function submitCb({ staffId, email, mobile, note, countryCode }) {
+    let { status, message: tipInfo } = await AddStaffInterface({
       adminId: staffId,
       email,
-      mobile,
+      mobile: `${countryCode} ${mobile}`,
       note,
     });
-    console.log("addStaffRes: ", addStaffRes);
-    // setModalOpen(!modalOpen);
+    if (status) {
+      message.success(tipInfo);
+      props?.onUpdate?.();
+      setModalOpen(!modalOpen);
+    } else {
+      message.error(tipInfo);
+    }
   }
   function addStaffInfoCb(e) {
     stop(e, () => {
@@ -135,7 +144,7 @@ const AddStaffInfo = (props) => {
   });
   function submitCb(values) {
     console.log("values: ", values);
-    props?.onOk(values);
+    props?.onOk({ ...values, countryCode: countryCode.current });
   }
   function cancelCb(e) {
     stop(e, () => {
