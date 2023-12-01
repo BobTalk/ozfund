@@ -22,9 +22,16 @@ export const GetCrtIpAddreaaInterface = ()=>{
     url: `${adminPrefix}/myIp`
   })
 }
-export const GetAdminInfoInterface = ()=>{
+export const GetAdminInfoInterface = (params)=>{
   return _http.getReq({
-    url: `${adminPrefix}/getAdminInfo`
+    url: `${adminPrefix}/getAdminInfo`,
+    params
+  })
+}
+export const CloseAccountInterface = (params)=>{
+  return _http.putReq({
+    url: `${adminPrefix}/closeAdmin`,
+    params
   })
 }
 export const UpdatePasswordInterface = ()=>{
@@ -60,14 +67,16 @@ export const GetOperationLogInterface = ()=>{
     url: `${adminPrefix}/findAdminOperationLog`
   })
 }
-export const SwitchFreezeAccountInterface = ()=>{
-  return _http.getReq({
-    url: `${adminPrefix}/switchFreezeAdmin`
+export const SwitchFreezeAccountInterface = (params)=>{
+  return _http.putReq({
+    url: `${adminPrefix}/switchFreezeAdmin`,
+    params
   })
 }
-export const ResetPwdInterface = ()=>{
-  return _http.getReq({
-    url: `${adminPrefix}/resetAdminPassword`
+export const ResetPwdInterface = (params)=>{
+  return _http.putReq({
+    url: `${adminPrefix}/resetAdminPassword`,
+    params
   })
 }
 export const UpdatePermissionInterface = (data)=>{
@@ -89,5 +98,11 @@ export const AddIpInterface = ()=>{
 export const GetIpLogListInterface = ()=>{
   return _http.getReq({
     url: `${adminPrefix}/findAdminIpLogList`
+  })
+}
+export const UpdateInfoInterface = (data)=>{
+  return _http.putReq({
+    url: `${adminPrefix}/updateAdminInfo`,
+    data
   })
 }

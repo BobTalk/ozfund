@@ -57,3 +57,14 @@ export enum userAcountStateEnum {
   冻结 = 2,
   关闭 = 3
 }
+
+export enum countryCodeEnum{
+  "中国" = "86",
+  "新加坡" = "65",
+  "泰国" = "66",
+  "日本" = "81",
+  "韩国" = "82",
+  "越南" = "84",
+  "缅甸" = "95",
+  "台湾" = "886",
+}

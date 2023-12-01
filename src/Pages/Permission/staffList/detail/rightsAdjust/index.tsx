@@ -13,11 +13,11 @@ import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { UpdatePermissionInterface } from "@/api";
 import { useLocation } from "react-router-dom";
-const RightsAdjust = (props) => {
+const RightsAdjust = () => {
   let routerMapIdCp = JSON.parse(JSON.stringify(routerMapId));
   let activePath = getSession("activePath");
   let [stop] = useStopPropagation();
-  let { state, pathname } = useLocation();
+  let { state } = useLocation();
   let [treeDisabled, setTreeDisabled] = useState(true);
   let [activeTreeNode, setActiveTreeNode] = useState(activePath);
   const filterRouter = useCallback((routerList = [], parentPath = null) => {
@@ -53,7 +53,6 @@ const RightsAdjust = (props) => {
     if (status) {
       message.success(tipInfo);
       setTreeDisabled(!treeDisabled);
-      console.log("activeTreeNode: ", activeTreeNode);
       setSession("activePath", activeTreeNode);
     } else {
       message.error(tipInfo);

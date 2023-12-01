@@ -3,6 +3,7 @@ import { activePath, activePathToName } from "@/Pages/Layout/activeRouterConfig"
 const AseKey = 'abcopekiYHJFMGTO';
 // const { AES, enc, mode, pad, DES } = require('crypto-js')
 import { AES, enc, mode, pad, DES } from 'crypto-js'
+import { number } from "echarts";
 const SessionStorage = window.sessionStorage
 const mergeClassName = (...arg: string[]) => {
   let param = arg.filter(item => !['undefined', 'null'].includes(item)).filter(Boolean)
@@ -111,7 +112,8 @@ const timeFormate = (time: string | Date, format: string = 'YYYY-MM-DD'): string
 const formatEnum = (enumData) => {
   let enumObj = JSON.parse(JSON.stringify(enumData))
   let allKey = Object.keys(enumObj)
-  let r = allKey.slice(allKey.length / 2)
+  // let r = allKey.slice(allKey.length / 2)
+  let r = allKey.filter(item => !/^\d{1,}$/.test(item))
   return r.map(item => ({
     value: enumObj[item],
     label: item
@@ -130,7 +132,7 @@ const breadSite = (key) => {
   } else {
     return [{ title: activePathToName?.[key]?.[0] ?? "--" }]
   }
-} 
+}
 export {
   breadSite,
   mergeClassName,
