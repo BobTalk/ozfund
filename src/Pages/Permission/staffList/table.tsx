@@ -3,7 +3,7 @@ import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { FindListInterface } from "@/api";
 import { EyeFilled } from "@ant-design/icons";
-import { ConfigProvider, Pagination, Typography, message } from "antd";
+import { ConfigProvider, Typography, message } from "antd";
 import { timeFormate } from "@/utils/base";
 import { userAcountStateEnum } from "@/Enum";
 import {
@@ -53,9 +53,8 @@ const Table = (props, ref) => {
       width: 200,
       align: "left",
       render: (_, record, index) => {
-        const editable = isEditing(record);
         return (
-          <Typography.Link disabled={editable}>
+          <Typography.Link disabled={!props.childrenPermison}>
             <div
               onClick={(e) => lookCb(e, record)}
               className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[var(--blue1)] rounded-[4px] text-[var(--blue)]"
@@ -71,12 +70,10 @@ const Table = (props, ref) => {
   const [dataList, setDataList] = useState<any>([]);
   let [onceExc, setOnceExc] = useState(true);
   let [stop] = useStopPropagation();
-  let [editingKey, setEditingKey] = useState("");
   let [paginationInfo, setPaginationInfo] = useState<any>({
     pageSize: 10,
     pageNo: 1,
   });
-  let isEditing = (record) => record.key === editingKey;
   function lookCb(e, crt) {
     stop(e, () => {
       props?.onLook(crt);

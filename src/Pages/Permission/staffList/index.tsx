@@ -2,7 +2,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input, Select, message } from "antd";
 import Table from "./table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ModalFooter from "@/Components/ModalFooterBtn";
@@ -21,13 +21,16 @@ const StaffList = () => {
   let navigate = useNavigate();
   let tableRefs = useRef<any>();
   let { pathname } = useLocation();
-  function lookCb(crt) {
+  let [childrenRouter, setChildrenRouter] = useState<any>()
+  function findChildRouterPermiss(){
     let activePath: Array<string> = getSession("activePath");
     let findRouter = childrenUrl.find((item) => {
       return activePath.includes(item);
     });
-    // : navigate('/denied')
-    findRouter && navigate(findRouter, { state: crt });
+    setChildrenRouter(findRouter)
+  }
+  function lookCb(crt) {
+    !!childrenRouter && navigate(childrenRouter, { state: crt });
   }
   function updateListCb() {
     tableRefs.current.updateList({});
@@ -41,12 +44,15 @@ const StaffList = () => {
       true
     );
   }
+  useEffect(()=>{
+    findChildRouterPermiss()
+  },[])
   return [urlPrev, ...childrenUrl].includes(pathname) ? (
     <Outlet />
   ) : (
     <>
       <FilterComp onUpdate={updateListCb} onFilter={filterCb} />
-      <Table onLook={lookCb} ref={tableRefs} />
+      <Table onLook={lookCb} ref={tableRefs} childrenPermison={childrenRouter}/>
     </>
   );
 };
