@@ -1,11 +1,12 @@
 import Tabs from "@/Components/Tabs";
-import { getSession } from "@/utils/base";
+import { breadSite, getSession } from "@/utils/base";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-
+import store from "@/store";
 const WebSiteOperation = () => {
   let tabsRefs = useRef<any>();
-  let { pathname } = useLocation();
+  let { pathname, state } = useLocation();
+
   let splitRouter = [];
   let lastName = "";
   let crtRouter = getSession("_crtRouter");
@@ -16,12 +17,38 @@ const WebSiteOperation = () => {
   let commonUrlPrefix = `/ozfund/website-operation/${lastName}`;
   let navigate = useNavigate();
   let [tabsHeight, setTabsHeight] = useState(0);
-
+  let [childrenRouter, setChildrenRouter] = useState([
+    { label: "进程", key: `${commonUrlPrefix}/process` },
+    { label: "动态", key: `${commonUrlPrefix}/trends` },
+    { label: "公告", key: `${commonUrlPrefix}/notice` },
+    {
+      label: "常见问题",
+      key: `${commonUrlPrefix}/problem`,
+    },
+  ]);
   function tabClickCb(key) {
-    navigate(key);
+    breadByPath(key);
+    navigate(key, { state });
+  }
+  function breadByPath(path) {
+    store.dispatch({
+      type: "ADD_BREADCRUMB",
+      data: breadSite(path),
+    });
+  }
+  function findChildRouterPermiss() {
+    let activePath: Array<string> = getSession("activePath");
+    let findRouter = childrenRouter.filter((item) => {
+      return activePath.includes(item.key);
+    });
+    findRouter.length && breadByPath(findRouter[0]?.key);
+    if (findRouter.length !== childrenRouter.length) {
+      setChildrenRouter(findRouter);
+    }
   }
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();
+    findChildRouterPermiss();
     setTabsHeight(height);
   }, []);
   return (
@@ -31,15 +58,7 @@ const WebSiteOperation = () => {
         defaultActiveKey={pathname}
         onTabClick={tabClickCb}
         className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
-        list={[
-          { label: "进程", key: `${commonUrlPrefix}/process` },
-          { label: "动态", key: `${commonUrlPrefix}/trends` },
-          { label: "公告", key: `${commonUrlPrefix}/notice` },
-          {
-            label: "常见问题",
-            key: `${commonUrlPrefix}/problem`,
-          },
-        ]}
+        list={childrenRouter}
       />
       <div
         className="mt-[var(--gap15)]"
