@@ -1,18 +1,34 @@
 import TabsComp from "@/Components/Tabs";
+import { getSession } from "@/utils/base";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 const StaffDetail = () => {
   const commonUrlPrefix = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
-  let { pathname,state } = useLocation();
+  let { pathname, state } = useLocation();
   let tabsRefs = useRef<any>();
   let [tabsHeight, setTabsHeight] = useState<number>();
+  let [childrenRouter, setChildrenRouter] = useState([
+    { label: "员工详情", key: `${commonUrlPrefix}/staff-info` },
+    { label: "权限调整", key: `${commonUrlPrefix}/rights-adjust` },
+    { label: "账户管理", key: `${commonUrlPrefix}/account` },
+  ]);
   function tabClickCb(key) {
-    navigate(key,{state});
+    navigate(key, { state });
+  }
+  function findChildRouterPermiss() {
+    let activePath: Array<string> = getSession("activePath");
+    let findRouter = childrenRouter.filter((item) => {
+      return activePath.includes(item.key);
+    });
+    if (findRouter.length !== childrenRouter.length) {
+      setChildrenRouter(findRouter);
+    }
   }
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();
+    findChildRouterPermiss();
     setTabsHeight(height);
   }, []);
   return (
@@ -22,11 +38,7 @@ const StaffDetail = () => {
         ref={tabsRefs}
         onTabClick={tabClickCb}
         className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
-        list={[
-          { label: "员工详情", key: `${commonUrlPrefix}/staff-info` },
-          { label: "权限调整", key: `${commonUrlPrefix}/rights-adjust` },
-          { label: "账户管理", key: `${commonUrlPrefix}/account` },
-        ]}
+        list={childrenRouter}
       />
       <div
         style={{
