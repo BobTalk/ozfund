@@ -1,46 +1,36 @@
 import { Menu } from "antd";
 import styleScope from "./menu.module.less";
-import { mergeClassName, setSession } from "@/utils/base";
+import { breadSite, mergeClassName, setSession } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useLocation, useNavigate } from "react-router-dom";
 import store from "@/store";
 import { menuList } from "./menuConfig";
-import { activePath, activePathToName } from "./activeRouterConfig";
+
 import { useLayoutEffect } from "react";
+import { activePath, activePathToName } from "./activeRouterConfig";
 const LayoutMenu = () => {
   let [stop] = useStopPropagation();
   let navigate = useNavigate();
   let { pathname } = useLocation();
   function menuSelectCb({ key, domEvent }) {
-    setSession('_crtRouter', key)
+    setSession("_crtRouter", key);
     stop(domEvent, () => {
       navigate(key, {
         state: {
           _title: activePathToName[key],
         },
       });
-      breadSite(key);
-    });
-  }
-  function breadSite(key) {
-    let activeKey = activePathToName[key];
-    let activeP = activePath[key];
-    if (activeKey?.length > 1) {
-      let res = activeKey.map((item, idx, arr) => {
-        return idx === arr.length - 1 || !idx
-          ? { title: item }
-          : { title: item, href: activeP[idx] };
-      });
-      store.dispatch({ type: "ADD_BREADCRUMB", data: res });
-    } else {
       store.dispatch({
         type: "ADD_BREADCRUMB",
-        data: [{ title: activePathToName?.[key]?.[0] ?? "--" }],
+        data: breadSite(key),
       });
-    }
+    });
   }
   useLayoutEffect(() => {
-    breadSite(pathname);
+    store.dispatch({
+      type: "ADD_BREADCRUMB",
+      data: breadSite(pathname),
+    });
   }, []);
   return (
     <Menu

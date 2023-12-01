@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-
+import { activePath, activePathToName } from "@/Pages/Layout/activeRouterConfig";
 const AseKey = 'abcopekiYHJFMGTO';
 // const { AES, enc, mode, pad, DES } = require('crypto-js')
 import { AES, enc, mode, pad, DES } from 'crypto-js'
@@ -117,7 +117,22 @@ const formatEnum = (enumData) => {
     label: item
   }))
 }
+
+const breadSite = (key) => {
+  let activeKey = activePathToName[key];
+  let activeP = activePath[key];
+  if (activeKey?.length > 1) {
+    return activeKey.map((item, idx, arr) => {
+      return idx === arr.length - 1 || !idx
+        ? { title: item }
+        : { title: item, href: activeP[idx] };
+    });
+  } else {
+    return [{ title: activePathToName?.[key]?.[0] ?? "--" }]
+  }
+} 
 export {
+  breadSite,
   mergeClassName,
   encrypt,
   decrypt,
