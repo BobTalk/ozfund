@@ -108,7 +108,15 @@ const timeFormate = (time: string | Date, format: string = 'YYYY-MM-DD'): string
   if (!time) return "--";
   return dayjs(time).format(format)
 }
-
+const formatEnum = (enumData) => {
+  let enumObj = JSON.parse(JSON.stringify(enumData))
+  let allKey = Object.keys(enumObj)
+  let r = allKey.slice(allKey.length / 2)
+  return r.map(item => ({
+    value: enumObj[item],
+    label: item
+  }))
+}
 export {
   mergeClassName,
   encrypt,
@@ -120,5 +128,6 @@ export {
   removeSession,
   encryptByDES,
   timeFormate,
-  clearSession
+  clearSession,
+  formatEnum
 }

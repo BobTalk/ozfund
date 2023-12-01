@@ -318,7 +318,7 @@ const RouteList = [
                 path: 'staff-detail',
                 element: <StaffDetail />,
                 isAuth: true,
-                title: "",
+                title: "详情页",
                 children: [
                   {
                     path: 'staff-info',

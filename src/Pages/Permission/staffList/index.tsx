@@ -8,27 +8,44 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
 import { AddStaffInterface } from "@/api";
+import { userAcountStateEnum } from "@/Enum";
+import { formatEnum, getSession } from "@/utils/base";
 const StaffList = () => {
   let urlPrev = "/ozfund/permission/staff-list/staff-detail";
+  let childrenUrl = [
+    `${urlPrev}/staff-info`,
+    `${urlPrev}/rights-adjust`,
+    `${urlPrev}/account`,
+  ];
+
   let navigate = useNavigate();
   let tableRefs = useRef<any>();
   let { pathname } = useLocation();
   function lookCb(crt) {
-    navigate(urlPrev, { state: crt });
+    let activePath: Array<string> = getSession("activePath");
+    let findRouter = childrenUrl.find((item) => {
+      return activePath.includes(item);
+    });
+    // : navigate('/denied')
+    findRouter && navigate(findRouter, { state: crt });
   }
   function updateListCb() {
-    tableRefs.current.updateList();
+    tableRefs.current.updateList({});
   }
-  return [
-    urlPrev,
-    `${urlPrev}/staff-info`,
-    `${urlPrev}/rights-adjust`,
-    `${urlPrev}/account`,
-  ].includes(pathname) ? (
+  function filterCb({ staffId, stateAcount }) {
+    tableRefs.current.updateList(
+      {
+        search: staffId || null,
+        state: stateAcount || null,
+      },
+      true
+    );
+  }
+  return [urlPrev, ...childrenUrl].includes(pathname) ? (
     <Outlet />
   ) : (
     <>
-      <FilterComp onUpdate={updateListCb} />
+      <FilterComp onUpdate={updateListCb} onFilter={filterCb} />
       <Table onLook={lookCb} ref={tableRefs} />
     </>
   );
@@ -66,7 +83,7 @@ const FilterComp = (props) => {
     });
   }
   function filterSubmitCb(values) {
-    console.log("筛选条件: ", values);
+    props?.onFilter?.(values);
   }
   return (
     <>
@@ -100,9 +117,9 @@ const FilterComp = (props) => {
             <Form.Item name="stateAcount" label="账户状态">
               <Select
                 allowClear
-                className="!w-[1.63rem]"
                 placeholder="请选择"
-                options={[]}
+                className="!w-[1.63rem]"
+                options={formatEnum(userAcountStateEnum)}
               />
             </Form.Item>
             <Form.Item>
@@ -227,6 +244,7 @@ const AddonBeforePhone = (props) => {
       <Select
         className="text-[14px] text-[#333]"
         size="large"
+        placeholder="请选择"
         defaultValue="86"
         onChange={selectChangeCb}
         options={[{ value: "86", label: "86" }]}

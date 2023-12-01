@@ -82,28 +82,26 @@ const Table = (props, ref) => {
       props?.onLook(crt);
     });
   }
-  async function getPermissionList() {
+  async function getPermissionList(conditions = {}, isRestData = false) {
     if (!onceExc) return;
     let {
       status,
       data = [],
       message: tipInfo,
-      conditions,
       rank,
       code,
       ...pgt
     } = await FindListInterface({
       pageNo: paginationInfo.pageNo,
       pageSize: paginationInfo.pageSize,
+      conditions,
     });
     if (status) {
       setOnceExc(false);
       setPaginationInfo(pgt);
       setDataList((oldArr: Array<any>) => {
-        return uniqBy(
-          oldArr.concat(data.map((item) => ((item.key = item.adminId), item))),
-          "adminId"
-        );
+        let res = data.map((item) => ((item.key = item.adminId), item));
+        return isRestData ? res : uniqBy(oldArr.concat(res), "adminId");
       });
     } else {
       message.error(tipInfo);
@@ -116,9 +114,9 @@ const Table = (props, ref) => {
       pageNo: ++paginationInfo.pageNo,
     }));
   }
-  function updateList() {
+  function updateList(conditions,isRestData) {
     setOnceExc(true);
-    getPermissionList();
+    getPermissionList(conditions, isRestData);
   }
   useLayoutEffect(() => {
     getPermissionList();

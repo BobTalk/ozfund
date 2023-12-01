@@ -33,6 +33,7 @@ const RightsAdjust = (props) => {
   }, []);
   const treeData = filterRouter(cloneDeep(RouteList)).filter(Boolean);
   function treeCheckCb(keyList, info) {
+    console.log('keyList: ', keyList);
     setActiveTreeNode(keyList);
   }
   async function updatePermissCb() {
@@ -50,6 +51,7 @@ const RightsAdjust = (props) => {
     if(status){
       message.success(tipInfo)
       setTreeDisabled(!treeDisabled);
+      console.log('activeTreeNode: ', activeTreeNode);
       setSession("activePath", activeTreeNode)
     }else{
       message.error(tipInfo)

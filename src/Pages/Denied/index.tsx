@@ -3,13 +3,13 @@ import styleScope from "./index.module.less";
 import { useEffect, useState } from "react";
 import Image from "@/Components/Image";
 import { GetCrtIpAddreaaInterface } from "@/api";
-import { clearSession } from "@/utils/base";
+// import { clearSession } from "@/utils/base";
 const Denied = () => {
   let [currentIp, setCurrentIp] = useState("");
   useEffect(() => {
     GetCrtIpAddreaaInterface().then((res) => {
       setCurrentIp(res.data);
-      clearSession()
+      // clearSession()
     });
   }, []);
 
