@@ -21,13 +21,13 @@ const StaffList = () => {
   let navigate = useNavigate();
   let tableRefs = useRef<any>();
   let { pathname } = useLocation();
-  let [childrenRouter, setChildrenRouter] = useState<any>()
-  function findChildRouterPermiss(){
+  let [childrenRouter, setChildrenRouter] = useState<any>();
+  function findChildRouterPermiss() {
     let activePath: Array<string> = getSession("activePath");
     let findRouter = childrenUrl.find((item) => {
       return activePath.includes(item);
     });
-    setChildrenRouter(findRouter)
+    setChildrenRouter(findRouter);
   }
   function lookCb(crt) {
     !!childrenRouter && navigate(childrenRouter, { state: crt });
@@ -44,15 +44,19 @@ const StaffList = () => {
       true
     );
   }
-  useEffect(()=>{
-    findChildRouterPermiss()
-  },[])
+  useEffect(() => {
+    findChildRouterPermiss();
+  }, []);
   return [urlPrev, ...childrenUrl].includes(pathname) ? (
     <Outlet />
   ) : (
     <>
       <FilterComp onUpdate={updateListCb} onFilter={filterCb} />
-      <Table onLook={lookCb} ref={tableRefs} childrenPermison={childrenRouter}/>
+      <Table
+        onLook={lookCb}
+        ref={tableRefs}
+        childrenPermison={childrenRouter}
+      />
     </>
   );
 };
@@ -61,8 +65,8 @@ const FilterComp = (props) => {
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
   let [filterInfo] = useState({
-    staffId: "",
-    stateAcount: "",
+    staffId: undefined,
+    stateAcount: undefined,
   });
   let [modalOpen, setModalOpen] = useState(false);
 
