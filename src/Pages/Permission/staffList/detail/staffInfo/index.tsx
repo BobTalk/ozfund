@@ -1,9 +1,8 @@
 import { EditOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input, Select } from "antd";
 import { useState } from "react";
-
+import { useLocation } from "react-router-dom";
 const StaffInfo = () => {
-  let [staffInfo] = useState({});
   function countryCodeCb(val) {
     console.log("国家编号: ", val);
   }

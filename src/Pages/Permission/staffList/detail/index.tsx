@@ -1,8 +1,8 @@
 import TabsComp from "@/Components/Tabs";
-import { getSession } from "@/utils/base";
+import { breadSite, getSession } from "@/utils/base";
 import { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-
+import store from "@/store";
 const StaffDetail = () => {
   const commonUrlPrefix = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
@@ -15,13 +15,21 @@ const StaffDetail = () => {
     { label: "账户管理", key: `${commonUrlPrefix}/account` },
   ]);
   function tabClickCb(key) {
+    breadByPath(key);
     navigate(key, { state });
+  }
+  function breadByPath(path) {
+    store.dispatch({
+      type: "ADD_BREADCRUMB",
+      data: breadSite(path),
+    });
   }
   function findChildRouterPermiss() {
     let activePath: Array<string> = getSession("activePath");
     let findRouter = childrenRouter.filter((item) => {
       return activePath.includes(item.key);
     });
+    findRouter.length && breadByPath(findRouter[0]?.key);
     if (findRouter.length !== childrenRouter.length) {
       setChildrenRouter(findRouter);
     }

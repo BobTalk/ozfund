@@ -1,7 +1,11 @@
 import { CloseOutlined, KeyOutlined, SaveOutlined } from "@ant-design/icons";
 import RouteList from "@/Routers/config";
 import { Button, ConfigProvider, Tree, message } from "antd";
-import { getSession, mergeClassName, setSession } from "@/utils/base";
+import {
+  getSession,
+  mergeClassName,
+  setSession,
+} from "@/utils/base";
 import { useCallback, useState } from "react";
 import { cloneDeep } from "lodash";
 import { routerMapId } from "@/Enum";
@@ -13,8 +17,7 @@ const RightsAdjust = (props) => {
   let routerMapIdCp = JSON.parse(JSON.stringify(routerMapId));
   let activePath = getSession("activePath");
   let [stop] = useStopPropagation();
-  let [userInfo] = useState(props);
-  let { state } = useLocation();
+  let { state, pathname } = useLocation();
   let [treeDisabled, setTreeDisabled] = useState(true);
   let [activeTreeNode, setActiveTreeNode] = useState(activePath);
   const filterRouter = useCallback((routerList = [], parentPath = null) => {
@@ -32,8 +35,7 @@ const RightsAdjust = (props) => {
     });
   }, []);
   const treeData = filterRouter(cloneDeep(RouteList)).filter(Boolean);
-  function treeCheckCb(keyList, info) {
-    console.log('keyList: ', keyList);
+  function treeCheckCb(keyList) {
     setActiveTreeNode(keyList);
   }
   async function updatePermissCb() {
@@ -44,17 +46,17 @@ const RightsAdjust = (props) => {
       }
     }
 
-   let {status, message:tipInfo} =  await UpdatePermissionInterface({
-     adminId: state.adminId,
-     permissions: idList.filter(Boolean),
+    let { status, message: tipInfo } = await UpdatePermissionInterface({
+      adminId: state.adminId,
+      permissions: idList.filter(Boolean),
     });
-    if(status){
-      message.success(tipInfo)
+    if (status) {
+      message.success(tipInfo);
       setTreeDisabled(!treeDisabled);
-      console.log('activeTreeNode: ', activeTreeNode);
-      setSession("activePath", activeTreeNode)
-    }else{
-      message.error(tipInfo)
+      console.log("activeTreeNode: ", activeTreeNode);
+      setSession("activePath", activeTreeNode);
+    } else {
+      message.error(tipInfo);
     }
   }
   function changeCb(e) {
