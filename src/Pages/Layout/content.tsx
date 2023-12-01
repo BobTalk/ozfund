@@ -1,13 +1,11 @@
 import Message from "@/Components/Message";
-import { Breadcrumb, Layout } from "antd";
+import { Breadcrumb, ConfigProvider, Layout } from "antd";
 import { Outlet, useLocation } from "react-router-dom";
-import messageIcon from "@/assets/images/message.svg";
 import siteIcon from "@/assets/images/site.svg";
 import styleScope from "./content.module.less";
-import closeIcon from "@/assets/images/close.svg";
 import { useEffect, useRef, useState } from "react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { getSession, mergeClassName, setSession } from "@/utils/base";
+import { getSession } from "@/utils/base";
 import store from "@/store";
 let { Content } = Layout;
 const LayoutContent = () => {
@@ -15,22 +13,11 @@ const LayoutContent = () => {
   let { pathname } = useLocation();
   let [contentH, setContentH] = useState(0);
   let userInfo = getSession("userInfo") ?? {};
-  let [usename] = useState(() => userInfo["adminId"]);
-  let [showMessage, setShowMessage] = useState("");
-  let [isShowLoginTip, setIsShowLoginTip] = useState<Boolean>(
-    getSession("loginTip")
-  );
+
   let [breadcrumb, setBreadcrumb] = useState(
     store.getState().breadcrumbReducer
   );
   let [stop] = useStopPropagation();
-  function close(e) {
-    stop(e, () => {
-      setShowMessage("hidden");
-      setIsShowLoginTip(true);
-      setSession("loginTip", true);
-    });
-  }
   useEffect(() => {
     setBreadcrumb(store.getState().breadcrumbReducer);
   }, [store.getState().breadcrumbReducer]);
@@ -50,8 +37,21 @@ const LayoutContent = () => {
         ref={messageRefs}
         message={
           <div className={styleScope["bread-crumb"]}>
-            <span className="!text-[#AAA]">您的当前位置：</span>
-            <Breadcrumb separator="/" items={breadcrumb} />
+            <span className="!text-[#999]">您的当前位置：</span>
+            <ConfigProvider
+              theme={{
+                components: {
+                  Breadcrumb: {
+                    itemColor: "#999",
+                    separatorColor: "#999",
+                    linkColor:"#999",
+                    lastItemColor: "#0385F2",
+                  },
+                },
+              }}
+            >
+              <Breadcrumb separator="/" items={breadcrumb} />
+            </ConfigProvider>
           </div>
         }
         className="text-[#333] bg-[#FFF] rounded-[0]"

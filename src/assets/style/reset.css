@@ -316,3 +316,8 @@
 .text-\[22px\] {
   font-size: .22rem !important;
 }
+
+.ant-breadcrumb a:hover {
+  background: none;
+  color: #999;
+}
