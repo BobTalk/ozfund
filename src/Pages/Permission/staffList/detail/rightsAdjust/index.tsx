@@ -108,9 +108,10 @@ const RightsAdjust = (props) => {
         </div>
 
         <Tree
-          blockNode
+          // blockNode
           onCheck={treeCheckCb}
           disabled={treeDisabled}
+          defaultExpandedKeys={activeTreeNode}
           defaultCheckedKeys={activeTreeNode}
           className={mergeClassName(`${styleScope["reset-tree"]}`)}
           checkable

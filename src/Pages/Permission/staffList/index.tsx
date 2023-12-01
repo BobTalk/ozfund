@@ -7,6 +7,7 @@ import TextArea from "antd/es/input/TextArea";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
+import { AddStaffInterface } from "@/api";
 const StaffList = () => {
   let urlPrev = "/ozfund/permission/staff-list/staff-detail";
   let navigate = useNavigate();
@@ -38,10 +39,15 @@ const FilterComp = () => {
   });
   let [modalOpen, setModalOpen] = useState(false);
 
-  function submitCb(values) {
-    moduleContent.current = AddStaffInfo;
-    moduleTitle.current = "开设员工";
-    setModalOpen(!modalOpen);
+  async function submitCb({ staffId, email, mobile, note }) {
+    let addStaffRes = await AddStaffInterface({
+      adminId: staffId,
+      email,
+      mobile,
+      note,
+    });
+    console.log("addStaffRes: ", addStaffRes);
+    // setModalOpen(!modalOpen);
   }
   function addStaffInfoCb(e) {
     stop(e, () => {
@@ -144,12 +150,14 @@ const AddStaffInfo = (props) => {
       theme={{
         token: {
           borderRadius: 2,
+          controlHeight: 42,
         },
       }}
     >
       <Form
         layout="vertical"
         onFinish={submitCb}
+        className="clear_required"
         initialValues={collectStaffInfo}
         form={form}
       >
@@ -157,28 +165,31 @@ const AddStaffInfo = (props) => {
           className="mb-[var(--gap15)] mx-[var(--gap30)] mt-[var(--gap20)]"
           label={<span className="text-[var(--border-color)]">员工ID</span>}
           name="staffId"
+          rules={[{ required: true, message: "输入员工ID" }]}
         >
-          <Input size="large" placeholder="" />
+          <Input placeholder="" />
         </Form.Item>
         <Form.Item
+          rules={[{ required: true, message: "输入邮箱" }]}
           className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={<span className="text-[var(--border-color)]">邮箱</span>}
           name="email"
         >
-          <Input size="large" className="w-full" placeholder="" />
+          <Input className="w-full" placeholder="" />
         </Form.Item>
         <Form.Item
+          rules={[{ required: true, message: "输入联系方式" }]}
           className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={<span className="text-[var(--border-color)]">联系方式</span>}
           name="mobile"
         >
           <Input
-            size="large"
             addonBefore={<AddonBeforePhone onCountryCodeCb={countryCodeCb} />}
             placeholder="请输入联系方式"
           />
         </Form.Item>
         <Form.Item
+          rules={[{ required: true, message: "输入备注" }]}
           className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={<span className="text-[var(--border-color)]">备注</span>}
           name="note"

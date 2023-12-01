@@ -44,9 +44,10 @@ export const FindListInterface = (data)=>{
   })
 }
 // 新增员工
-export const OpenAdminInterface = ()=>{
-  return _http.getReq({
-    url: `${adminPrefix}/openAdmin`
+export const AddStaffInterface = (data)=>{
+  return _http.postReq({
+    url: `${adminPrefix}/openAdmin`,
+    data
   })
 }
 export const GetLoginLogInterface = ()=>{
