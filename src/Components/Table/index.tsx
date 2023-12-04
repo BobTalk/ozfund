@@ -61,14 +61,14 @@ const TableComp = (props: TableCompPropsType) => {
           className="w-full"
           rowKey="dataIndex"
           components={comp}
-          virtual={virtual}
+          virtual={false}
           bordered={border}
           loading={false}
-          scroll={{ y: 0 }}
+          scroll={{ y: 55 * 10 }}
           pagination={pagination}
           dataSource={dataSource}
           columns={columns}
-          {...props}
+          // {...props}
         >
           {props.children}
         </Table>
@@ -86,6 +86,6 @@ TableComp.defaultProps = {
   token: {},
   paginationThemeObj: {},
   components: {},
-  virtual: true,
+  virtual: false,
 };
 export default TableComp;

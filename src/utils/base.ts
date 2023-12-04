@@ -120,7 +120,7 @@ const formatEnum = (enumData) => {
   }))
 }
 
-const breadSite = (key) => {
+const breadSite = (key:string) => {
   let activeKey = activePathToName[key];
   let activeP = activePath[key];
   if (activeKey?.length > 1) {

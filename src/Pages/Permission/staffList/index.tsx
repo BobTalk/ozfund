@@ -9,7 +9,8 @@ import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
 import { AddStaffInterface } from "@/api";
 import { userAcountStateEnum } from "@/Enum";
-import { formatEnum, getSession } from "@/utils/base";
+import { breadSite, formatEnum, getSession } from "@/utils/base";
+import store from "@/store";
 const StaffList = () => {
   let urlPrev = "/ozfund/permission/staff-list/staff-detail";
   let childrenUrl = [
@@ -31,6 +32,10 @@ const StaffList = () => {
   }
   function lookCb(crt) {
     !!childrenRouter && navigate(childrenRouter, { state: crt });
+    store.dispatch({
+      type: "ADD_BREADCRUMB",
+      data: breadSite(childrenRouter),
+    });
   }
   function updateListCb() {
     tableRefs.current.updateList({});

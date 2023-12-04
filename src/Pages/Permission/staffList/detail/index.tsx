@@ -18,7 +18,7 @@ const StaffDetail = () => {
     breadByPath(key);
     navigate(key, { state });
   }
-  function breadByPath(path) {
+  function breadByPath(path:string) {
     store.dispatch({
       type: "ADD_BREADCRUMB",
       data: breadSite(path),
