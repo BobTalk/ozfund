@@ -63,9 +63,10 @@ export const GetLoginLogInterface = (data)=>{
     data
   })
 }
-export const GetOperationLogInterface = ()=>{
+export const GetOperationLogInterface = (data)=>{
   return _http.postReq({
-    url: `${adminPrefix}/findAdminOperationLog`
+    url: `${adminPrefix}/findAdminOperationLog`,
+    data
   })
 }
 export const SwitchFreezeAccountInterface = (params)=>{
