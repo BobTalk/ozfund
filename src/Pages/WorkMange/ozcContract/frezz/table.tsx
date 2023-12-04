@@ -52,7 +52,7 @@ const Table = () => {
         <Input placeholder="输入地址" className="w-[3.7rem]" />
         <Button type="primary">查询</Button>
       </div>
-      <TableComp className="_reset-tabel" dataSource={dataList} columns={columns} />
+      <TableComp className="_reset-table__no-btn" dataSource={dataList} columns={columns} />
      
     </ConfigProvider>
   );

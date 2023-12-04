@@ -48,7 +48,7 @@ const TableAllocation = (props) => {
       }}
     >
       <TableComp
-        className="_reset-tabel"
+        className="_reset-table__no-btn"
         dataSource={dataList}
         columns={columns}
       />
