@@ -24,6 +24,10 @@ const List = () => {
   function submitAddCb(values) {
     console.log("values: ", values);
   }
+  function deleteCb(crt, index) {
+    console.log("删除项数据: ", crt);
+    console.log("删除项位置: ", index);
+  }
   useEffect(() => {
     let { height } = topModuleRefs.current.getBoundingClientRect();
     setFilterModuleHeight(height);
@@ -31,7 +35,8 @@ const List = () => {
   return (
     <>
       <TopModule ref={topModuleRefs} onAddIpAddress={addIpAddressCb} />
-      <TableModule
+      <Table
+        onDelete={deleteCb}
         style={{
           height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
         }}
@@ -84,25 +89,6 @@ const TopModule = forwardRef((props: any, ref: any) => {
     </ConfigProvider>
   );
 });
-function TableModule(props: any) {
-  function deleteCb(crt, index) {
-    console.log("删除项数据: ", crt);
-    console.log("删除项位置: ", index);
-  }
-  return (
-    <div style={props.style}>
-      <div
-        style={{
-          maxHeight: `calc(100% - .63rem)`,
-        }}
-        className="mt-[var(--gap15)] overflow-auto bg-white rounded-[var(--border-radius)]"
-      >
-        <Table onDelete={deleteCb} />
-      </div>
-      <MoreBtn />
-    </div>
-  );
-}
 function AddIpAddress(props) {
   let [formInitVal] = useState({
     address: "",

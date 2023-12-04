@@ -1,11 +1,16 @@
 import Icon from "@/Components/Icon";
+import MoreBtn from "@/Components/MoreBtn";
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { GetIpListInterface } from "@/api";
 import { ConfigProvider, Typography } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 const Table = (props) => {
+  async function getTableList() {
+    let { status, data } = await GetIpListInterface({});
+  }
   const columns: ColumnsType = [
     {
       title: "IP地址",
@@ -34,12 +39,12 @@ const Table = (props) => {
         return (
           <Typography.Link disabled={editable}>
             <div
-                onClick={(e) => deleteCb(e, record, index)}
-                className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
-              >
-                <Icon className="mr-[8px]" name="h-icon-delete"/>
-                <span>删除</span>
-              </div>
+              onClick={(e) => deleteCb(e, record, index)}
+              className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
+            >
+              <Icon className="mr-[8px]" name="h-icon-delete" />
+              <span>删除</span>
+            </div>
           </Typography.Link>
         );
       },
@@ -71,6 +76,9 @@ const Table = (props) => {
       props?.onDelete(crt, index);
     });
   }
+  useLayoutEffect(() => {
+    getTableList();
+  }, []);
   return (
     <ConfigProvider
       theme={{
@@ -80,11 +88,21 @@ const Table = (props) => {
         },
       }}
     >
-      <TableComp
-        className="_reset-table__btn"
-        dataSource={dataList}
-        columns={columns}
-      />
+      <div style={props.style}>
+        <div
+          style={{
+            maxHeight: `calc(100% - .63rem)`,
+          }}
+          className="mt-[var(--gap15)] overflow-auto bg-white rounded-[var(--border-radius)]"
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            columns={columns}
+          />
+        </div>
+        <MoreBtn />
+      </div>
     </ConfigProvider>
   );
 };

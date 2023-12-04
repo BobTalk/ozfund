@@ -57,13 +57,14 @@ export const AddStaffInterface = (data)=>{
     data
   })
 }
-export const GetLoginLogInterface = ()=>{
-  return _http.getReq({
-    url: `${adminPrefix}/findAdminLoginLog`
+export const GetLoginLogInterface = (data)=>{
+  return _http.postReq({
+    url: `${adminPrefix}/findAdminLoginLog`,
+    data
   })
 }
 export const GetOperationLogInterface = ()=>{
-  return _http.getReq({
+  return _http.postReq({
     url: `${adminPrefix}/findAdminOperationLog`
   })
 }
@@ -85,9 +86,10 @@ export const UpdatePermissionInterface = (data)=>{
     data
   })
 }
-export const GetIpListInterface = ()=>{
-  return _http.getReq({
-    url: `${adminPrefix}/findAdminIpList`
+export const GetIpListInterface = (data)=>{
+  return _http.postReq({
+    url: `${adminPrefix}/findAdminIpList`,
+    data
   })
 }
 export const AddIpInterface = ()=>{

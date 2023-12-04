@@ -133,7 +133,12 @@ const breadSite = (key) => {
     return [{ title: activePathToName?.[key]?.[0] ?? "--" }]
   }
 }
+function timeJoin(time, isPre = false) {
+  if (!time) return null
+  return isPre ? time + " 23:59:59" : time + " 00:00:00"
+}
 export {
+  timeJoin,
   breadSite,
   mergeClassName,
   encrypt,

@@ -45,7 +45,7 @@ instance.interceptors.response.use(
   (response: any) => {
     let code = response.data.code
     // removePending(response.config);
-    if(code !== 200){
+    if([401].includes(code)){
       clearSession()
       window.location.reload()
       return
