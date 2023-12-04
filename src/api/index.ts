@@ -93,9 +93,10 @@ export const GetIpListInterface = (data)=>{
     data
   })
 }
-export const AddIpInterface = ()=>{
-  return _http.getReq({
-    url: `${adminPrefix}/addAdminIp`
+export const AddIpInterface = (data)=>{
+  return _http.postReq({
+    url: `${adminPrefix}/addAdminIp`,
+    data
   })
 }
 export const GetIpLogListInterface = ()=>{

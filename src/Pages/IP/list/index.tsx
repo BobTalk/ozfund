@@ -1,14 +1,14 @@
 import RangePicker from "@/Components/RangePicker";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Form, Input, Select } from "antd";
+import { Button, ConfigProvider, Form, Input, Select, message } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import Table from "./table";
-import MoreBtn from "@/Components/MoreBtn";
 import TextArea from "antd/es/input/TextArea";
 
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
+import { AddIpInterface } from "@/api";
 
 const List = () => {
   let topModuleRefs = useRef<any>();
@@ -21,8 +21,13 @@ const List = () => {
     setModalOpen(!modalOpen);
   }
   // 新增IP地址 提交
-  function submitAddCb(values) {
-    console.log("values: ", values);
+  async function submitAddCb({ address, note }) {
+    let { message: tipInfo, status } = await AddIpInterface({
+      address,
+      note,
+    });
+    message[status ? "success" : "error"](tipInfo);
+    status && setModalOpen(!modalOpen);
   }
   function deleteCb(crt, index) {
     console.log("删除项数据: ", crt);
@@ -112,10 +117,16 @@ function AddIpAddress(props) {
         layout="vertical"
         initialValues={formInitVal}
         onFinish={props?.onOk}
-        className="mt-[var(--gap20)]"
+        className="mt-[var(--gap20)] clear_required"
       >
         <Form.Item
           name="address"
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           className="mb-[var(--gap15)] px-[var(--gap30)]"
           label={<span className="text-[var(--border-color)]">IP地址</span>}
         >
@@ -123,6 +134,12 @@ function AddIpAddress(props) {
         </Form.Item>
         <Form.Item
           name="note"
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           className="mb-[var(--gap30)] px-[var(--gap30)]"
           label={<span className="text-[var(--border-color)]">备注</span>}
         >
