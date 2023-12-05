@@ -13,7 +13,6 @@ const AddProcessModule = (props) => {
     props?.onCancel();
   }
   function addProcessCb(values) {
-    console.log("values: ", Object.values(crtData).length);
     Object.values(crtData).length
       ? props?.onUpdateProcess?.({
           ...crtData,
