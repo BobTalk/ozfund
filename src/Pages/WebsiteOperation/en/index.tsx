@@ -1,6 +1,11 @@
 import { Outlet } from "react-router-dom";
+import TabsScope from "../Tabs";
 
 const En = () => {
-  return <Outlet/>
-}
+  return (
+    <TabsScope language="en">
+      <Outlet />
+    </TabsScope>
+  );
+};
 export default En;

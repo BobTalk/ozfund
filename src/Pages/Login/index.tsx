@@ -72,7 +72,7 @@ const FormComp = () => {
 
     if (status) {
       setSession("token", loginData);
-      let userInfo = await GetAdminInfoInterface();
+      let userInfo = await GetAdminInfoInterface({});
       let { code, status, ...userInfoObj } = userInfo;
       if (status) {
         setSession("userInfo", userInfoObj);

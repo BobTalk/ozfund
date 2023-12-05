@@ -7,10 +7,11 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from "@ant-design/icons";
-import { getSession, timeFormate } from "@/utils/base";
+import { clearSession, getSession, timeFormate } from "@/utils/base";
 import Icon from "@/Components/Icon";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LogoutInterface } from "@/api";
 const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
   let [userInfo] = useState(getSession("userInfo") ?? {});
 
@@ -21,9 +22,15 @@ const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
     >
       <div className="flex justify-between items-center h-full pl-[var(--gap20)] pr-[var(--gap30)]">
         {collapsed ? (
-          <MenuUnfoldOutlined className="text-[22px]" onClick={() => setCollapsed(!collapsed)} />
+          <MenuUnfoldOutlined
+            className="text-[22px]"
+            onClick={() => setCollapsed(!collapsed)}
+          />
         ) : (
-          <MenuFoldOutlined className="text-[22px]" onClick={() => setCollapsed(!collapsed)} />
+          <MenuFoldOutlined
+            className="text-[22px]"
+            onClick={() => setCollapsed(!collapsed)}
+          />
         )}
 
         <div className="flex items-center justify-end ">
@@ -46,7 +53,14 @@ const LayoutHeader = ({ colorBgContainer, collapsed, setCollapsed }: any) => {
 };
 const DropDownScope = (props) => {
   let navigate = useNavigate();
-  function logout() {}
+  function logout() {
+    LogoutInterface().then((res) => {
+      if (res.status) {
+        clearSession();
+        navigate("/login");
+      }
+    });
+  }
   function customDropdown(menu) {
     return (
       <div className="bg-[var(--white)] p-[.1rem]">

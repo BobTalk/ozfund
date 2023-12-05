@@ -2,19 +2,20 @@ import { CloseOutlined, KeyOutlined, SaveOutlined } from "@ant-design/icons";
 import RouteList from "@/Routers/config";
 import { Button, ConfigProvider, Tree, message } from "antd";
 import {
+  formatEnum,
   getSession,
   mergeClassName,
   setSession,
 } from "@/utils/base";
 import { useCallback, useState } from "react";
 import { cloneDeep } from "lodash";
-import { routerMapId } from "@/Enum";
+import { routerMapIdEnum } from "@/Enum";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { UpdatePermissionInterface } from "@/api";
 import { useLocation } from "react-router-dom";
 const RightsAdjust = () => {
-  let routerMapIdCp = JSON.parse(JSON.stringify(routerMapId));
+  let routerMapIdCp = formatEnum(routerMapIdEnum);
   let activePath = getSession("activePath");
   let [stop] = useStopPropagation();
   let { state } = useLocation();
@@ -40,12 +41,12 @@ const RightsAdjust = () => {
   }
   async function updatePermissCb() {
     let idList = [];
-    for (const key of activeTreeNode) {
-      if (!idList.includes(routerMapIdCp[key])) {
-        idList.push(routerMapIdCp[key]);
+    for (let index = 0; index < routerMapIdCp.length; index++) {
+      const obj = routerMapIdCp[index];
+      if (activeTreeNode.includes(obj["label"])) {
+        idList.push(obj["value"]);
       }
     }
-
     let { status, message: tipInfo } = await UpdatePermissionInterface({
       adminId: state.adminId,
       permissions: idList.filter(Boolean),
