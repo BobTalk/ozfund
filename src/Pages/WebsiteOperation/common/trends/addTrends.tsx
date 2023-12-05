@@ -2,10 +2,12 @@ import { getSession, mergeClassName } from "@/utils/base";
 import { Button, ConfigProvider, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 
 const AddProcessModule = (props) => {
   let { adminId } = getSession("userInfo");
   let { crtData = {} } = props;
+  let crtTime = dayjs(new Date()).valueOf()
   let [form] = Form.useForm<{
     title: string;
     content: string;
@@ -23,6 +25,13 @@ const AddProcessModule = (props) => {
         })
       : props?.onAddTrends?.(values);
   }
+  useEffect(()=>{
+    form.setFieldValue('time',crtTime)
+    if(Object.values(crtData).length){
+      form.setFieldValue('title',crtData.subject)
+      form.setFieldValue('content',crtData.content)
+    }
+  },[])
   return (
     <ConfigProvider
       theme={{
@@ -40,7 +49,6 @@ const AddProcessModule = (props) => {
         className="clear_required h-full px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
       >
         <Form.Item
-          name="staffId"
           className="mb-[var(--gap15)]"
           label={<LabelComp title="员工ID" />}
         >
@@ -66,7 +74,7 @@ const AddProcessModule = (props) => {
         >
           <Input
             disabled
-            defaultValue={crtData.time ?? dayjs(new Date()).valueOf()}
+            defaultValue={crtData.time ?? crtTime}
           />
         </Form.Item>
         <Form.Item

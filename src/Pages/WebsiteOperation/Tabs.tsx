@@ -44,6 +44,7 @@ const TabsScope = (props) => {
     let { height } = tabsRefs.current.getBoundingClientRect();
     findChildRouterPermiss();
     setTabsHeight(height);
+    tabClickCb(pathname)
   }, []);
   return (
     <>

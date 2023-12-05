@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import AddTrendsModule from "./addTrends";
 import { mergeClassName } from "@/utils/base";
 import { useLocation } from "react-router-dom";
-import { AddTrendsInterface, UpdateProcessInterface } from "@/api";
+import { AddTrendsInterface, UpdateTrendsInterface } from "@/api";
 import { languageEnum } from "@/Enum";
 const Trends = () => {
   let { state } = useLocation();
@@ -24,16 +24,17 @@ const Trends = () => {
     setAddTrendsInfo(!addTrendsInfo);
   }
   async function updateTrendsCb(crt) {
-    let { status, message: tipInfo } = await UpdateProcessInterface(crt);
+    let { status, message: tipInfo } = await UpdateTrendsInterface(crt);
     message[status ? "success" : "error"](tipInfo);
     if (status) {
       setAddTrendsInfo(!addTrendsInfo);
       tabelRefs?.current?.editorLoadTableList();
     }
   }
-  async function addTrendsSubmitCb({ title, content }) {
+  async function addTrendsSubmitCb({ title, time,content }) {
     let { status, message: tipInfo } = await AddTrendsInterface({
       subject: title,
+      time,
       content,
       language: languageEnum[state.language],
     });

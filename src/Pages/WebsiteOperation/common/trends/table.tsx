@@ -20,6 +20,7 @@ import {
 } from "@/api";
 import { languageEnum } from "@/Enum";
 import { cloneDeep } from "lodash";
+import dayjs from "dayjs";
 const TableProcess = (props, ref) => {
   const columns: ColumnsType = [
     {
@@ -38,15 +39,16 @@ const TableProcess = (props, ref) => {
     {
       title: "时间戳",
       dataIndex: "createTime",
-      render: (_) => timeFormate(_),
+      render: (_) => dayjs(timeFormate(_)).valueOf(),
     },
     {
       title: "时间",
-      dataIndex: "adminId",
+      dataIndex: "createTime",
+      render: (_) => timeFormate(_),
     },
     {
       title: "员工ID",
-      dataIndex: "num",
+      dataIndex: "adminId",
     },
     {
       title: "置顶",
