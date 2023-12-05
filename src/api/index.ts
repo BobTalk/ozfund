@@ -99,6 +99,12 @@ export const AddIpInterface = (data)=>{
     data
   })
 }
+export const DeleteIpInterface = (params)=>{
+  return _http.deleteReq({
+    url: `${adminPrefix}/deleteAdminIp`,
+    params
+  })
+}
 export const GetIpLogListInterface = ()=>{
   return _http.getReq({
     url: `${adminPrefix}/findAdminIpLogList`

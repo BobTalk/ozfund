@@ -61,25 +61,23 @@ const BatchTransferAccounts = () => {
           components: {
             Input: {
               paddingBlock: 6,
+              controlHeight: 35
             },
             InputNumber: {
               paddingBlock: 6,
+              controlHeight: 35 
             },
           },
           token: {
-            controlHeight: 36,
-            borderRadius:2
+            controlHeight: 35,
+            borderRadius: 2,
           },
         }}
       >
         <ul className="mt-[var(--gap20)] px-[var(--gap30)] pb-[var(--gap30)]">
           <li className="flex gap-x-[var(--gap20)] not-first-of-type:mt-[var(--gap15)]">
-            <Input size="middle" className="flex-1" placeholder="输入地址" />
-            <InputNumber
-              size="middle"
-              className="flex-1"
-              placeholder="输入数量"
-            />
+            <Input className="flex-1" placeholder="输入地址" />
+            <InputNumber className="flex-1" placeholder="输入数量" />
             <div className="grid cursor-pointer place-items-center w-[.4rem] h-[.36rem] rounded-[.02rem] bg-[var(--border-color)] opacity-20">
               <Icon
                 style={{
@@ -92,12 +90,8 @@ const BatchTransferAccounts = () => {
             </div>
           </li>
           <li className="flex gap-x-[var(--gap20)] not-first-of-type:mt-[var(--gap15)]">
-            <Input size="middle" className="flex-1" placeholder="输入地址" />
-            <InputNumber
-              size="middle"
-              className="flex-1"
-              placeholder="输入数量"
-            />
+            <Input className="flex-1" placeholder="输入地址" />
+            <InputNumber className="flex-1" placeholder="输入数量" />
             <div className="grid cursor-pointer place-items-center w-[.4rem] h-[.36rem] rounded-[.02rem] bg-[var(--border-color)] opacity-20">
               <Icon
                 style={{

@@ -8,11 +8,14 @@ import TextArea from "antd/es/input/TextArea";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
-import { AddIpInterface } from "@/api";
+import { AddIpInterface, DeleteIpInterface } from "@/api";
+import FormItem from "antd/es/form/FormItem";
+import { timeJoin } from "@/utils/base";
 
 const List = () => {
   let topModuleRefs = useRef<any>();
   let moduleContent = useRef<any>();
+  let tableRefs = useRef<any>();
   let moduleTitle = useRef<string>("新增IP地址");
   let [modalOpen, setModalOpen] = useState(false);
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
@@ -23,15 +26,37 @@ const List = () => {
   // 新增IP地址 提交
   async function submitAddCb({ address, note }) {
     let { message: tipInfo, status } = await AddIpInterface({
-      address,
+      ip: address,
       note,
     });
     message[status ? "success" : "error"](tipInfo);
     status && setModalOpen(!modalOpen);
+    status &&
+      tableRefs.current.updateTableList(
+        {},
+        {
+          pageNo: 1,
+          pageSize: 10,
+        }
+      );
   }
-  function deleteCb(crt, index) {
-    console.log("删除项数据: ", crt);
-    console.log("删除项位置: ", index);
+  async function deleteCb(crt, index) {
+    let { status, message: tipInfo } = await DeleteIpInterface({ id: crt.id });
+    message[status ? "success" : "error"](tipInfo);
+  }
+  function filterCb({ search, time }) {
+    console.log('time: ', time);
+    tableRefs.current.updateTableList(
+      {
+        search,
+        beginTime: timeJoin(time[0]),
+        endTime: timeJoin(time[1], true),
+      },
+      {
+        pageNo: 1,
+        pageSize: 10,
+      }
+    );
   }
   useEffect(() => {
     let { height } = topModuleRefs.current.getBoundingClientRect();
@@ -39,8 +64,13 @@ const List = () => {
   }, []);
   return (
     <>
-      <TopModule ref={topModuleRefs} onAddIpAddress={addIpAddressCb} />
+      <TopModule
+        ref={topModuleRefs}
+        onFilter={filterCb}
+        onAddIpAddress={addIpAddressCb}
+      />
       <Table
+        ref={tableRefs}
         onDelete={deleteCb}
         style={{
           height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
@@ -59,10 +89,18 @@ const List = () => {
 };
 const TopModule = forwardRef((props: any, ref: any) => {
   let [stop] = useStopPropagation();
+  let [form] = Form.useForm<{
+    search: undefined | string;
+    time: Array<Date | string>;
+  }>();
   function addIpAddressCb(e) {
     stop(e, () => {
       props?.onAddIpAddress?.();
     });
+  }
+  function filterCb({ search, time }) {
+    time ??= [];
+    props?.onFilter?.({ search, time });
   }
   return (
     <ConfigProvider
@@ -77,16 +115,27 @@ const TopModule = forwardRef((props: any, ref: any) => {
         ref={ref}
         className="flex items-center bg-white justify-between p-[var(--gap20)] rounded-[var(--border-radius)]"
       >
-        <div className="flex items-center gap-[var(--gap10)]">
-          <p className="text-[#666]">配置搜索</p>
-          <Select
-            placeholder="请选择"
-            className="mr-[var(--gap10)] w-[1.63rem]"
-            options={[]}
-          />
-          <RangePicker />
-          <Button type="primary">查询</Button>
-        </div>
+        <Form
+          onFinish={filterCb}
+          form={form}
+          colon={false}
+          className="flex items-center gap-[var(--gap10)]"
+        >
+          <FormItem
+            name="search"
+            label={<p className="text-[#666]">备注搜索</p>}
+          >
+            <Input allowClear placeholder="备注搜索" />
+          </FormItem>
+          <FormItem name="time">
+            <RangePicker name="time" form={form} />
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
+          </FormItem>
+        </Form>
         <Button type="primary" onClick={addIpAddressCb} icon={<PlusOutlined />}>
           新增IP地址
         </Button>
