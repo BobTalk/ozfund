@@ -1,6 +1,6 @@
-import { Switch } from 'antd';
 import _http from "../Https";
 let env = process.env.NODE_ENV == 'development' ? '/' : '/api/'
+let rootPathPrefix = `${env}root/`
 const adminPrefix = `${env}admin`
 export const GetAccessKeyInterface = () => {
   return _http.getReq({
@@ -119,21 +119,21 @@ export const UpdateInfoInterface = (data) => {
 }
 export const EmailSubscribeInterface = (params) => {
   return _http.getReq({
-    url: `${env}subscribe`,
+    url: `${rootPathPrefix}subscribe`,
     params
   })
 }
 // /findSubscribeEmail 获取订阅邮箱
 export const GetEmailListInterface = (params) => {
   return _http.getReq({
-    url: `${env}findSubscribeEmail`,
+    url: `${rootPathPrefix}findSubscribeEmail`,
     params
   })
 }
 // /findEmailTemplate 获取邮箱模板
 export const GetEmailTempInterface = (params) => {
   return _http.getReq({
-    url: `${env}findEmailTemplate`,
+    url: `${rootPathPrefix}findEmailTemplate`,
     params
   })
 }
@@ -143,27 +143,27 @@ export const GetEmailTempInterface = (params) => {
 // /addEmailTemplate 添加邮箱模板
 export const AddEmailTempInterface = (data) => {
   return _http.postReq({
-    url: `${env}addEmailTemplate`,
+    url: `${rootPathPrefix}addEmailTemplate`,
     data
   })
 }
 // /getEmailTemplate?id= 获取邮箱模板内容
 export const GetEmailTempInfoInterface = (params) => {
   return _http.postReq({
-    url: `${env}getEmailTemplate`,
+    url: `${rootPathPrefix}getEmailTemplate`,
     params
   })
 }
 // 0 获取定时邮件任务 1 获取定时邮件发送记录
 export const GetEmailTimeTaskInterface = (flag) => {
   return _http.getReq({
-    url: `${env}findEmailTask/${flag}`,
+    url: `${rootPathPrefix}findEmailTask/${flag}`,
   })
 }
 // /addEmailTask 添加邮件任务
 export const AddEmailTaskInterface = (data) => {
   return _http.getReq({
-    url: `${env}addEmailTask`,
+    url: `${rootPathPrefix}addEmailTask`,
     data
   })
 }
@@ -171,177 +171,178 @@ export const AddEmailTaskInterface = (data) => {
 // /updateEmailTask 修改邮件任务
 export const UpdateEmailTaskInterface = (data) => {
   return _http.getReq({
-    url: `${env}updateEmailTask`,
+    url: `${rootPathPrefix}updateEmailTask`,
     data
   })
 }
 // /deleteEmailTask?id= 删除邮件任务
 export const DeleteEmailTaskInterface = (params) => {
   return _http.deleteReq({
-    url: `${env}deleteEmailTask`,
+    url: `${rootPathPrefix}deleteEmailTask`,
     params
   })
 }
 // /findAnnouncementList 获取公告列表
 export const GetNoticeListInterface = () => {
   return _http.getReq({
-    url: `${env}findAnnouncementList`,
+    url: `${rootPathPrefix}findAnnouncementList`,
   })
 }
 // /addAnnouncement 添加公告
 export const AddNoticeInterface = (data) => {
   return _http.postReq({
-    url: `${env}addAnnouncement`,
+    url: `${rootPathPrefix}addAnnouncement`,
     data
   })
 }
 // /updateAnnouncement 修改公告
 export const UpdateNoticeInterface = (data) => {
   return _http.putReq({
-    url: `${env}updateAnnouncement`,
+    url: `${rootPathPrefix}updateAnnouncement`,
     data
   })
 }
 // /deleteAnnouncement?id= 删除公告
 export const DeleteNoticeInterface = (data) => {
   return _http.deleteReq({
-    url: `${env}deleteAnnouncement`,
+    url: `${rootPathPrefix}deleteAnnouncement`,
     data
   })
 }
 // /switchTopAnnouncement 开关公告置顶
 export const SwitchNoticeInterface = () => {
   return _http.getReq({
-    url: `${env}switchTopAnnouncement`,
+    url: `${rootPathPrefix}switchTopAnnouncement`,
   })
 }
 // 进程
 // /findCourseList 获取进程列表
-export const GetProcessInterface = () => {
-  return _http.getReq({
-    url: `${env}findCourseList`,
+export const GetProcessInterface = (data) => {
+  return _http.postReq({
+    url: `${rootPathPrefix}findCourseList`,
+    data
   })
 }
 // /addCourse 添加进程
 export const AddProcessInterface = (data) => {
   return _http.postReq({
-    url: `${env}addCourse`,
+    url: `${rootPathPrefix}addCourse`,
     data
   })
 }
 // /updateCourse 修改进程
 export const UpdateProcessInterface = (data) => {
   return _http.putReq({
-    url: `${env}updateCourse`,
+    url: `${rootPathPrefix}updateCourse`,
     data
   })
 }
 // /deleteCourse?id 删除进程
 export const DeleteProcessInterface = (params) => {
   return _http.deleteReq({
-    url: `${env}deleteCourse`,
+    url: `${rootPathPrefix}deleteCourse`,
     params
   })
 }
 // /switchTopCourse 开关进程置顶
 export const SwitchProcessInterface = (params) => {
-  return _http.getReq({
-    url: `${env}switchTopCourse`,
+  return _http.putReq({
+    url: `${rootPathPrefix}switchTopCourse`,
     params
   })
 }
 // /findDynamicList 获取动态列表
 export const GetTrendsInterface = (params) => {
   return _http.getReq({
-    url: `${env}findDynamicList`,
+    url: `${rootPathPrefix}findDynamicList`,
     params
   })
 }
 // /updateDynamic 修改动态
 export const UpdateTrendsInterface = (data) => {
   return _http.putReq({
-    url: `${env}updateDynamic`,
+    url: `${rootPathPrefix}updateDynamic`,
     data
   })
 }
 // /deleteDynamic 删除动态
 export const DeleteTrendsInterface = (params) => {
   return _http.deleteReq({
-    url: `${env}deleteDynamic`,
+    url: `${rootPathPrefix}deleteDynamic`,
     params
   })
 }
 // /switchTopDynamic 开关动态置顶
 export const SwitchTrendsInterface = () => {
   return _http.getReq({
-    url: `${env}switchTopDynamic`,
+    url: `${rootPathPrefix}switchTopDynamic`,
   })
 }
 
 // /findAllIssueType 获取问题分类
 export const GetProbelmTypeInterface = () => {
   return _http.getReq({
-    url: `${env}findAllIssueType`,
+    url: `${rootPathPrefix}findAllIssueType`,
   })
 }
 // /addIssueType 添加问题分类
 export const AddProbelmTypeInterface = (data) => {
   return _http.postReq({
-    url: `${env}addIssueType`,
+    url: `${rootPathPrefix}addIssueType`,
     data
   })
 }
 // /updateIssueType 修改问题分类
 export const UpdateProbelmTypeInterface = (data) => {
   return _http.putReq({
-    url: `${env}updateIssueType`,
+    url: `${rootPathPrefix}updateIssueType`,
     data
   })
 }
 // /deleteIssueType?id= 删除问题分类
 export const DeleteProbelmTypeInterface = (params) => {
   return _http.deleteReq({
-    url: `${env}deleteIssueType`,
+    url: `${rootPathPrefix}deleteIssueType`,
     params
   })
 }
 // /switchTopIssueType 开关问题分类置顶
 export const SwitchProbelmTypeInterface = () => {
   return _http.getReq({
-    url: `${env}switchTopIssueType`,
+    url: `${rootPathPrefix}switchTopIssueType`,
   })
 }
 // /findIssueList 获取问题
 export const GetProbelmInterface = () => {
   return _http.getReq({
-    url: `${env}findIssueList`,
+    url: `${rootPathPrefix}findIssueList`,
   })
 }
 // /addIssue 添加问题
 export const AddProbelmInterface = (data) => {
   return _http.postReq({
-    url: `${env}addIssue`,
+    url: `${rootPathPrefix}addIssue`,
     data
   })
 }
 // /updateIssue 修改问题
 export const UpdateProbelmInterface = (data) => {
   return _http.putReq({
-    url: `${env}updateIssue`,
+    url: `${rootPathPrefix}updateIssue`,
     data
   })
 }
 // /deleteIssue?id= 删除问题
 export const DeleteProbelmInterface = (params) => {
   return _http.deleteReq({
-    url: `${env}updateIssue`,
+    url: `${rootPathPrefix}updateIssue`,
     params
   })
 }
 // /switchTopIssue?id= 开关问题置顶
 export const SwitchProbelmInterface = (params) => {
   return _http.getReq({
-    url: `${env}switchTopIssue`,
+    url: `${rootPathPrefix}switchTopIssue`,
     params
   })
 }

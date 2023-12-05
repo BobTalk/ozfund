@@ -7,13 +7,6 @@ import Denied from "../Denied";
 const TabsScope = (props) => {
   let tabsRefs = useRef<any>();
   let { pathname, state } = useLocation();
-  // let splitRouter = [];
-  // let lastName = "";
-  // let crtRouter = getSession("_crtRouter");
-  // if (crtRouter) {
-  //   splitRouter = crtRouter?.split("/");
-  //   lastName = splitRouter?.at(-1);
-  // }
   let commonUrlPrefix = `/ozfund/website-operation/${props.language}`;
   let navigate = useNavigate();
   let [tabsHeight, setTabsHeight] = useState(0);
@@ -28,7 +21,7 @@ const TabsScope = (props) => {
   ]);
   function tabClickCb(key) {
     breadByPath(key);
-    navigate(key, { state });
+    navigate(key, { state: { ...state, language: props.language } });
   }
   function breadByPath(path) {
     store.dispatch({
@@ -42,9 +35,10 @@ const TabsScope = (props) => {
       return activePath.includes(item.key);
     });
     findRouter.length && breadByPath(findRouter[0]?.key);
-    if (findRouter.length !== childrenRouter.length) {
-      setChildrenRouter(findRouter);
-    }
+    navigate(findRouter[0]?.key, {
+      state: { ...state, language: props.language },
+    });
+    setChildrenRouter(findRouter);
   }
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();

@@ -70,8 +70,8 @@ export enum userAcountStateEnum {
   关闭 = 3,
 }
 export enum languageEnum {
-  zhCn = 1,
-  zhWt = 2,
+  "zh-cn" = 1,
+  "zh-wt" = 2,
   en = 3,
   japan = 4,
 }

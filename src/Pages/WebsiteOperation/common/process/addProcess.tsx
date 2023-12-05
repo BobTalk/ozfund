@@ -1,10 +1,26 @@
-import { mergeClassName } from "@/utils/base";
+import { getSession, mergeClassName } from "@/utils/base";
 import { Button, ConfigProvider, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
 const AddProcessModule = (props) => {
+  let { adminId } = getSession("userInfo");
+  let { crtData = {} } = props;
+  let [form] = Form.useForm<{
+    title: string;
+    content: string;
+  }>();
   function cancelProcessCb() {
     props?.onCancel();
+  }
+  function addProcessCb(values) {
+    console.log("values: ", Object.values(crtData).length);
+    Object.values(crtData).length
+      ? props?.onUpdateProcess?.({
+          ...crtData,
+          subject: values.title ?? crtData.subject,
+          content: values.content ?? crtData.content,
+        })
+      : props?.onAddProcess?.(values);
   }
   return (
     <ConfigProvider
@@ -17,28 +33,31 @@ const AddProcessModule = (props) => {
     >
       <Form
         labelAlign="left"
+        colon={false}
+        onFinish={addProcessCb}
+        form={form}
         className="h-full px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
       >
         <Form.Item
-          colon={false}
+          name="staffId"
           className="mb-[var(--gap15)]"
           label={<LabelComp title="员工ID" />}
         >
-          <Input />
+          <Input disabled defaultValue={adminId} />
         </Form.Item>
         <Form.Item
-          colon={false}
+          name="title"
           className="mb-[var(--gap15)]"
           label={<LabelComp title="标题" />}
         >
-          <Input />
+          <Input defaultValue={crtData.subject} />
         </Form.Item>
         <Form.Item
-          colon={false}
+          name="content"
           className="mb-[var(--gap15)]"
           label={<LabelComp title="进程内容" />}
         >
-          <TextArea autoSize={{ minRows: 18 }} />
+          <TextArea defaultValue={crtData.content} autoSize={{ minRows: 18 }} />
         </Form.Item>
         <Form.Item className="mb-0">
           <div className="flex justify-end">
@@ -53,7 +72,7 @@ const AddProcessModule = (props) => {
               type="primary"
               htmlType="submit"
             >
-              确定新增
+              确定{Object.values(crtData).length ? "更新" : "新增"}
             </Button>
           </div>
         </Form.Item>
