@@ -55,10 +55,16 @@ export enum routerMapId {
 export enum userAcountStateEnum {
   正常 = 1,
   冻结 = 2,
-  关闭 = 3
+  关闭 = 3,
+}
+export enum languageEnum {
+  zhCn = 1,
+  zhWt = 2,
+  en = 3,
+  japan = 4,
 }
 
-export enum countryCodeEnum{
+export enum countryCodeEnum {
   "中国" = "86",
   "新加坡" = "65",
   "泰国" = "66",
