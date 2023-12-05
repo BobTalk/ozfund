@@ -252,16 +252,23 @@ export const SwitchProcessInterface = (params) => {
   })
 }
 // /findDynamicList 获取动态列表
-export const GetTrendsInterface = (params) => {
-  return _http.getReq({
+export const GetTrendsInterface = (data) => {
+  return _http.postReq({
     url: `${rootPathPrefix}findDynamicList`,
-    params
+    data
   })
 }
 // /updateDynamic 修改动态
 export const UpdateTrendsInterface = (data) => {
   return _http.putReq({
     url: `${rootPathPrefix}updateDynamic`,
+    data
+  })
+}
+// /updateDynamic 新增动态
+export const AddTrendsInterface = (data) => {
+  return _http.putReq({
+    url: `${rootPathPrefix}addDynamic`,
     data
   })
 }
@@ -273,9 +280,10 @@ export const DeleteTrendsInterface = (params) => {
   })
 }
 // /switchTopDynamic 开关动态置顶
-export const SwitchTrendsInterface = () => {
-  return _http.getReq({
+export const SwitchTrendsInterface = (params) => {
+  return _http.putReq({
     url: `${rootPathPrefix}switchTopDynamic`,
+    params
   })
 }
 

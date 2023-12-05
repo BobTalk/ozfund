@@ -35,7 +35,7 @@ const AddProcessModule = (props) => {
         colon={false}
         onFinish={addProcessCb}
         form={form}
-        className="h-full px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
+        className="h-full clear_required px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
       >
         <Form.Item
           name="staffId"
@@ -46,6 +46,12 @@ const AddProcessModule = (props) => {
         </Form.Item>
         <Form.Item
           name="title"
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           className="mb-[var(--gap15)]"
           label={<LabelComp title="标题" />}
         >
@@ -53,6 +59,12 @@ const AddProcessModule = (props) => {
         </Form.Item>
         <Form.Item
           name="content"
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           className="mb-[var(--gap15)]"
           label={<LabelComp title="进程内容" />}
         >

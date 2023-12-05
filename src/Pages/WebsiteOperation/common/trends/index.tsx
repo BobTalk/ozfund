@@ -1,24 +1,60 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button } from "antd";
-import TableTrends from "./table";
-import MoreBtn from "@/Components/MoreBtn";
-import { useState } from "react";
+import { Button, message } from "antd";
+import TableProcess from "./table";
+import { useRef, useState } from "react";
 import AddTrendsModule from "./addTrends";
 import { mergeClassName } from "@/utils/base";
+import { useLocation } from "react-router-dom";
+import { AddTrendsInterface, UpdateProcessInterface } from "@/api";
+import { languageEnum } from "@/Enum";
 const Trends = () => {
-  let [addProcessInfo, setAddProcessInfo] = useState(false);
-  function addProcessCb() {
-    setAddProcessInfo(!addProcessInfo);
+  let { state } = useLocation();
+  let tabelRefs = useRef<any>();
+  let [addTrendsInfo, setAddTrendsInfo] = useState(false);
+  let [crtData, setCrtData] = useState<any>({});
+  function addTrendsCb() {
+    setCrtData({});
+    setAddTrendsInfo(!addTrendsInfo);
   }
   function cancelCb() {
-    setAddProcessInfo(!addProcessInfo);
+    setAddTrendsInfo(!addTrendsInfo);
+  }
+  function editorCb(crt) {
+    setCrtData(crt);
+    setAddTrendsInfo(!addTrendsInfo);
+  }
+  async function updateTrendsCb(crt) {
+    let { status, message: tipInfo } = await UpdateProcessInterface(crt);
+    message[status ? "success" : "error"](tipInfo);
+    if (status) {
+      setAddTrendsInfo(!addTrendsInfo);
+      tabelRefs?.current?.editorLoadTableList();
+    }
+  }
+  async function addTrendsSubmitCb({ title, content }) {
+    let { status, message: tipInfo } = await AddTrendsInterface({
+      subject: title,
+      content,
+      language: languageEnum[state.language],
+    });
+    message[status ? "success" : "error"](tipInfo);
+    if (status) {
+      setAddTrendsInfo(!addTrendsInfo);
+      tabelRefs?.current?.updateTableList(
+        {},
+        {
+          pageNo: 1,
+          pageSize: 10,
+        }
+      );
+    }
   }
   return (
     <>
-      {!addProcessInfo ? (
+      {!addTrendsInfo ? (
         <div className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]">
           <Button
-            onClick={addProcessCb}
+            onClick={addTrendsCb}
             type="primary"
             className="py-[6px] h-[.36rem]"
             icon={<PlusOutlined />}
@@ -27,19 +63,28 @@ const Trends = () => {
           </Button>
         </div>
       ) : null}
-      <div
-        className={mergeClassName(
-          "bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]",
-          addProcessInfo ? "h-full" : ""
-        )}
-      >
-        {addProcessInfo ? (
-          <AddTrendsModule onCancel={cancelCb} />
-        ) : (
-          <TableTrends />
-        )}
-      </div>
-      {!addProcessInfo ? <MoreBtn /> : null}
+
+      {addTrendsInfo ? (
+        <div
+          className={mergeClassName(
+            "bg-white h-full rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]"
+          )}
+        >
+          <AddTrendsModule
+            crtData={crtData}
+            onUpdateTrends={updateTrendsCb}
+            onAddTrends={addTrendsSubmitCb}
+            onCancel={cancelCb}
+            language={state.language}
+          />
+        </div>
+      ) : (
+        <TableProcess
+          ref={tabelRefs}
+          onEditor={editorCb}
+          language={state.language}
+        />
+      )}
     </>
   );
 };

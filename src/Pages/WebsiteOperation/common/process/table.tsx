@@ -136,7 +136,7 @@ const TableProcess = (props, ref) => {
   ) {
     let { data, status, pageSize, pageNo, pageTotal } =
       await GetProcessInterface({
-        gpt,
+        ...gpt,
         conditions: {
           language: languageEnum[props["language"]],
           ...conditions,
