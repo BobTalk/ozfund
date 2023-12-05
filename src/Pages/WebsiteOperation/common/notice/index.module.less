@@ -1,0 +1,22 @@
+.async-send_mail {
+  margin-bottom: 0;
+
+  :global(.ant-form-item-control-input) {
+    min-height: 0;
+  }
+
+  :global(.ant-form-item-label >label) {
+    height: auto;
+  }
+
+  :global(.ant-checkbox .ant-checkbox-inner) {
+    width: .16rem;
+    height: .16rem;
+    border-radius: 2px;
+
+    &::after {
+      transform: rotate(45deg) scale(.7);
+      margin-top: -50%;
+    }
+  }
+}

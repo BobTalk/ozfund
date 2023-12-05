@@ -183,9 +183,10 @@ export const DeleteEmailTaskInterface = (params) => {
   })
 }
 // /findAnnouncementList 获取公告列表
-export const GetNoticeListInterface = () => {
-  return _http.getReq({
+export const GetNoticeListInterface = (data) => {
+  return _http.postReq({
     url: `${rootPathPrefix}findAnnouncementList`,
+    data
   })
 }
 // /addAnnouncement 添加公告
@@ -203,16 +204,17 @@ export const UpdateNoticeInterface = (data) => {
   })
 }
 // /deleteAnnouncement?id= 删除公告
-export const DeleteNoticeInterface = (data) => {
+export const DeleteNoticeInterface = (params) => {
   return _http.deleteReq({
     url: `${rootPathPrefix}deleteAnnouncement`,
-    data
+    params
   })
 }
 // /switchTopAnnouncement 开关公告置顶
-export const SwitchNoticeInterface = () => {
-  return _http.getReq({
+export const SwitchNoticeInterface = (params) => {
+  return _http.putReq({
     url: `${rootPathPrefix}switchTopAnnouncement`,
+    params
   })
 }
 // 进程

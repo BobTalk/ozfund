@@ -1,62 +1,127 @@
-import { mergeClassName } from "@/utils/base";
+import { getSession, mergeClassName } from "@/utils/base";
 import { Button, Checkbox, ConfigProvider, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
-
-const AddTrendsModule = (props) => {
-  function cancelProcessCb() {
+import dayjs from "dayjs";
+import { useEffect, useRef } from "react";
+import scopeStyle from "./index.module.less";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
+const AddProcessModule = (props) => {
+  let { adminId } = getSession("userInfo");
+  let [stop] = useStopPropagation();
+  let { crtData = {} } = props;
+  let checkboxRef = useRef<boolean>(crtData.sendEmail);
+  let [form] = Form.useForm<{
+    title: string;
+    content: string;
+    sender: string;
+    sendEmail: boolean;
+  }>();
+  function cancelTrendsCb() {
     props?.onCancel();
   }
+  function addTrendsCb(values) {
+    Object.values(crtData).length
+      ? props?.onUpdateNotice?.({
+          ...crtData,
+          sender:values.sender,
+          subject: values.title ?? crtData.subject,
+          content: values.content ?? crtData.content,
+          sendEmail: checkboxRef.current,
+        })
+      : props?.onAddNotice?.({ ...values, sendEmail: checkboxRef.current });
+  }
+  function checkboxCb(e) {
+    stop(e, () => {
+      checkboxRef.current = e.target.checked;
+    });
+  }
+  useEffect(() => {
+    if (Object.values(crtData).length) {
+      form.setFieldValue("title", crtData.subject);
+      form.setFieldValue("sender", crtData.sender);
+      form.setFieldValue("content", crtData.content);
+      checkboxRef.current = !!crtData.sendEmail;
+    }
+  }, []);
   return (
     <ConfigProvider
       theme={{
         token: {
           controlHeight: 44,
           borderRadius: 0,
-          controlInteractiveSize: 16,
         },
       }}
     >
       <Form
         labelAlign="left"
-        className="h-full px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
+        colon={false}
+        onFinish={addTrendsCb}
+        form={form}
+        className="clear_required h-full px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
       >
         <Form.Item
-          colon={false}
           className="mb-[var(--gap15)]"
           label={<LabelComp title="员工ID" />}
         >
-          <Input />
+          <Input disabled defaultValue={adminId} />
         </Form.Item>
         <Form.Item
-          colon={false}
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
+          name="title"
           className="mb-[var(--gap15)]"
           label={<LabelComp title="标题" />}
         >
-          <Input />
+          <Input defaultValue={crtData.subject} />
         </Form.Item>
         <Form.Item
-          colon={false}
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
+          name="sender"
           className="mb-[var(--gap15)]"
           label={<LabelComp title="发送人" />}
         >
-          <Input />
+          <Input defaultValue={crtData.sender} />
         </Form.Item>
         <Form.Item
-          colon={false}
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
+          name="content"
           className="mb-[var(--gap15)]"
-          label={<LabelComp title="动态内容" />}
+          label={<LabelComp title="公告内容" />}
         >
-          <TextArea autoSize={{ minRows: 18 }} />
-          <div className="flex items-center text-[14px] text-[#222] mt-[var(--gap15)]">
+          <TextArea defaultValue={crtData.content} autoSize={{ minRows: 18 }} />
+        </Form.Item>
+        <Form.Item
+          name="sendEmail"
+          className={scopeStyle["async-send_mail"]}
+          label={<LabelComp title="" />}
+        >
+          <div className="flex items-center text-[14px] text-[#222]">
             <p className="mr-[.2rem]">同步发送邮件</p>
-            <Checkbox className="w-[.16rem] h-[.16rem]" />
+            <Checkbox
+              onChange={checkboxCb}
+              defaultChecked={crtData.sendEmail}
+            />
           </div>
         </Form.Item>
-        <Form.Item className="mb-[.26rem]">
+        <Form.Item className="mb-0">
           <div className="flex justify-end">
             <Button
               className="h-[.36rem] w-[.9rem] leading-none mr-[var(--gap10)] rounded-[4px]"
-              onClick={cancelProcessCb}
+              onClick={cancelTrendsCb}
             >
               取消
             </Button>
@@ -65,7 +130,7 @@ const AddTrendsModule = (props) => {
               type="primary"
               htmlType="submit"
             >
-              确定新增
+              确定{Object.values(crtData).length ? "更新" : "新增"}
             </Button>
           </div>
         </Form.Item>
@@ -83,4 +148,4 @@ const LabelComp = ({ title, className = "" }) => {
     </span>
   );
 };
-export default AddTrendsModule;
+export default AddProcessModule;
