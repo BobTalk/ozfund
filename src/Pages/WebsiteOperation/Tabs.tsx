@@ -38,14 +38,13 @@ const TabsScope = (props) => {
   }
   function findChildRouterPermiss() {
     let activePath: Array<string> = getSession("activePath");
-    console.log('activePath: ', activePath);
     let findRouter = childrenRouter.filter((item) => {
       return activePath.includes(item.key);
     });
     findRouter.length && breadByPath(findRouter[0]?.key);
-    // if (findRouter.length !== childrenRouter.length) {
-    setChildrenRouter(findRouter);
-    // }
+    if (findRouter.length !== childrenRouter.length) {
+      setChildrenRouter(findRouter);
+    }
   }
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();
@@ -73,7 +72,7 @@ const TabsScope = (props) => {
           </div>
         </>
       ) : (
-        <Denied/>
+        <Denied />
       )}
     </>
   );
