@@ -17,7 +17,6 @@ import {
   DeleteProcessInterface,
   GetProcessInterface,
   SwitchProcessInterface,
-  UpdateProcessInterface,
 } from "@/api";
 import { languageEnum } from "@/Enum";
 import { cloneDeep } from "lodash";

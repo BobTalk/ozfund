@@ -7,6 +7,7 @@ import Denied from "../Denied";
 const TabsScope = (props) => {
   let tabsRefs = useRef<any>();
   let { pathname, state } = useLocation();
+  console.log('pathname: ', pathname);
   let commonUrlPrefix = `/ozfund/website-operation/${props.language}`;
   let navigate = useNavigate();
   let [tabsHeight, setTabsHeight] = useState(0);
@@ -44,7 +45,7 @@ const TabsScope = (props) => {
     let { height } = tabsRefs.current.getBoundingClientRect();
     findChildRouterPermiss();
     setTabsHeight(height);
-    tabClickCb(pathname)
+    // tabClickCb(pathname)
   }, []);
   return (
     <>
@@ -52,7 +53,7 @@ const TabsScope = (props) => {
         <>
           <Tabs
             ref={tabsRefs}
-            defaultActiveKey={pathname}
+            defaultActiveKey={childrenRouter[0]?.['key']}
             onTabClick={tabClickCb}
             className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
             list={childrenRouter}

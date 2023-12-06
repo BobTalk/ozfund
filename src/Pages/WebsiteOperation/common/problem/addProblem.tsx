@@ -1,11 +1,31 @@
-import { mergeClassName } from "@/utils/base";
+import { getSession, mergeClassName } from "@/utils/base";
 import { Button, Checkbox, ConfigProvider, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { useEffect } from "react";
 
-const AddTrendsModule = (props) => {
-  function cancelProcessCb() {
+const AddProblemModule = (props) => {
+  let { adminId } = getSession("userInfo");
+  let { crtData = {} } = props;
+  let [form] = Form.useForm<{
+    problem: string;
+    content: string;
+  }>();
+  function cancelProblemCb() {
     props?.onCancel();
   }
+  function addProblemCb(values) {
+    Object.values(crtData).length
+      ? props?.onUpdateProcess?.({
+          ...crtData,
+          subject: values.title ?? crtData.subject,
+          content: values.content ?? crtData.content,
+        })
+      : props?.onAddProcess?.(values);
+  }
+  useEffect(() => {
+    form.setFieldValue("problem", crtData.subject);
+    form.setFieldValue("content", crtData.content);
+  }, []);
   return (
     <ConfigProvider
       theme={{
@@ -18,36 +38,51 @@ const AddTrendsModule = (props) => {
     >
       <Form
         labelAlign="left"
-        className="h-full px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
+        onFinish={addProblemCb}
+        form={form}
+        className="h-full clear_required px-[var(--gap20)] pt-[var(--gap20)] overflow-y-auto"
       >
         <Form.Item
           colon={false}
           className="mb-[var(--gap15)]"
           label={<LabelComp title="员工ID" />}
         >
-          <Input />
+          <Input disabled defaultValue={adminId} />
         </Form.Item>
         <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
+          name="problem"
           colon={false}
           className="mb-[var(--gap15)]"
           label={<LabelComp title="问题" />}
         >
-          <Input />
+          <Input defaultValue={crtData.subject} />
         </Form.Item>
-        
+
         <Form.Item
+          name="content"
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           colon={false}
           className="mb-[var(--gap15)]"
           label={<LabelComp title="问题内容" />}
         >
-          <TextArea autoSize={{ minRows: 18 }} />
-          
+          <TextArea defaultValue={crtData.content} autoSize={{ minRows: 18 }} />
         </Form.Item>
-        <Form.Item className="mb-[.26rem]">
+        <Form.Item className="mb-0">
           <div className="flex justify-end">
             <Button
               className="h-[.36rem] w-[.9rem] leading-none mr-[var(--gap10)] rounded-[4px]"
-              onClick={cancelProcessCb}
+              onClick={cancelProblemCb}
             >
               取消
             </Button>
@@ -56,7 +91,7 @@ const AddTrendsModule = (props) => {
               type="primary"
               htmlType="submit"
             >
-              确定新增
+              确定{Object.values(crtData).length ? "更新" : "新增"}
             </Button>
           </div>
         </Form.Item>
@@ -74,4 +109,4 @@ const LabelComp = ({ title, className = "" }) => {
     </span>
   );
 };
-export default AddTrendsModule;
+export default AddProblemModule;

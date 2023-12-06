@@ -323,9 +323,10 @@ export const SwitchProbelmTypeInterface = () => {
   })
 }
 // /findIssueList 获取问题
-export const GetProbelmInterface = () => {
-  return _http.getReq({
+export const GetProbelmInterface = (data) => {
+  return _http.postReq({
     url: `${rootPathPrefix}findIssueList`,
+    data
   })
 }
 // /addIssue 添加问题
@@ -345,7 +346,7 @@ export const UpdateProbelmInterface = (data) => {
 // /deleteIssue?id= 删除问题
 export const DeleteProbelmInterface = (params) => {
   return _http.deleteReq({
-    url: `${rootPathPrefix}updateIssue`,
+    url: `${rootPathPrefix}deleteIssue`,
     params
   })
 }

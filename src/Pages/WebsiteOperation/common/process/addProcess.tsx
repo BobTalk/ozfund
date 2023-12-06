@@ -1,6 +1,7 @@
 import { getSession, mergeClassName } from "@/utils/base";
 import { Button, ConfigProvider, Form, Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { useEffect } from "react";
 
 const AddProcessModule = (props) => {
   let { adminId } = getSession("userInfo");
@@ -21,6 +22,10 @@ const AddProcessModule = (props) => {
         })
       : props?.onAddProcess?.(values);
   }
+  useEffect(() => {
+    form.setFieldValue("title", crtData.subject);
+    form.setFieldValue("content", crtData.content);
+  }, []);
   return (
     <ConfigProvider
       theme={{
