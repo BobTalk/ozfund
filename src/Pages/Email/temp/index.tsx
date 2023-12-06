@@ -1,16 +1,48 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import TableTemp from "./table";
-import MoreBtn from "@/Components/MoreBtn";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import AddTempModule from "./addTemp";
-import { mergeClassName } from "@/utils/base";
 const Temp = () => {
   let [addTempInfo, setAddTempInfo] = useState(false);
+
+  let tableRefs = useRef<any>();
+  let crtData = useRef<any>({});
+  let crtTablePagination = useRef<{
+    pageNo: number;
+    pageSize: number;
+    pageTotal?: number;
+  }>({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  let disabled = useRef<boolean>(false);
   function addTempCb() {
+    crtData.current = {};
+    disabled.current = false;
     setAddTempInfo(!addTempInfo);
   }
   function cancelCb() {
+    setAddTempInfo(!addTempInfo);
+  }
+  function addSuccessCb() {
+    setAddTempInfo(!addTempInfo);
+  }
+  function updateSuccessCb() {
+    setAddTempInfo(!addTempInfo);
+    setTimeout(() => {
+      tableRefs?.current?.updateTableList(crtTablePagination.current);
+    }, 1000);
+  }
+  function lookCb(crt, index) {
+    crtData.current = crt;
+    disabled.current = true;
+    setAddTempInfo(!addTempInfo);
+  }
+  function editorCb(crt, index, pgt) {
+    crtTablePagination.current = pgt;
+    crtData.current = crt;
+    disabled.current = false;
     setAddTempInfo(!addTempInfo);
   }
   return (
@@ -27,19 +59,20 @@ const Temp = () => {
           </Button>
         </div>
       ) : null}
-      <div
-        className={mergeClassName(
-          "bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]",
-          addTempInfo ? "h-full" : ""
-        )}
-      >
-        {addTempInfo ? (
-          <AddTempModule onCancel={cancelCb} />
-        ) : (
-          <TableTemp />
-        )}
-      </div>
-      {!addTempInfo ? <MoreBtn /> : null}
+
+      {addTempInfo ? (
+        <div className="h-full bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]">
+          <AddTempModule
+            disabled={disabled.current}
+            crtData={crtData.current}
+            onCancel={cancelCb}
+            onAdd={addSuccessCb}
+            onUpdate={updateSuccessCb}
+          />
+        </div>
+      ) : (
+        <TableTemp ref={tableRefs} onLook={lookCb} onEditor={editorCb} />
+      )}
     </>
   );
 };

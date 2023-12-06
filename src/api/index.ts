@@ -131,10 +131,10 @@ export const GetEmailListInterface = (data) => {
   })
 }
 // /findEmailTemplate 获取邮箱模板
-export const GetEmailTempInterface = (params) => {
-  return _http.getReq({
+export const GetEmailTempInterface = (data) => {
+  return _http.postReq({
     url: `${rootPathPrefix}findEmailTemplate`,
-    params
+    data
   })
 }
 
@@ -145,6 +145,18 @@ export const AddEmailTempInterface = (data) => {
   return _http.postReq({
     url: `${rootPathPrefix}addEmailTemplate`,
     data
+  })
+}
+export const UpdateEmailTempInterface = (data) => {
+  return _http.putReq({
+    url: `${rootPathPrefix}updateEmailTemplate`,
+    data
+  })
+}
+export const DeleteEmailTempInterface = (params) => {
+  return _http.putReq({
+    url: `${rootPathPrefix}deleteEmailTemplate`,
+    params
   })
 }
 // /getEmailTemplate?id= 获取邮箱模板内容

@@ -95,7 +95,6 @@ const TableProcess = (props, ref) => {
   }>({
     pageNo: 1,
     pageSize: 10,
-    pageTotal: 10,
   });
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
