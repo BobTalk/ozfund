@@ -166,15 +166,21 @@ export const GetEmailTempInfoInterface = (params) => {
     params
   })
 }
-// 0 获取定时邮件任务 1 获取定时邮件发送记录
-export const GetEmailTimeTaskInterface = (flag) => {
+export const GetEmailAllTempInfoInterface = () => {
   return _http.getReq({
+    url: `${rootPathPrefix}findAllEmailTemplate`,
+  })
+}
+// 0 获取定时邮件任务 1 获取定时邮件发送记录
+export const GetEmailTimeTaskInterface = (data, flag) => {
+  return _http.postReq({
     url: `${rootPathPrefix}findEmailTask/${flag}`,
+    data
   })
 }
 // /addEmailTask 添加邮件任务
 export const AddEmailTaskInterface = (data) => {
-  return _http.getReq({
+  return _http.postReq({
     url: `${rootPathPrefix}addEmailTask`,
     data
   })
@@ -182,7 +188,7 @@ export const AddEmailTaskInterface = (data) => {
 
 // /updateEmailTask 修改邮件任务
 export const UpdateEmailTaskInterface = (data) => {
-  return _http.getReq({
+  return _http.putReq({
     url: `${rootPathPrefix}updateEmailTask`,
     data
   })
