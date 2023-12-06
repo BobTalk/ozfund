@@ -124,10 +124,10 @@ export const EmailSubscribeInterface = (params) => {
   })
 }
 // /findSubscribeEmail 获取订阅邮箱
-export const GetEmailListInterface = (params) => {
-  return _http.getReq({
+export const GetEmailListInterface = (data) => {
+  return _http.postReq({
     url: `${rootPathPrefix}findSubscribeEmail`,
-    params
+    data
   })
 }
 // /findEmailTemplate 获取邮箱模板

@@ -1,8 +1,36 @@
 import { ConfigProvider, Select } from "antd";
 import TableEmail from "./table";
-import MoreBtn from "@/Components/MoreBtn";
-import { mergeClassName } from "@/utils/base";
+import { useRef } from "react";
+import { formatEnum } from "@/utils/base";
+import { language1Enum } from "@/Enum";
 const List = () => {
+  let tableRefs = useRef<any>();
+  let filterVal = useRef<number>();
+  function reloadTableList(filterParams, paginationParams, isMergeData) {
+    tableRefs.current.getTableList(filterParams, paginationParams, isMergeData);
+  }
+  function loadMoreCb(pgt) {
+    reloadTableList(
+      {
+        language: filterVal.current,
+      },
+      pgt,
+      true
+    );
+  }
+  function filterCb(val) {
+    filterVal.current = val;
+    reloadTableList(
+      {
+        language: val,
+      },
+      {
+        pageNo: 1,
+        pageSize: 10,
+      },
+      false
+    );
+  }
   return (
     <>
       <div className="flex items-center bg-white p-[var(--gap20)] rounded-[var(--border-radius)]">
@@ -14,17 +42,17 @@ const List = () => {
             },
           }}
         >
-          <Select placeholder="请选择" className="w-[1.63rem] h-[.36rem]" options={[]} />
+          <Select
+            placeholder="请选择"
+            onChange={filterCb}
+            className="w-[1.63rem] h-[.36rem]"
+            allowClear
+            options={formatEnum(language1Enum)}
+          />
         </ConfigProvider>
       </div>
-      <div
-        className={mergeClassName(
-          "bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]"
-        )}
-      >
-        <TableEmail />
-      </div>
-      <MoreBtn />
+
+      <TableEmail ref={tableRefs} onMore={loadMoreCb} />
     </>
   );
 };

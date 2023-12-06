@@ -75,6 +75,12 @@ export enum languageEnum {
   en = 3,
   japan = 4,
 }
+export enum language1Enum {
+  "简体中文" = 1,
+  "繁体中文" = 2,
+  'English' = 3,
+  "しろうと" = 4,
+}
 
 export enum countryCodeEnum {
   "中国" = "86",

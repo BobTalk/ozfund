@@ -88,7 +88,11 @@ const TableProcess = (props, ref) => {
     },
   ];
   const [dataList, setDataList] = useState<any>([]);
-  let pagination = useRef<any>({
+  let pagination = useRef<{
+    pageNo: number;
+    pageSize: number;
+    pageTotal?: number;
+  }>({
     pageNo: 1,
     pageSize: 10,
     pageTotal: 10,
