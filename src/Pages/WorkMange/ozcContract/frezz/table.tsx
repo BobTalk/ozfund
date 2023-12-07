@@ -32,7 +32,6 @@ const Table = (props) => {
     {
       title: "员工ID",
       dataIndex: "staffId",
-      width: 200,
     },
   ];
   const [dataList, setDataList] = useState<any>([
@@ -59,7 +58,13 @@ const Table = (props) => {
     }, 500);
   }, []);
   return (
-    <>
+    <ConfigProvider
+      theme={{
+        token: {
+          borderRadius: 2,
+        },
+      }}
+    >
       <div ref={contentRefs} style={props.style}>
         <div
           style={{
@@ -76,7 +81,7 @@ const Table = (props) => {
         </div>
         {isShowMoreBtn() ? <MoreBtn /> : null}
       </div>
-    </>
+    </ConfigProvider>
   );
 };
 
