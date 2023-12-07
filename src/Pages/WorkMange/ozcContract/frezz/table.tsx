@@ -3,13 +3,19 @@ import type { ColumnsType } from "@/Components/Table";
 import { Button, ConfigProvider, Input } from "antd";
 import dayjs from "dayjs";
 import styleScope from "./index.module.less";
-import { useState } from "react";
-const Table = () => {
+import { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import { getTableShowLine } from "@/utils/base";
+import MoreBtn from "@/Components/MoreBtn";
+const Table = (props) => {
+  let pagitions = useRef<any>({
+    pageNo: 1,
+    pageSize: 10,
+  });
   const columns: ColumnsType = [
     {
       title: "冻结时间",
       dataIndex: "frezzTime",
-      render: (_)=> dayjs(_).format("YYYY.MM.DD HH:mm:ss")
+      render: (_) => dayjs(_).format("YYYY.MM.DD HH:mm:ss"),
     },
     {
       title: "地址",
@@ -39,23 +45,39 @@ const Table = () => {
       staffId: "xiaowu",
     },
   ]);
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
+  let isShowMoreBtn = () =>
+    pagitions.current.pageNo < pagitions.current.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagitions.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div className="flex items-center gap-[var(--gap10)] mt-[var(--gap20)] mb-[var(--gap17)] ml-[var(--gap30)]">
-        <Input placeholder="输入地址" className="w-[3.7rem]" />
-        <Button type="primary">查询</Button>
+    <>
+      <div ref={contentRefs} style={props.style}>
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="overflow-auto bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]"
+        >
+          <TableComp
+            className="_reset-table__no-btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {isShowMoreBtn() ? <MoreBtn /> : null}
       </div>
-      <TableComp className="_reset-table__no-btn" dataSource={dataList} columns={columns} />
-     
-    </ConfigProvider>
+    </>
   );
 };
 
-export default Table;
+export default forwardRef(Table);

@@ -1,9 +1,13 @@
 import { ModalTitle } from "@/Components/Modal";
-import Modal from "@/Pages/ModalComp";
-import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
+import { Button, ConfigProvider, Form, Input, InputNumber, Select } from "antd";
 import Table from "./table";
-import MoreBtn from "@/Components/MoreBtn";
-import { useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -13,6 +17,11 @@ import ModalFooter from "@/Components/ModalFooterBtn";
 const Frezz = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
+  let filterRefs = useRef<any>();
+  let tableRefs = useRef<any>();
+  let topModuleRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
+
   let moduleTitle = useRef<any>("冻结地址");
   function submitFrezzCb(values: any) {
     console.log("submitFrezzCb: ", values);
@@ -21,10 +30,21 @@ const Frezz = () => {
     moduleContent.current = FrezzModal;
     setModalOpen(!modalOpen);
   }
+  useEffect(() => {
+    let { height: topHeight } = topModuleRefs.current.getContentHeight();
+    let { height: filterHeight } = filterRefs.current.getContentHeight();
+    setFilterModuleHeight(topHeight + filterHeight);
+  }, []);
   return (
     <div className="h-full">
-      <TopModule onFinish={finishCb} />
-      <ListModule />
+      <TopModule ref={topModuleRefs} onFinish={finishCb} />
+      <ListModule ref={filterRefs} />
+      <Table
+        ref={tableRefs}
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
+      />
       <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
@@ -37,17 +57,28 @@ const Frezz = () => {
   );
 };
 
-const TopModule = (props) => {
+const TopModule = forwardRef((props: any, ref) => {
   let [form] = Form.useForm();
   let [formInitVal] = useState({
     address: "",
     num: 0,
   });
+  let contentRefs = useRef<any>();
   function finishCb(values) {
     props?.onFinish?.(values);
   }
+  function getContentHeight() {
+    return contentRefs.current.getBoundingClientRect();
+  }
+  useImperativeHandle(
+    ref,
+    () => ({
+      getContentHeight,
+    }),
+    []
+  );
   return (
-    <div className="bg-white rounded-[var(--border-radius)]">
+    <div ref={contentRefs} className="bg-white rounded-[var(--border-radius)]">
       <TitleComp title="OZC冻结地址" />
       <ConfigProvider
         theme={{
@@ -89,7 +120,7 @@ const TopModule = (props) => {
       </ConfigProvider>
     </div>
   );
-};
+});
 const FrezzModal = (props) => {
   let [form] = Form.useForm();
   let [stop] = useStopPropagation();
@@ -164,17 +195,40 @@ const FrezzModal = (props) => {
   );
 };
 
-const ListModule = () => {
-  return (
-    <>
-      <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap14)]">
-        <TitleComp title="冻结地址列表" />
-        <Table />
-      </div>
-      <MoreBtn />
-    </>
+const ListModule = forwardRef((props, ref) => {
+  let contentRefs = useRef<any>();
+  function getContentHeight() {
+    return contentRefs.current.getBoundingClientRect();
+  }
+  useImperativeHandle(
+    ref,
+    () => ({
+      getContentHeight,
+    }),
+    []
   );
-};
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          borderRadius: 2,
+          controlHeight: 36,
+        },
+      }}
+    >
+      <div
+        ref={contentRefs}
+        className="bg-white rounded-[var(--border-radius)_var(--border-radius)_0_0] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap17)]"
+      >
+        <TitleComp title="冻结地址列表" />
+        <div className="flex items-center gap-[var(--gap10)] mt-[var(--gap20)] ml-[var(--gap30)]">
+          <Input placeholder="输入地址" className="w-[3.7rem]" />
+          <Button type="primary">查询</Button>
+        </div>
+      </div>
+    </ConfigProvider>
+  );
+});
 const LabelComp = ({ title, className = "" }) => {
   return (
     <span className={mergeClassName("text-[14px] text-[#666]", className)}>
