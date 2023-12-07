@@ -1,27 +1,45 @@
 import { ModalTitle } from "@/Components/Modal";
 import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
-import MoreBtn from "@/Components/MoreBtn";
-import { useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import Table from "./table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Delete = () => {
   let [modalOpen, setModalOpen] = useState(false);
+  let topModuleRefs = useRef<any>();
+  let tableRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let moduleContent = useRef<any>();
   function finishCb(values) {
     moduleContent.current = FrezzModal;
     setModalOpen(!modalOpen);
   }
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getFilterHeight();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <div className="h-full">
-      <TopModule onFinish={finishCb} />
-      <ListModule />
+      <TopModule ref={topModuleRefs} onFinish={finishCb} />
+      <Table
+        ref={tableRefs}
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
+      />
     </div>
   );
 };
 
-const TopModule = (props) => {
+const TopModule = forwardRef((props: any, ref) => {
+  let filterHeight = useRef<any>(0);
   let [form] = Form.useForm();
   let [formInitVal] = useState({
     tokenName: "",
@@ -30,6 +48,16 @@ const TopModule = (props) => {
   function finishCb(values) {
     props?.onFinish?.(values);
   }
+  function getFilterHeight() {
+    return filterHeight?.current.getBoundingClientRect();
+  }
+  useImperativeHandle(
+    ref,
+    () => ({
+      getFilterHeight,
+    }),
+    []
+  );
   return (
     <div className="bg-white rounded-[var(--border-radius)]">
       <TitleComp title="新增OZC允许代币兑换" />
@@ -80,7 +108,7 @@ const TopModule = (props) => {
       </ConfigProvider>
     </div>
   );
-};
+});
 const FrezzModal = (props) => {
   let [form] = Form.useForm();
   let [stop] = useStopPropagation();
@@ -138,10 +166,12 @@ const FrezzModal = (props) => {
               <LabelComp title="备注" className="text-[var(--border-color)]" />
             }
           >
-            <TextArea autoSize={{
-              minRows: 4,
-              maxRows: 6,
-            }}/>
+            <TextArea
+              autoSize={{
+                minRows: 4,
+                maxRows: 6,
+              }}
+            />
           </Form.Item>
 
           <Form.Item className="flex justify-end mt-0 border-t border-t-[var(--border-color)] py-[var(--gap20)] mr-[var(--gap30)]">
@@ -155,17 +185,6 @@ const FrezzModal = (props) => {
         </Form>
       </ConfigProvider>
     </div>
-  );
-};
-
-const ListModule = () => {
-  return (
-    <>
-      <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap14)]">
-        <Table />
-      </div>
-      <MoreBtn />
-    </>
   );
 };
 const LabelComp = ({ title, className = "" }) => {

@@ -132,6 +132,7 @@ const Table = (props, ref) => {
           <TableComp
             className="_reset-table__btn"
             dataSource={dataList}
+            line={tableContentLine}
             columns={columns}
           />
         </div>

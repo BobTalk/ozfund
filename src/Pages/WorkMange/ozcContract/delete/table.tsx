@@ -2,9 +2,11 @@ import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider, Typography } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
+import MoreBtn from "@/Components/MoreBtn";
+import { getTableShowLine } from "@/utils/base";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
@@ -33,7 +35,7 @@ const Table = (props) => {
               onClick={(e) => deleteCb(e, record)}
               className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
             >
-              <Icon className="mr-[8px]" name="h-icon-delete"/>
+              <Icon className="mr-[8px]" name="h-icon-delete" />
               <span>移除</span>
             </div>
           </Typography.Link>
@@ -51,6 +53,13 @@ const Table = (props) => {
       staffId: "xiaowu",
     },
   ]);
+  let pagitions = useRef<any>({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
@@ -59,6 +68,16 @@ const Table = (props) => {
       props?.onDelete(crt);
     });
   }
+  const isShowMoreBtn = () =>
+    pagitions.current.pageNo < pagitions.current.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagitions.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   return (
     <ConfigProvider
       theme={{
@@ -68,11 +87,23 @@ const Table = (props) => {
         },
       }}
     >
-      <TableComp
-        className="_reset-table__btn"
-        dataSource={dataList}
-        columns={columns}
-      />
+      {" "}
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="bg-white overflow-auto rounded-[var(--border-radius)] pt-[var(--gap10)] pb-[var(--gap14)]"
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        <MoreBtn />
+      </div>
     </ConfigProvider>
   );
 };
