@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { EditOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, ConfigProvider } from "antd";
 import { Typography } from "antd";
 import Icon from "@/Components/Icon";
+import MoreBtn from "@/Components/MoreBtn";
+import { getTableShowLine } from "@/utils/base";
 const TableConfig = (props) => {
-  let [data, setData] = useState([
+  let [dataList, setData] = useState([
     {
       key: "table1",
       assetsType: "USDT",
@@ -34,10 +36,10 @@ const TableConfig = (props) => {
       supplementaryMinerFees: 89,
     },
   ]);
-  // 保存编辑信息
-  async function submitCb(e, crt, index) {
-    props?.onEditor?.(e, crt, index);
-  }
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
+
   let columns: ColumnsType = [
     {
       title: "序号",
@@ -103,7 +105,9 @@ const TableConfig = (props) => {
           >
             <Button
               className="bg-[rgba(3,133,242,0.1)] border-[rgba(3,133,242,0.1)] text-[#0385F2]"
-              icon={<Icon name="h-icon-qianming" style={{fontSize: "16px"}} />}
+              icon={
+                <Icon name="h-icon-qianming" style={{ fontSize: "16px" }} />
+              }
             >
               签名
             </Button>
@@ -112,20 +116,58 @@ const TableConfig = (props) => {
       },
     },
   ];
+  let pagitions = useRef<any>({
+    pageNo: 1,
+    pageSize: 10,
+  });
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
+  function isShowMoreBtn() {
+    return pagitions.current.pageNo < pagitions.current.pageTotal;
+  }
+  // 保存编辑信息
+  async function submitCb(e, crt, index) {
+    props?.onEditor?.(e, crt, index);
+  }
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagitions.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, [dataList]);
   return (
-    <TableComp
-      className="mt-[var(--gap15)] _reset-table__btn"
-      themeObj={{
-        headerBorderRadius: 0,
+    <ConfigProvider
+      theme={{
+        token: {
+          borderRadius: 2,
+          controlHeight: 36,
+        },
       }}
-      bordered={false}
-      dataSource={data}
-      columns={columns}
-      pagination={false}
-    />
+    >
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="overflow-auto bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]"
+        >
+          <TableComp
+            className="mt-[var(--gap15)] _reset-table__btn"
+            themeObj={{
+              headerBorderRadius: 0,
+            }}
+            bordered={false}
+            dataSource={dataList}
+            columns={columns}
+            pagination={false}
+          />
+        </div>
+        <MoreBtn />
+      </div>
+    </ConfigProvider>
   );
 };
 
-export default TableConfig;
+export default forwardRef(TableConfig);

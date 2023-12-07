@@ -1,13 +1,16 @@
 import { Button } from "antd";
-import TableConfig from "./table.jsx";
+import TableConfig from "./table";
 import linkIcon from "@/assets/images/link.svg";
 import { useStopPropagation } from "@/Hooks/StopPropagation.js";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
-import MoreBtn from "@/Components/MoreBtn/index.js";
+import MoreBtn from "@/Components/MoreBtn";
 
 const Todo = () => {
   let [stop] = useStopPropagation();
+  let topModuleRefs = useRef<any>();
+  let tableRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [signatureOpen, setSignatureOpen] = useState(false);
   function signatureCb(e, crt, index) {
     stop(e, () => {
@@ -16,7 +19,10 @@ const Todo = () => {
   }
   return (
     <>
-      <div className="flex justify-end bg-[var(--white)] px-[var(--gap20)] py-[var(--gap15)] rounded-[var(--border-radius)]">
+      <div
+        ref={topModuleRefs}
+        className="flex justify-end bg-[var(--white)] px-[var(--gap20)] py-[var(--gap15)] rounded-[var(--border-radius)]"
+      >
         <Button
           className="flex items-center h-[.35rem]"
           type="primary"
@@ -25,7 +31,13 @@ const Todo = () => {
           连接钱包
         </Button>
       </div>
-      <TableConfig onEditor={signatureCb} />
+      <TableConfig
+        ref={tableRefs}
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
+        onEditor={signatureCb}
+      />
       <ModalComp
         title="签名"
         modalOpen={signatureOpen}
@@ -51,7 +63,6 @@ const Todo = () => {
           </p>
         </>
       </ModalComp>
-      <MoreBtn />
     </>
   );
 };
