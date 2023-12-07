@@ -1,20 +1,46 @@
 import RangePicker from "@/Components/RangePicker";
-import { Button, ConfigProvider, Select } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Form, Input, Select, message } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import Table from "./table";
-import MoreBtn from "@/Components/MoreBtn";
+import TextArea from "antd/es/input/TextArea";
+
+import { useStopPropagation } from "@/Hooks/StopPropagation";
+import ModalFooter from "@/Components/ModalFooterBtn";
+import ModalScopeComp from "@/Pages/ModalScope";
+import { AddIpInterface, DeleteIpInterface } from "@/api";
+import FormItem from "antd/es/form/FormItem";
+import { timeJoin } from "@/utils/base";
 
 const ChangeRecord = () => {
   let topModuleRefs = useRef<any>();
+  let moduleContent = useRef<any>();
+  let tableRefs = useRef<any>();
+  let moduleTitle = useRef<string>("新增IP地址");
+  let [modalOpen, setModalOpen] = useState(false);
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
+  function filterCb({ search, time }) {
+    tableRefs.current.updateTableList(
+      {
+        search:search||null,
+        beginTime: timeJoin(time[0]),
+        endTime: timeJoin(time[1], true),
+      },
+      {
+        pageNo: 1,
+        pageSize: 10,
+      }
+    );
+  }
   useEffect(() => {
     let { height } = topModuleRefs.current.getBoundingClientRect();
     setFilterModuleHeight(height);
   }, []);
   return (
     <>
-      <TopModule ref={topModuleRefs} />
-      <TableModule
+      <TopModule ref={topModuleRefs} onFilter={filterCb} />
+      <Table
+        ref={tableRefs}
         style={{
           height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
         }}
@@ -23,6 +49,16 @@ const ChangeRecord = () => {
   );
 };
 const TopModule = forwardRef((props: any, ref: any) => {
+  let [stop] = useStopPropagation();
+  let [form] = Form.useForm<{
+    search: undefined | string;
+    time: Array<Date | string>;
+  }>();
+
+  function filterCb({ search, time }) {
+    time ??= [];
+    props?.onFilter?.({ search, time });
+  }
   return (
     <ConfigProvider
       theme={{
@@ -34,35 +70,32 @@ const TopModule = forwardRef((props: any, ref: any) => {
     >
       <div
         ref={ref}
-        className="bg-white p-[var(--gap20)] rounded-[var(--border-radius)]"
+        className="flex items-center bg-white justify-between p-[var(--gap20)] rounded-[var(--border-radius)]"
       >
-        <div className="flex items-center gap-[var(--gap10)]">
-          <p className="text-[#666]">配置搜索</p>
-          <Select
-            placeholder="请选择"
-            className="mr-[var(--gap10)] w-[1.63rem]"
-            options={[]}
-          />
-          <RangePicker />
-          <Button type="primary">查询</Button>
-        </div>
+        <Form
+          onFinish={filterCb}
+          form={form}
+          colon={false}
+          className="flex items-center gap-[var(--gap10)]"
+        >
+          <FormItem
+            name="search"
+            label={<p className="text-[#666]">备注搜索</p>}
+          >
+            <Input allowClear placeholder="备注搜索" />
+          </FormItem>
+          <FormItem name="time">
+            <RangePicker name="time" form={form} />
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
+          </FormItem>
+        </Form>
       </div>
     </ConfigProvider>
   );
 });
-function TableModule(props: any) {
-  return (
-    <div style={props.style}>
-      <div
-        style={{
-          maxHeight: `calc(100% - .63rem)`,
-        }}
-        className="mt-[var(--gap15)] overflow-auto bg-white rounded-[var(--border-radius)]"
-      >
-        <Table />
-      </div>
-      <MoreBtn />
-    </div>
-  );
-}
+
 export default ChangeRecord;

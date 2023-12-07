@@ -106,9 +106,10 @@ export const DeleteIpInterface = (params) => {
     params
   })
 }
-export const GetIpLogListInterface = () => {
-  return _http.getReq({
-    url: `${adminPrefix}/findAdminIpLogList`
+export const GetIpLogListInterface = (data) => {
+  return _http.postReq({
+    url: `${adminPrefix}/findAdminIpLogList`,
+    data
   })
 }
 export const UpdateInfoInterface = (data) => {
