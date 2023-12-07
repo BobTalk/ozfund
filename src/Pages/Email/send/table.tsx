@@ -12,7 +12,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
 import MoreBtn from "@/Components/MoreBtn";
-import { DeleteEmailTempInterface, GetEmailTimeTaskInterface } from "@/api";
+import { DeleteEmailTaskInterface, GetEmailTimeTaskInterface } from "@/api";
 import { cloneDeep } from "lodash";
 import { timeFormate } from "@/utils/base";
 import { language1Enum } from "@/Enum";
@@ -102,7 +102,7 @@ const TableProcess = (props, ref) => {
   let isEditing = (record) => record.key === editingKey;
   function deleteCb(e, crt, index) {
     stop(e, async () => {
-      let { status, message: tipInfo } = await DeleteEmailTempInterface({
+      let { status, message: tipInfo } = await DeleteEmailTaskInterface({
         id: crt.id,
       });
       message[status ? "success" : "error"](tipInfo);

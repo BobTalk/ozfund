@@ -4,7 +4,7 @@ import {
   GetEmailAllTempInfoInterface,
   UpdateEmailTaskInterface,
 } from "@/api";
-import { formatEnum, getSession, mergeClassName } from "@/utils/base";
+import { formatEnum, mergeClassName } from "@/utils/base";
 import {
   Button,
   ConfigProvider,
@@ -28,8 +28,14 @@ const AddTrendsModule = (props) => {
     language: string;
     sendTime: string | Date;
   }>();
-  let { crtData: crtDataInfo = {}, disabled } = props;
-  // let [crtDataInfo, setCrtDataInfo] = useState(crtData);
+  let { crtData = {}, disabled } = props;
+  let [crtDataInfo, setCrtDataInfo] = useState(() => {
+    if (Object.values(crtData).length) {
+      crtData.sendTime = dayjs(crtData.sendTime, "YYYY-mm-DD HH:mm:ss");
+      return crtData;
+    }
+    return {};
+  });
   let [allTemp, setAllTemp] = useState([]);
   function cancelProcessCb() {
     props?.onCancel();
@@ -63,18 +69,6 @@ const AddTrendsModule = (props) => {
   function templateChangeCb(value, option) {
     form.setFieldValue("content", option.content);
   }
-  // const range = (start, end) => {
-  //   const result = [];
-  //   for (let i = start; i < end; i++) {
-  //     result.push(i);
-  //   }
-  //   return result;
-  // };
-  // const disabledDateTime = () => ({
-  //   disabledHours: () => range(0, 24).splice(4, 20),
-  //   disabledMinutes: () => range(30, 60),
-  //   disabledSeconds: () => [55, 56],
-  // });
   useLayoutEffect(() => {
     getAllEmailTemp();
   }, []);
@@ -120,12 +114,7 @@ const AddTrendsModule = (props) => {
           className="mb-[var(--gap15)]"
           label={<LabelComp title="发布人" />}
         >
-          <Input
-            placeholder="发布人"
-            allowClear
-            disabled={disabled}
-            defaultValue={crtDataInfo.sender}
-          />
+          <Input placeholder="发布人" allowClear disabled={disabled} />
         </Form.Item>
         <Form.Item
           name="subject"
@@ -138,12 +127,7 @@ const AddTrendsModule = (props) => {
           className="mb-[var(--gap15)]"
           label={<LabelComp title="标题" />}
         >
-          <Input
-            allowClear
-            placeholder="标题"
-            disabled={disabled}
-            defaultValue={crtDataInfo.subject}
-          />
+          <Input allowClear placeholder="标题" disabled={disabled} />
         </Form.Item>
         <Form.Item
           name="templateId"
@@ -164,7 +148,6 @@ const AddTrendsModule = (props) => {
             }}
             onChange={templateChangeCb}
             options={allTemp}
-            defaultValue={crtDataInfo.templateId}
             placeholder="选择模版"
           ></Select>
         </Form.Item>
@@ -187,9 +170,9 @@ const AddTrendsModule = (props) => {
             className="w-full"
             format="YYYY-MM-DD HH:mm:ss"
             disabledDate={disabledDate}
-            // disabledTime={disabledDateTime}
-            showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
-            defaultValue={crtDataInfo.sendTime}
+            showTime={{
+              defaultValue: dayjs("00:00:00", "HH:mm:ss"),
+            }}
           />
         </Form.Item>
         <Form.Item
@@ -206,7 +189,6 @@ const AddTrendsModule = (props) => {
           <Select
             allowClear
             placeholder="选择分类"
-            defaultValue={crtDataInfo.language}
             options={formatEnum(language1Enum)}
           />
         </Form.Item>
@@ -221,11 +203,7 @@ const AddTrendsModule = (props) => {
           className="mb-[var(--gap15)]"
           label={<LabelComp title="邮件内容" />}
         >
-          <TextArea
-            disabled={disabled}
-            defaultValue={crtDataInfo.content}
-            autoSize={{ minRows: 18 }}
-          />
+          <TextArea disabled={disabled} autoSize={{ minRows: 18 }} />
         </Form.Item>
 
         <>
