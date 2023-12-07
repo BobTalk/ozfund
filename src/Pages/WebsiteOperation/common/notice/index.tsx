@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
 import TableProcess from "./table";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddTrendsModule from "./addNotice";
 import { mergeClassName } from "@/utils/base";
 import { useLocation } from "react-router-dom";
@@ -10,6 +10,8 @@ import { languageEnum } from "@/Enum";
 const Notice = () => {
   let { state } = useLocation();
   let tabelRefs = useRef<any>();
+  let topModuleRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [addNoticeInfo, setAddNoticeInfo] = useState(false);
   let [crtData, setCrtData] = useState<any>({});
   function addNoticeCb() {
@@ -31,7 +33,7 @@ const Notice = () => {
       tabelRefs?.current?.editorLoadTableList();
     }
   }
-  async function addNoticeSubmitCb({ title, sender,sendEmail,content }) {
+  async function addNoticeSubmitCb({ title, sender, sendEmail, content }) {
     let { status, message: tipInfo } = await AddNoticeInterface({
       subject: title,
       sender,
@@ -51,10 +53,17 @@ const Notice = () => {
       );
     }
   }
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getBoundingClientRect();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <>
       {!addNoticeInfo ? (
-        <div className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]">
+        <div
+          ref={topModuleRefs}
+          className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]"
+        >
           <Button
             onClick={addNoticeCb}
             type="primary"
@@ -82,6 +91,9 @@ const Notice = () => {
         </div>
       ) : (
         <TableProcess
+          style={{
+            height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+          }}
           ref={tabelRefs}
           onEditor={editorCb}
           language={state.language}

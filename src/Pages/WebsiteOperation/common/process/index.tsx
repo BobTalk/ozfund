@@ -2,7 +2,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
 import TableProcess from "./table";
 import MoreBtn from "@/Components/MoreBtn";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddProcessModule from "./addProcess";
 import { mergeClassName } from "@/utils/base";
 import { useLocation } from "react-router-dom";
@@ -11,6 +11,8 @@ import { languageEnum } from "@/Enum";
 const Process = () => {
   let { state } = useLocation();
   let tabelRefs = useRef<any>();
+  let topModuleRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [addProcessInfo, setAddProcessInfo] = useState(false);
   let [crtData, setCrtData] = useState<any>({});
   function addProcessCb() {
@@ -50,10 +52,17 @@ const Process = () => {
       );
     }
   }
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getBoundingClientRect();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <>
       {!addProcessInfo ? (
-        <div className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]">
+        <div
+          ref={topModuleRefs}
+          className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]"
+        >
           <Button
             onClick={addProcessCb}
             type="primary"
@@ -81,6 +90,9 @@ const Process = () => {
         </div>
       ) : (
         <TableProcess
+          style={{
+            height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+          }}
           ref={tabelRefs}
           onEditor={editorCb}
           language={state.language}

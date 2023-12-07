@@ -11,7 +11,7 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
-import { mergeClassName, timeFormate } from "@/utils/base";
+import { getTableShowLine, mergeClassName, timeFormate } from "@/utils/base";
 import MoreBtn from "@/Components/MoreBtn";
 import {
   DeleteProcessInterface,
@@ -96,6 +96,9 @@ const TableProcess = (props, ref) => {
     pageNo: 1,
     pageSize: 10,
   });
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
@@ -184,6 +187,14 @@ const TableProcess = (props, ref) => {
     []
   );
   useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagination.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
+  useLayoutEffect(() => {
     getTableList({}, pagination.current, true);
   }, []);
   return (
@@ -195,20 +206,21 @@ const TableProcess = (props, ref) => {
         },
       }}
     >
-      <div
-        className={mergeClassName(
-          "bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]"
-        )}
-      >
-        <TableComp
-          className="_reset-table__btn"
-          dataSource={dataList}
-          columns={columns}
-        />
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div
+          className={mergeClassName("bg-white rounded-[var(--border-radius)]")}
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {pagination.current.pageNo < pagination.current.pageTotal ? (
+          <MoreBtn onMore={loadMoreCb} />
+        ) : null}
       </div>
-      {pagination.current.pageNo < pagination.current.pageTotal ? (
-        <MoreBtn onMore={loadMoreCb} />
-      ) : null}
     </ConfigProvider>
   );
 };

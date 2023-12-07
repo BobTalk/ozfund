@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
 import TableProcess from "./table";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddTrendsModule from "./addTrends";
 import { mergeClassName } from "@/utils/base";
 import { useLocation } from "react-router-dom";
@@ -10,6 +10,8 @@ import { languageEnum } from "@/Enum";
 const Trends = () => {
   let { state } = useLocation();
   let tabelRefs = useRef<any>();
+  let topModuleRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [addTrendsInfo, setAddTrendsInfo] = useState(false);
   let [crtData, setCrtData] = useState<any>({});
   function addTrendsCb() {
@@ -50,10 +52,14 @@ const Trends = () => {
       );
     }
   }
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getBoundingClientRect();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <>
       {!addTrendsInfo ? (
-        <div className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]">
+        <div ref={topModuleRefs} className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]">
           <Button
             onClick={addTrendsCb}
             type="primary"
@@ -81,6 +87,9 @@ const Trends = () => {
         </div>
       ) : (
         <TableProcess
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
           ref={tabelRefs}
           onEditor={editorCb}
           language={state.language}
