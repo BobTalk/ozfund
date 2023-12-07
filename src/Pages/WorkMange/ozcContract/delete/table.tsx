@@ -82,18 +82,16 @@ const Table = (props) => {
     <ConfigProvider
       theme={{
         token: {
-          borderRadius: 2,
           controlHeight: 36,
         },
       }}
     >
-      {" "}
       <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
         <div
           style={{
             maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
           }}
-          className="bg-white overflow-auto rounded-[var(--border-radius)] pt-[var(--gap10)] pb-[var(--gap14)]"
+          className="bg-white overflow-auto rounded-[var(--border-radius)]"
         >
           <TableComp
             className="_reset-table__btn"
@@ -102,7 +100,7 @@ const Table = (props) => {
             columns={columns}
           />
         </div>
-        <MoreBtn />
+        {isShowMoreBtn() ? <MoreBtn /> : null}
       </div>
     </ConfigProvider>
   );

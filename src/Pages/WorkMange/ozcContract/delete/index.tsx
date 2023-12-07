@@ -42,7 +42,7 @@ const TopModule = forwardRef((props: any, ref) => {
   let filterHeight = useRef<any>(0);
   let [form] = Form.useForm();
   let [formInitVal] = useState({
-    tokenName: "",
+    tokenName: undefined,
     currencyType: "",
   });
   function finishCb(values) {
@@ -59,7 +59,7 @@ const TopModule = forwardRef((props: any, ref) => {
     []
   );
   return (
-    <div className="bg-white rounded-[var(--border-radius)]">
+    <div ref={filterHeight} className="bg-white rounded-[var(--border-radius)]">
       <TitleComp title="新增OZC允许代币兑换" />
       <ConfigProvider
         theme={{
