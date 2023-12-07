@@ -14,6 +14,7 @@ import Icon from "@/Components/Icon";
 import MoreBtn from "@/Components/MoreBtn";
 import { DeleteEmailTempInterface, GetEmailTempInterface } from "@/api";
 import { cloneDeep } from "lodash";
+import { getTableShowLine } from "@/utils/base";
 const TableProcess = (props, ref) => {
   const columns: ColumnsType = [
     {
@@ -79,7 +80,9 @@ const TableProcess = (props, ref) => {
     },
   ];
   const [dataList, setDataList] = useState<any>([]);
-  // let [once, setOnce] = useState(true);
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let once = useRef<boolean>(true);
   let pagination = useRef<{
     pageNo: number;
@@ -162,6 +165,14 @@ const TableProcess = (props, ref) => {
     []
   );
   useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagination.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
+  useLayoutEffect(() => {
     getTableList(pagination.current);
   }, []);
   return (
@@ -173,16 +184,19 @@ const TableProcess = (props, ref) => {
         },
       }}
     >
-      <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]">
-        <TableComp
-          className="_reset-table__btn"
-          dataSource={dataList}
-          columns={columns}
-        />
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div className="bg-white rounded-[var(--border-radius)]">
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {pagination.current.pageNo < pagination.current.pageTotal ? (
+          <MoreBtn onMore={moreCb} />
+        ) : null}
       </div>
-      {pagination.current.pageNo < pagination.current.pageTotal ? (
-        <MoreBtn onMore={moreCb} />
-      ) : null}
     </ConfigProvider>
   );
 };
