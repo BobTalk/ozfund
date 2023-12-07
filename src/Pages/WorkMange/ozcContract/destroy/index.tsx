@@ -1,16 +1,24 @@
 import MoreBtn from "@/Components/MoreBtn";
 import Table from "./table";
 import Modal from "@/Pages/ModalComp";
-import { useRef, useState } from "react";
-import { Button, ConfigProvider, Form } from "antd";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { Button, ConfigProvider, Form, Input } from "antd";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import TextArea from "antd/es/input/TextArea";
 import { mergeClassName } from "@/utils/base";
 import ModalScopeComp from "@/Pages/ModalScope";
 import ModalFooter from "@/Components/ModalFooterBtn";
 const Destory = () => {
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
+  let topModuleRefs = useRef<any>();
   let moduleTitle = useRef<any>("销毁地址");
   function submitFrezzCb(values: any) {
     console.log("submitDestroyCb: ", values);
@@ -20,9 +28,19 @@ const Destory = () => {
     moduleContent.current = DestoryModal;
     setModalOpen(!modalOpen);
   }
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getFilterHeight();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <div className="h-full">
-      <ListModule onDelete={deleteCb} />
+      <ListModule ref={topModuleRefs} />
+      <Table
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
+        onDelete={deleteCb}
+      />
       <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
@@ -34,20 +52,37 @@ const Destory = () => {
     </div>
   );
 };
-const ListModule = (props) => {
-  function deleteCb(crt) {
-    props?.onDelete?.(crt);
+const ListModule = forwardRef((props, ref) => {
+  let filterHeight = useRef<any>(0);
+  function getFilterHeight() {
+    return filterHeight?.current.getBoundingClientRect();
   }
-  function moreCb() {}
-  return (
-    <>
-      <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pt-[var(--gap10)] pb-[var(--gap14)]">
-        <Table onDelete={deleteCb} />
-      </div>
-      <MoreBtn onMore={moreCb} />
-    </>
+  useImperativeHandle(
+    ref,
+    () => ({
+      getFilterHeight,
+    }),
+    []
   );
-};
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          borderRadius: 2,
+          controlHeight: 36,
+        },
+      }}
+    >
+      <div
+        ref={filterHeight}
+        className="flex bg-white rounded-[var(--border-radius)] items-center gap-[var(--gap10)] py-[var(--gap20)] pl-[var(--gap30)]"
+      >
+        <Input placeholder="输入地址" className="w-[3.7rem]" />
+        <Button type="primary">查询</Button>
+      </div>
+    </ConfigProvider>
+  );
+});
 const DestoryModal = (props) => {
   let [form] = Form.useForm();
   let [stop] = useStopPropagation();
@@ -105,10 +140,12 @@ const DestoryModal = (props) => {
               <LabelComp title="备注" className="text-[var(--border-color)]" />
             }
           >
-            <TextArea autoSize={{
-              minRows: 4,
-              maxRows: 6,
-            }}/>
+            <TextArea
+              autoSize={{
+                minRows: 4,
+                maxRows: 6,
+              }}
+            />
           </Form.Item>
 
           <Form.Item>
@@ -118,7 +155,7 @@ const DestoryModal = (props) => {
             <Button type="primary" htmlType="submit">
               确定
             </Button> */}
-            <ModalFooter onCancel={cancelCb}/>
+            <ModalFooter onCancel={cancelCb} />
           </Form.Item>
         </Form>
       </ConfigProvider>

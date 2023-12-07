@@ -1,10 +1,12 @@
 import Icon from "@/Components/Icon";
+import MoreBtn from "@/Components/MoreBtn";
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { getTableShowLine } from "@/utils/base";
 import { Button, ConfigProvider, Input, Typography } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
@@ -42,7 +44,7 @@ const Table = (props) => {
                 onClick={(e) => deleteCb(e, record)}
                 className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
               >
-                <Icon className="mr-[8px]" name="h-icon-delete"/>
+                <Icon className="mr-[8px]" name="h-icon-delete" />
                 <span>删除</span>
               </div>
             ) : (
@@ -72,13 +74,31 @@ const Table = (props) => {
     },
   ]);
   let [stop] = useStopPropagation();
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
+
+  let pagitions = useRef<any>({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  const isShowMoreBtn = () =>
+    pagitions.current.pageNo < pagitions.current.pageTotal;
   function deleteCb(e, crt) {
     stop(e, () => {
       props?.onDelete(crt);
     });
   }
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagitions.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   return (
     <ConfigProvider
       theme={{
@@ -88,15 +108,21 @@ const Table = (props) => {
         },
       }}
     >
-      <div className="flex items-center gap-[var(--gap10)] mt-[var(--gap20)] mb-[var(--gap17)] ml-[var(--gap30)]">
-        <Input placeholder="输入地址" className="w-[3.7rem]" />
-        <Button type="primary">查询</Button>
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="bg-white overflow-auto rounded-[0_0_var(--border-radius)_var(--border-radius)]"
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            columns={columns}
+          />
+        </div>
+        <MoreBtn />
       </div>
-      <TableComp
-        className="_reset-table__btn"
-        dataSource={dataList}
-        columns={columns}
-      />
     </ConfigProvider>
   );
 };
