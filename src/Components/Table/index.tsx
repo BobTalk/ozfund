@@ -40,8 +40,8 @@ const TableComp = (props: TableCompPropsType) => {
     pagination,
     border,
     components: comp,
-    virtual,
     className,
+    line=10
   } = props;
   return (
     <ConfigProvider
@@ -64,7 +64,7 @@ const TableComp = (props: TableCompPropsType) => {
           virtual={false}
           bordered={border}
           loading={false}
-          scroll={{ y: 55 * 10 }}
+          scroll={{ y: 55 * line }}
           pagination={pagination}
           dataSource={dataSource}
           columns={columns}

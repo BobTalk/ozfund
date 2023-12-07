@@ -137,8 +137,12 @@ function timeJoin(time, isPre = false) {
   if (!time) return null
   return isPre ? time + " 23:59:59" : time + " 00:00:00"
 }
+function getTableShowLine(el, btnHeight, lineHeight=55){
+  return (el?.clientHeight - 64 - btnHeight) / lineHeight
+}
 export {
   timeJoin,
+  getTableShowLine,
   breadSite,
   mergeClassName,
   encrypt,

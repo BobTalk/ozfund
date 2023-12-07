@@ -11,7 +11,7 @@ const MoreBtn = (props: MoreBtnType) => {
     });
   }
   return (
-    <div className="pt-[var(--gap15)] pb-[.08rem]">
+    <div className="pt-[var(--gap15)] pb-[.08rem] h-[63px]">
       <p className="grid place-items-center bg-[var(--white)] h-[.48rem] rounded-[var(--border-radius)]">
         <span
           onClick={moreCb}

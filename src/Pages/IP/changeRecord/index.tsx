@@ -1,23 +1,15 @@
 import RangePicker from "@/Components/RangePicker";
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Form, Input, Select, message } from "antd";
+import { Button, ConfigProvider, Form, Input } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import Table from "./table";
-import TextArea from "antd/es/input/TextArea";
 
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import ModalFooter from "@/Components/ModalFooterBtn";
-import ModalScopeComp from "@/Pages/ModalScope";
-import { AddIpInterface, DeleteIpInterface } from "@/api";
 import FormItem from "antd/es/form/FormItem";
 import { timeJoin } from "@/utils/base";
 
 const ChangeRecord = () => {
   let topModuleRefs = useRef<any>();
-  let moduleContent = useRef<any>();
   let tableRefs = useRef<any>();
-  let moduleTitle = useRef<string>("新增IP地址");
-  let [modalOpen, setModalOpen] = useState(false);
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   function filterCb({ search, time }) {
     tableRefs.current.updateTableList(
