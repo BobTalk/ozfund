@@ -71,8 +71,7 @@ const TableAllocation = (props) => {
         },
       }}
     >
-      {" "}
-      <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
+      <div className="mt-[var(--gap15)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
         <TableComp
           className="_reset-table__no-btn"
           dataSource={dataList}

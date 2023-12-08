@@ -118,9 +118,7 @@ const TotoPrice = (props) => {
             </ul>
           </div>
         </div>
-       
-          <TableAllocation />
-        
+        <TableAllocation />
       </div>
       <div
         className="w-full mt-[.07rem] bg-white py-[.3rem] pr-[.2rem] pl-[.3rem] rounded-[var(--border-radius)]"

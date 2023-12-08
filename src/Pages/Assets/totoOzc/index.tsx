@@ -38,10 +38,11 @@ const TotoOzc = (props) => {
   }, []);
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
-        <TableAllocation />
-      </div>
-      <MoreBtn />
+      <TableAllocation
+        style={{
+          height: `100%`,
+        }}
+      />
     </div>
   );
 };
