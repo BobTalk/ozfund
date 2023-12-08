@@ -2,6 +2,7 @@ import _http from "../Https";
 let env = process.env.NODE_ENV == 'development' ? '/' : '/api/'
 let rootPathPrefix = `${env}root/`
 const adminPrefix = `${env}admin`
+const contractPrefix = `${env}contract`
 export const GetAccessKeyInterface = () => {
   return _http.getReq({
     url: `${adminPrefix}/getAccessKey`
@@ -373,6 +374,104 @@ export const DeleteProbelmInterface = (params) => {
 export const SwitchProbelmInterface = (params) => {
   return _http.getReq({
     url: `${rootPathPrefix}switchTopIssue`,
+    params
+  })
+}
+// /contract/addAdmin?address= 添加管理员
+export const AddManageInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}removeAdmin`,
+    params
+  })
+}
+// /contract/removeAdmin?address= 移除管理员
+export const RemoveManageInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}removeAdmin`,
+    params
+  })
+}
+// /contract/addSuperAdmin?address= 添加超级管理员
+export const AddSuperManageInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}addSuperAdmin`,
+    params
+  })
+}
+// /contract/removeSuperAdmin?address= 移除超级管理员
+export const RemoveSuperManageInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}removeSuperAdmin`,
+    params
+  })
+}
+// /contract/confirgurePoolAutoAddress?address=&poolId= 配置矿池自动空投地址
+export const AutoAirdropInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}confirgurePoolAutoAddress`,
+    params
+  })
+}
+// /contract/distribute {poolId [address amount]} 批量转账
+export const TransferAccountsInterface=(data)=>{
+  return _http.postReq({
+    url:`${contractPrefix}distribute`,
+    data
+  })
+}
+// /contract/withdrawToken {contractAddress tokenContractAddress  spenderAddress amount} 提取合约token
+export const WithdrawTokenInterface=(data)=>{
+  return _http.postReq({
+    url:`${contractPrefix}withdrawToken`,
+    data
+  })
+}
+// /contract/dischargeStake?address= 解押
+export const DischargeStakeInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}dischargeStake`,
+    params
+  })
+}
+// /contract/switchExchane 开关交易
+export const SwitchExchaneInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}switchExchane`,
+    params
+  })
+}
+// /contract/mint?address=&amount= 增发
+export const AddPublishInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}mint`,
+    params
+  })
+}
+// /contract/freezeAddress?address= 冻结地址
+export const FreezeAddressInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}freezeAddress`,
+    params
+  })
+}
+// /contract/burnFreezeAddressCoin?address= 销毁冻结地址资产
+export const DestroyFreezeAddressInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}burnFreezeAddressCoin`,
+    params
+  })
+}
+// /contract/allowSupportedAddress?address=&name= 新增可兑换代币
+export const AddExchangeTokensInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}allowSupportedAddress`,
+    params
+  })
+}
+// /contract/removeAllowSupportedAddress?address= 移除可兑换代币
+export const RemoveExchangeTokensInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}removeAllowSupportedAddress`,
     params
   })
 }
