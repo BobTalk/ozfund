@@ -4,9 +4,9 @@ import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { GetIpListInterface } from "@/api";
-import { timeFormate } from "@/utils/base";
+import { getTableShowLine, timeFormate } from "@/utils/base";
 import { ConfigProvider, Typography, Popconfirm } from "antd";
-import { uniqBy,cloneDeep } from "lodash";
+import { uniqBy, cloneDeep } from "lodash";
 import {
   forwardRef,
   useImperativeHandle,
@@ -88,14 +88,16 @@ const Table = (props, ref) => {
       },
     },
   ];
-
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
   function deleteCb(e, crt, index) {
     stop(e, () => {
-     let newList =  cloneDeep(dataList)
-     newList.splice(index, 1);
+      let newList = cloneDeep(dataList);
+      newList.splice(index, 1);
       setDataList(newList);
       props?.onDelete(crt, index);
     });
@@ -110,6 +112,16 @@ const Table = (props, ref) => {
     }),
     []
   );
+  const isShowMoreBtn = () =>
+    pagination.current.pageNo < pagination.current.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagination.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   useLayoutEffect(() => {
     getTableList({}, pagination.current, true);
   }, []);
@@ -122,12 +134,12 @@ const Table = (props, ref) => {
         },
       }}
     >
-      <div style={props.style}>
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
         <div
           style={{
-            maxHeight: `calc(100% - .63rem)`,
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
           }}
-          className="mt-[var(--gap15)] overflow-auto bg-white rounded-[var(--border-radius)]"
+          className="overflow-auto bg-white rounded-[var(--border-radius)]"
         >
           <TableComp
             className="_reset-table__btn"
@@ -136,9 +148,7 @@ const Table = (props, ref) => {
             columns={columns}
           />
         </div>
-        {pagination.current.pageNo < pagination.current.pageTotal ? (
-          <MoreBtn />
-        ) : null}
+        {isShowMoreBtn() ? <MoreBtn /> : null}
       </div>
     </ConfigProvider>
   );
