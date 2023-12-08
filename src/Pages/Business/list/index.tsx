@@ -1,8 +1,7 @@
 import RangePicker from "@/Components/RangePicker";
-import { Button, ConfigProvider, Input, Select } from "antd";
+import { Button, ConfigProvider, Select } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import Table from "./table";
-import MoreBtn from "@/Components/MoreBtn";
 
 const Work = () => {
   let topModuleRefs = useRef<any>();
@@ -10,7 +9,6 @@ const Work = () => {
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   useEffect(() => {
     let { height } = topModuleRefs.current.getBoundingClientRect();
-    console.log("height: ", height);
     setFilterModuleHeight(height);
   }, []);
   return (
