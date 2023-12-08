@@ -1,8 +1,10 @@
+import MoreBtn from "@/Components/MoreBtn";
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
+import { getTableShowLine } from "@/utils/base";
 import { ConfigProvider } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
@@ -10,7 +12,7 @@ const Table = (props) => {
       dataIndex: "frezzTime",
       render: (_) => dayjs(_).format("YYYY.MM.DD HH:mm:ss"),
     },
-    
+
     {
       title: "发起人",
       dataIndex: "notes",
@@ -48,6 +50,24 @@ const Table = (props) => {
       staffId: "xiaowu",
     },
   ]);
+  let pagitions = useRef<any>({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
+  const isShowMoreBtn = () =>
+    pagitions.current.pageNo < pagitions.current.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagitions.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      let line = getTableShowLine(contentRefs.current, btnH);
+      setTableContentLine(line);
+    }, 500);
+  }, []);
   return (
     <ConfigProvider
       theme={{
@@ -57,11 +77,22 @@ const Table = (props) => {
         },
       }}
     >
-      <TableComp
-        className="_reset-table__btn"
-        dataSource={dataList}
-        columns={columns}
-      />
+      <div className="mt-[var(--gap15)]" style={props.style}>
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="overflow-auto bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]"
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {isShowMoreBtn() ? <MoreBtn /> : null}
+      </div>
     </ConfigProvider>
   );
 };

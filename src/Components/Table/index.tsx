@@ -30,6 +30,7 @@ type TableCompPropsType = {
   paginationThemeObj?: Object;
   components?: Object;
   virtual?: boolean;
+  style?: Object;
   [key: string]: any;
 };
 
@@ -41,7 +42,8 @@ const TableComp = (props: TableCompPropsType) => {
     border,
     components: comp,
     className,
-    line=10
+    line = 10,
+    style = {},
   } = props;
   return (
     <ConfigProvider
@@ -55,6 +57,7 @@ const TableComp = (props: TableCompPropsType) => {
       locale={zh_CN}
     >
       <div
+        style={style}
         className={mergeClassName(styleScope["table-reset_style"], className)}
       >
         <Table

@@ -6,15 +6,18 @@ import MoreBtn from "@/Components/MoreBtn";
 
 const Work = () => {
   let topModuleRefs = useRef<any>();
+  let tableRefs = useRef<any>();
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   useEffect(() => {
     let { height } = topModuleRefs.current.getBoundingClientRect();
+    console.log("height: ", height);
     setFilterModuleHeight(height);
   }, []);
   return (
     <>
       <TopModule ref={topModuleRefs} />
-      <TableModule
+      <Table
+        ref={tableRefs}
         style={{
           height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
         }}
@@ -38,7 +41,7 @@ const TopModule = forwardRef((props: any, ref: any) => {
       >
         <div className="flex items-center gap-[var(--gap10)]">
           <p className="text-[#666] whitespace-nowrap">类型</p>
-          <Select className="w-[1.63rem]" placeholder='请选择' options={[]}/>
+          <Select className="w-[1.63rem]" placeholder="请选择" options={[]} />
           <RangePicker />
           <Button type="primary">查询</Button>
         </div>
@@ -46,19 +49,5 @@ const TopModule = forwardRef((props: any, ref: any) => {
     </ConfigProvider>
   );
 });
-function TableModule(props: any) {
-  return (
-    <div style={props.style}>
-      <div
-        style={{
-          maxHeight: `calc(100% - .63rem)`,
-        }}
-        className="mt-[var(--gap15)] overflow-auto bg-white rounded-[var(--border-radius)]"
-      >
-        <Table />
-      </div>
-      <MoreBtn />
-    </div>
-  );
-}
+
 export default Work;
