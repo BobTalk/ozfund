@@ -30,6 +30,7 @@ const BusinessMange = () => {
     if (findRouter.length !== childrenRouter.length) {
       setChildrenRouter(findRouter);
     }
+    findRouter.length && navigate(findRouter[0]["key"], { state });
   }
   function tabClickCb(key) {
     breadByPath(key);
@@ -43,7 +44,7 @@ const BusinessMange = () => {
   return (
     <>
       <TabsComp
-        defaultActiveKey={pathname}
+        defaultActiveKey={childrenRouter?.[0]?.["key"]}
         ref={tabsRefs}
         onTabClick={tabClickCb}
         className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
