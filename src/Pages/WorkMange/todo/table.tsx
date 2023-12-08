@@ -161,6 +161,7 @@ const TableConfig = (props) => {
             bordered={false}
             dataSource={dataList}
             columns={columns}
+            line={tableContentLine}
             pagination={false}
           />
         </div>

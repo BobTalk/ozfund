@@ -196,7 +196,7 @@ const TableProcess = (props, ref) => {
       let btnH = pageNo < pageTotal ? 63 : 0;
       setTableContentLine(getTableShowLine(contentRefs.current, btnH));
     }, 500);
-  }, []);
+  }, [dataList]);
   useLayoutEffect(() => {
     getTableList({}, pagination.current, true);
   }, []);
@@ -210,21 +210,19 @@ const TableProcess = (props, ref) => {
       }}
     >
       <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-      <div
-        className={mergeClassName(
-          "bg-white rounded-[var(--border-radius)]"
-        )}
-      >
-        <TableComp
-          className="_reset-table__btn"
-          dataSource={dataList}
-          line={tableContentLine}
-          columns={columns}
-        />
-      </div>
-      {pagination.current.pageNo < pagination.current.pageTotal ? (
-        <MoreBtn onMore={loadMoreCb} />
-      ) : null}
+        <div
+          className={mergeClassName("bg-white rounded-[var(--border-radius)]")}
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {pagination.current.pageNo < pagination.current.pageTotal ? (
+          <MoreBtn onMore={loadMoreCb} />
+        ) : null}
       </div>
     </ConfigProvider>
   );

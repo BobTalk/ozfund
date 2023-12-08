@@ -171,7 +171,7 @@ const TableProcess = (props, ref) => {
       let btnH = pageNo < pageTotal ? 63 : 0;
       setTableContentLine(getTableShowLine(contentRefs.current, btnH));
     }, 500);
-  }, []);
+  }, [dataList]);
   useLayoutEffect(() => {
     getTableList(pagination.current);
   }, []);

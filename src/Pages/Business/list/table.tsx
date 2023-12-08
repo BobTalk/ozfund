@@ -67,7 +67,7 @@ const Table = (props) => {
       let line = getTableShowLine(contentRefs.current, btnH);
       setTableContentLine(line);
     }, 500);
-  }, []);
+  }, [dataList]);
   return (
     <ConfigProvider
       theme={{
