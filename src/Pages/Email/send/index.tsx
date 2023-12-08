@@ -1,11 +1,13 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import TableTemp from "./table";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddTempModule from "./addSend";
 const Send = () => {
   let [addTempInfo, setAddTempInfo] = useState(false);
-
+  let topModuleRefs = useRef<any>();
+  let filterParams = useRef<any>({});
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let tableRefs = useRef<any>();
   let crtData = useRef<any>({});
   let crtTablePagination = useRef<{
@@ -45,10 +47,17 @@ const Send = () => {
     disabled.current = false;
     setAddTempInfo(!addTempInfo);
   }
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getBoundingClientRect();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <>
       {!addTempInfo ? (
-        <div className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]">
+        <div
+          ref={topModuleRefs}
+          className="flex bg-white justify-end p-[var(--gap20)] rounded-[var(--border-radius)]"
+        >
           <Button
             onClick={addTempCb}
             type="primary"
@@ -71,7 +80,14 @@ const Send = () => {
           />
         </div>
       ) : (
-        <TableTemp ref={tableRefs} onLook={lookCb} onEditor={editorCb} />
+        <TableTemp
+          style={{
+            height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+          }}
+          ref={tableRefs}
+          onLook={lookCb}
+          onEditor={editorCb}
+        />
       )}
     </>
   );

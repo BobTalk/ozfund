@@ -14,7 +14,7 @@ import Icon from "@/Components/Icon";
 import MoreBtn from "@/Components/MoreBtn";
 import { DeleteEmailTaskInterface, GetEmailTimeTaskInterface } from "@/api";
 import { cloneDeep } from "lodash";
-import { timeFormate } from "@/utils/base";
+import { getTableShowLine, timeFormate } from "@/utils/base";
 import { language1Enum } from "@/Enum";
 const TableProcess = (props, ref) => {
   const columns: ColumnsType = [
@@ -100,6 +100,9 @@ const TableProcess = (props, ref) => {
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   function deleteCb(e, crt, index) {
     stop(e, async () => {
       let { status, message: tipInfo } = await DeleteEmailTaskInterface({
@@ -164,6 +167,16 @@ const TableProcess = (props, ref) => {
     }),
     []
   );
+  const isShowMoreBtn = () =>
+    pagination.current.pageNo < pagination.current.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagination.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   useLayoutEffect(() => {
     getTableList(pagination.current);
   }, []);
@@ -176,16 +189,17 @@ const TableProcess = (props, ref) => {
         },
       }}
     >
-      <div className="bg-white rounded-[var(--border-radius)] mt-[var(--gap15)] pb-[var(--gap14)]">
-        <TableComp
-          className="_reset-table__btn"
-          dataSource={dataList}
-          columns={columns}
-        />
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div className="bg-white rounded-[var(--border-radius)]">
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {isShowMoreBtn() ? <MoreBtn onMore={moreCb} /> : null}
       </div>
-      {pagination.current.pageNo < pagination.current.pageTotal ? (
-        <MoreBtn onMore={moreCb} />
-      ) : null}
     </ConfigProvider>
   );
 };
