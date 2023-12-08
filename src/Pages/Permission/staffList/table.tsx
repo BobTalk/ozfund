@@ -4,12 +4,13 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { FindListInterface } from "@/api";
 import { EyeFilled } from "@ant-design/icons";
 import { ConfigProvider, Typography, message } from "antd";
-import { timeFormate } from "@/utils/base";
+import { getTableShowLine, timeFormate } from "@/utils/base";
 import { userAcountStateEnum } from "@/Enum";
 import {
   forwardRef,
   useImperativeHandle,
   useLayoutEffect,
+  useRef,
   useState,
 } from "react";
 import MoreBtn from "@/Components/MoreBtn";
@@ -74,6 +75,9 @@ const Table = (props, ref) => {
     pageSize: 10,
     pageNo: 1,
   });
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
   function lookCb(e, crt) {
     stop(e, () => {
       props?.onLook(crt);
@@ -111,10 +115,19 @@ const Table = (props, ref) => {
       pageNo: ++paginationInfo.pageNo,
     }));
   }
-  function updateList(conditions,isRestData) {
+  function updateList(conditions, isRestData) {
     setOnceExc(true);
     getPermissionList(conditions, isRestData);
   }
+  const isShowMoreBtn = () => paginationInfo.pageNo < paginationInfo.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = paginationInfo;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   useLayoutEffect(() => {
     getPermissionList();
   }, [JSON.stringify(paginationInfo)]);
@@ -134,16 +147,22 @@ const Table = (props, ref) => {
         },
       }}
     >
-      <div className="pb-[.25rem] bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
-        <TableComp
-          className="_reset-table__btn"
-          dataSource={dataList}
-          columns={columns}
-        />
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="bg-white rounded-[var(--border-radius)]"
+        >
+          <TableComp
+            className="_reset-table__btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {isShowMoreBtn() ? <MoreBtn onMore={moreCb} /> : null}
       </div>
-      {paginationInfo.pageNo < paginationInfo.pageTotal ? (
-        <MoreBtn onMore={moreCb} />
-      ) : null}
     </ConfigProvider>
   );
 };

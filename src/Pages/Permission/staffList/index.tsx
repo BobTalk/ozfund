@@ -2,7 +2,13 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input, Select, message } from "antd";
 import Table from "./table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import TextArea from "antd/es/input/TextArea";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ModalFooter from "@/Components/ModalFooterBtn";
@@ -23,6 +29,8 @@ const StaffList = () => {
   let tableRefs = useRef<any>();
   let { pathname } = useLocation();
   let [childrenRouter, setChildrenRouter] = useState<any>();
+  let topModuleRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   function findChildRouterPermiss() {
     let activePath: Array<string> = getSession("activePath");
     let findRouter = childrenUrl.find((item) => {
@@ -50,23 +58,35 @@ const StaffList = () => {
     );
   }
   useEffect(() => {
+    let { height } = topModuleRefs.current.getFilterHeight();
+    setFilterModuleHeight(height);
+  }, []);
+  useEffect(() => {
     findChildRouterPermiss();
   }, []);
   return [urlPrev, ...childrenUrl].includes(pathname) ? (
     <Outlet />
   ) : (
     <>
-      <FilterComp onUpdate={updateListCb} onFilter={filterCb} />
+      <FilterComp
+        ref={topModuleRefs}
+        onUpdate={updateListCb}
+        onFilter={filterCb}
+      />
       <Table
         onLook={lookCb}
         ref={tableRefs}
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
         childrenPermison={childrenRouter}
       />
     </>
   );
 };
-const FilterComp = (props) => {
+const FilterComp = forwardRef((props: any, ref) => {
   let [stop] = useStopPropagation();
+  let filterHeight = useRef<any>(0);
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
   let [filterInfo] = useState({
@@ -100,6 +120,16 @@ const FilterComp = (props) => {
   function filterSubmitCb(values) {
     props?.onFilter?.(values);
   }
+  function getFilterHeight() {
+    return filterHeight?.current.getBoundingClientRect();
+  }
+  useImperativeHandle(
+    ref,
+    () => ({
+      getFilterHeight,
+    }),
+    []
+  );
   return (
     <>
       <ConfigProvider
@@ -115,7 +145,10 @@ const FilterComp = (props) => {
           },
         }}
       >
-        <div className="flex items-center justify-between p-[var(--gap20)] bg-white rounded-[var(--border-radius)]">
+        <div
+          ref={filterHeight}
+          className="flex items-center justify-between p-[var(--gap20)] bg-white rounded-[var(--border-radius)]"
+        >
           <Form
             colon={false}
             onFinish={filterSubmitCb}
@@ -162,7 +195,7 @@ const FilterComp = (props) => {
       />
     </>
   );
-};
+});
 
 const AddStaffInfo = (props) => {
   let [stop] = useStopPropagation();
