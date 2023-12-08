@@ -40,16 +40,13 @@ const Ozc = (props) => {
   }, []);
   return (
     <>
-      <div ref={tableRefs}>
-        <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
-          <TableAllocation />
-        </div>
-        <MoreBtn />
+      <div ref={tableRefs} className="mb-[var(--gap15)]">
+        <TableAllocation  />
       </div>
       <div
         className="w-full bg-white py-[.3rem] pr-[.2rem] pl-[.3rem] rounded-[var(--border-radius)]"
         style={{
-          height: `calc(100% - ${tableHeight}px - .15rem)`,
+          height: `calc(100% - ${tableHeight}px - .3rem)`,
           minHeight: "3.5rem",
         }}
       >

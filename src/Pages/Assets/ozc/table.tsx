@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import MoreBtn from "@/Components/MoreBtn";
 const TableAllocation = (props) => {
   const columns: ColumnsType = [
     {
@@ -54,11 +55,14 @@ const TableAllocation = (props) => {
         },
       }}
     >
-      <TableComp
-        className="_reset-table__no-btn"
-        dataSource={dataList}
-        columns={columns}
-      />
+      <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
+        <TableComp
+          className="_reset-table__no-btn"
+          dataSource={dataList}
+          columns={columns}
+        />
+      </div>
+      <MoreBtn />
     </ConfigProvider>
   );
 };

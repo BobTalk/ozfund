@@ -118,10 +118,9 @@ const TotoPrice = (props) => {
             </ul>
           </div>
         </div>
-        <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
+       
           <TableAllocation />
-        </div>
-        <MoreBtn />
+        
       </div>
       <div
         className="w-full mt-[.07rem] bg-white py-[.3rem] pr-[.2rem] pl-[.3rem] rounded-[var(--border-radius)]"

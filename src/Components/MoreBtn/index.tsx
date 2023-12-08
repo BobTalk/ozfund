@@ -1,7 +1,9 @@
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { mergeClassName } from "@/utils/base";
 
 type MoreBtnType = {
   onMore?: Function;
+  className?: string;
 };
 const MoreBtn = (props: MoreBtnType) => {
   let [stop] = useStopPropagation();
@@ -11,7 +13,12 @@ const MoreBtn = (props: MoreBtnType) => {
     });
   }
   return (
-    <div className="pt-[var(--gap15)] pb-[.08rem] h-[63px]">
+    <div
+      className={mergeClassName(
+        "pt-[var(--gap15)] pb-[.08rem] h-[63px]",
+        props.className
+      )}
+    >
       <p className="grid place-items-center bg-[var(--white)] h-[.48rem] rounded-[var(--border-radius)]">
         <span
           onClick={moreCb}
