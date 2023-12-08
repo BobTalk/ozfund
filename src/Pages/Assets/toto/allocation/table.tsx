@@ -2,9 +2,11 @@ import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { ConfigProvider, Switch, Typography } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import MoreBtn from "@/Components/MoreBtn";
+import { getTableShowLine } from "@/utils/base";
 const TableAllocation = (props) => {
   const columns: ColumnsType = [
     {
@@ -55,13 +57,30 @@ const TableAllocation = (props) => {
       staffId: "xiaowu",
     },
   ]);
+  let pagitions = useRef<any>({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  let timer = useRef(null);
+  let contentRefs = useRef<any>();
+  let [tableContentLine, setTableContentLine] = useState<number>(10);
+  const isShowMoreBtn = () =>
+    pagitions.current.pageNo < pagitions.current.pageTotal;
+  useLayoutEffect(() => {
+    let { pageNo, pageTotal } = pagitions.current;
+    timer.current && clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let btnH = pageNo < pageTotal ? 63 : 0;
+      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
+    }, 500);
+  }, []);
   return (
     <ConfigProvider
       theme={{
         components: {
           Table: {
             headerColor: "#333",
-            colorText:"#666",
+            colorText: "#666",
           },
         },
         token: {
@@ -70,11 +89,22 @@ const TableAllocation = (props) => {
         },
       }}
     >
-      <TableComp
-        className="_reset-table__no-btn"
-        dataSource={dataList}
-        columns={columns}
-      />
+      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
+        <div
+          style={{
+            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
+          }}
+          className="bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]"
+        >
+          <TableComp
+            className="_reset-table__no-btn"
+            dataSource={dataList}
+            line={tableContentLine}
+            columns={columns}
+          />
+        </div>
+        {isShowMoreBtn() ? <MoreBtn /> : null}
+      </div>
     </ConfigProvider>
   );
 };

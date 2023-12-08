@@ -1,20 +1,35 @@
 import { ModalTitle } from "@/Components/Modal";
 import TableAllocation from "./table";
-import { useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import MoreBtn from "@/Components/MoreBtn";
 
 const Allocation = (props) => {
+  let topModuleRefs = useRef<any>();
+  let tableRefs = useRef<any>();
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
+  useEffect(() => {
+    let { height } = topModuleRefs.current.getFilterHeight();
+    setFilterModuleHeight(height);
+  }, []);
   return (
     <>
-      <TopModule />
-      <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
-        <TableAllocation />
-      </div>
-      <MoreBtn />
+      <TopModule ref={topModuleRefs} />
+      <TableAllocation
+        ref={tableRefs}
+        style={{
+          height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
+        }}
+      />
     </>
   );
 };
-const TopModule = () => {
+const TopModule = forwardRef((props, ref) => {
   let tableHeaderList = [
     {
       title: "Oz开发者团队",
@@ -52,8 +67,19 @@ const TopModule = () => {
       devTeam5: 99999,
     },
   ]);
+  let filterHeight = useRef<any>(0);
+  function getFilterHeight() {
+    return filterHeight?.current.getBoundingClientRect();
+  }
+  useImperativeHandle(
+    ref,
+    () => ({
+      getFilterHeight,
+    }),
+    []
+  );
   return (
-    <div className="bg-white rounded-[var(--border-radius)] pb-[var(--gap20)]">
+    <div ref={filterHeight} className="bg-white rounded-[var(--border-radius)] pb-[var(--gap20)]">
       <ModalTitle
         showTitleIcon
         classTitleName="py-[var(--gap20)] ml-[var(--gap30)]  border-b border-b-[#e6e6e6] text-[16px] text-[#333]"
@@ -112,5 +138,5 @@ const TopModule = () => {
       </div>
     </div>
   );
-};
+});
 export default Allocation;
