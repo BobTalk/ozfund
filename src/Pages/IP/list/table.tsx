@@ -1,11 +1,10 @@
 import Icon from "@/Components/Icon";
-import MoreBtn from "@/Components/MoreBtn";
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import PageTableScope from "@/Pages/Components/Table";
 import { GetIpListInterface } from "@/api";
-import { getTableShowLine, timeFormate } from "@/utils/base";
-import { ConfigProvider, Typography, Popconfirm } from "antd";
+import { timeFormate } from "@/utils/base";
+import { Typography, Popconfirm } from "antd";
 import { uniqBy, cloneDeep } from "lodash";
 import {
   forwardRef,
@@ -26,11 +25,10 @@ const Table = (props, ref) => {
     pgt = pagination.current,
     isMergeData = false
   ) {
-    let { status, data, pageNo, pageSize, pageTotal } =
-      await GetIpListInterface({
-        conditions,
-        pgt,
-      });
+    let { data, pageNo, pageSize, pageTotal } = await GetIpListInterface({
+      conditions,
+      pgt,
+    });
     pagination.current = {
       pageNo,
       pageSize,
@@ -88,9 +86,6 @@ const Table = (props, ref) => {
       },
     },
   ];
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
@@ -114,43 +109,24 @@ const Table = (props, ref) => {
   );
   const isShowMoreBtn = () =>
     pagination.current.pageNo < pagination.current.pageTotal;
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = pagination.current;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
+
   useLayoutEffect(() => {
     getTableList({}, pagination.current, true);
   }, []);
+  function moreCb(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div
-          style={{
-            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
-          }}
-          className="overflow-auto bg-white rounded-[var(--border-radius)]"
-        >
-          <TableComp
-            className="_reset-table__btn"
-            dataSource={dataList}
-            line={tableContentLine}
-            columns={columns}
-          />
-        </div>
-        {isShowMoreBtn() ? <MoreBtn /> : null}
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagination.current}
+      style={props.style}
+      className="_reset-table__btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

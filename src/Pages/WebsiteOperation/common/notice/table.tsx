@@ -1,6 +1,5 @@
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-import { ConfigProvider, Popconfirm, Switch, Typography, message } from "antd";
+import { Popconfirm, Switch, Typography, message } from "antd";
 import {
   forwardRef,
   useImperativeHandle,
@@ -11,8 +10,7 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
-import { getTableShowLine, mergeClassName, timeFormate } from "@/utils/base";
-import MoreBtn from "@/Components/MoreBtn";
+import { timeFormate } from "@/utils/base";
 import {
   DeleteNoticeInterface,
   GetNoticeListInterface,
@@ -20,7 +18,7 @@ import {
 } from "@/api";
 import { languageEnum } from "@/Enum";
 import { cloneDeep } from "lodash";
-import dayjs from "dayjs";
+import PageTableScope from "@/Pages/Components/Table";
 const TableProcess = (props, ref) => {
   const columns: ColumnsType = [
     {
@@ -98,9 +96,6 @@ const TableProcess = (props, ref) => {
     pageSize: 10,
     pageTotal: 10,
   });
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
@@ -165,10 +160,6 @@ const TableProcess = (props, ref) => {
   function updateTableList(conditions, gpt, isMergeData = false) {
     getTableList(conditions, gpt, isMergeData);
   }
-  function loadMoreCb() {
-    pagination.current.pageNo += 1;
-    getTableList({}, pagination.current, true);
-  }
   function editorLoadTableList() {
     let { pageNo, pageSize } = pagination.current;
     getTableList(
@@ -188,42 +179,26 @@ const TableProcess = (props, ref) => {
     }),
     []
   );
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = pagination.current;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
+  const isShowMoreBtn = () =>
+    pagination.current.pageNo < pagination.current.pageTotal;
+
   useLayoutEffect(() => {
     getTableList({}, pagination.current, true);
   }, []);
+  function moreCb(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div
-          className={mergeClassName("bg-white rounded-[var(--border-radius)]")}
-        >
-          <TableComp
-            className="_reset-table__btn"
-            line={tableContentLine}
-            dataSource={dataList}
-            columns={columns}
-          />
-        </div>
-        {pagination.current.pageNo < pagination.current.pageTotal ? (
-          <MoreBtn onMore={loadMoreCb} />
-        ) : null}
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagination.current}
+      style={props.style}
+      className="_reset-table__btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

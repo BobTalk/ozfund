@@ -1,6 +1,4 @@
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-import { ConfigProvider } from "antd";
 import {
   forwardRef,
   useImperativeHandle,
@@ -9,9 +7,9 @@ import {
   useState,
 } from "react";
 import { GetEmailListInterface } from "@/api";
-import MoreBtn from "@/Components/MoreBtn";
-import { getTableShowLine, timeFormate } from "@/utils/base";
+import { timeFormate } from "@/utils/base";
 import { language1Enum } from "@/Enum";
+import PageTableScope from "@/Pages/Components/Table";
 const TableEmailList = (props, ref) => {
   const columns: ColumnsType = [
     {
@@ -39,9 +37,6 @@ const TableEmailList = (props, ref) => {
     pageSize: 10,
     pageTotal: 10,
   });
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
   async function getTableList(conditions, gpt, isMergeData = false) {
     let { status, data, pageSize, pageNo, pageTotal } =
       await GetEmailListInterface({
@@ -65,6 +60,9 @@ const TableEmailList = (props, ref) => {
     pagination.current.pageNo += 1;
     props?.onMore(pagination.current);
   }
+  const isShowMoreBtn = () =>
+    pagination.current.pageNo < pagination.current.pageTotal;
+
   useImperativeHandle(
     ref,
     () => ({
@@ -75,38 +73,17 @@ const TableEmailList = (props, ref) => {
   useLayoutEffect(() => {
     getTableList({}, pagination.current, false);
   }, []);
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = pagination.current;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div className="bg-white rounded-[var(--border-radius)]">
-          <TableComp
-            className="_reset-table__no-btn"
-            dataSource={dataList}
-            line={tableContentLine}
-            columns={columns}
-          />
-        </div>
-        {pagination.current.pageNo < pagination.current.pageTotal ? (
-          <MoreBtn onMore={loadMoreCb} />
-        ) : null}
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagination.current}
+      style={props.style}
+      className="_reset-table__no-btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={loadMoreCb}
+    />
   );
 };
 

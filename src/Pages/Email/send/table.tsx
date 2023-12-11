@@ -1,6 +1,5 @@
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-import { ConfigProvider, Popconfirm, Typography, message } from "antd";
+import { Popconfirm, Typography, message } from "antd";
 import {
   forwardRef,
   useImperativeHandle,
@@ -11,11 +10,11 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
-import MoreBtn from "@/Components/MoreBtn";
 import { DeleteEmailTaskInterface, GetEmailTimeTaskInterface } from "@/api";
 import { cloneDeep } from "lodash";
-import { getTableShowLine, timeFormate } from "@/utils/base";
+import { timeFormate } from "@/utils/base";
 import { language1Enum } from "@/Enum";
+import PageTableScope from "@/Pages/Components/Table";
 const TableProcess = (props, ref) => {
   const columns: ColumnsType = [
     {
@@ -100,9 +99,6 @@ const TableProcess = (props, ref) => {
   let [stop] = useStopPropagation();
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
   function deleteCb(e, crt, index) {
     stop(e, async () => {
       let { status, message: tipInfo } = await DeleteEmailTaskInterface({
@@ -169,38 +165,20 @@ const TableProcess = (props, ref) => {
   );
   const isShowMoreBtn = () =>
     pagination.current.pageNo < pagination.current.pageTotal;
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = pagination.current;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
+
   useLayoutEffect(() => {
     getTableList(pagination.current);
   }, []);
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div className="bg-white rounded-[var(--border-radius)]">
-          <TableComp
-            className="_reset-table__btn"
-            dataSource={dataList}
-            line={tableContentLine}
-            columns={columns}
-          />
-        </div>
-        {isShowMoreBtn() ? <MoreBtn onMore={moreCb} /> : null}
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagination.current}
+      style={props.style}
+      className="_reset-table__btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

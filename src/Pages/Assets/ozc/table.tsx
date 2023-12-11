@@ -1,11 +1,6 @@
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-import { ConfigProvider, Switch, Typography } from "antd";
-import dayjs from "dayjs";
-import { useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useStopPropagation } from "@/Hooks/StopPropagation";
-import MoreBtn from "@/Components/MoreBtn";
+import { useRef, useState } from "react";
+import PageTableScope from "@/Pages/Components/Table";
 const TableAllocation = (props) => {
   const columns: ColumnsType = [
     {
@@ -30,40 +25,29 @@ const TableAllocation = (props) => {
       dataIndex: "num",
     },
   ];
-  const [dataList, setDataList] = useState<any>([
-    {
-      key: 1,
-      frezzTime: new Date(),
-      address: "djahoaic4234kahdiuahdajag",
-      num: 439487,
-      notes: "Ozfund投注挖矿：sifjsidijjisd-Ozfund投注挖矿：Aioeowie",
-      staffId: "xiaowu",
-    },
-  ]);
+  const [dataList, setDataList] = useState<any>([]);
+  let pagitions = useRef<{
+    pageNo: number;
+    pageSize: number;
+    pageTotal?: number;
+  }>({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  const isShowMoreBtn = () =>
+    pagitions.current.pageNo < pagitions.current.pageTotal;
+  function moreCb(): void {}
+
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Table: {
-            headerColor: "#333",
-            colorText: "#666",
-          },
-        },
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div className="mt-[var(--gap15)] pb-[var(--gap14)] bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]">
-        <TableComp
-          className="_reset-table__no-btn"
-          dataSource={dataList}
-          columns={columns}
-        />
-      </div>
-      <MoreBtn />
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagitions.current}
+      style={props.style}
+      className="_reset-table__no-btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

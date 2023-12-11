@@ -1,12 +1,10 @@
 import Icon from "@/Components/Icon";
-import MoreBtn from "@/Components/MoreBtn";
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { getTableShowLine } from "@/utils/base";
-import { Button, ConfigProvider, Input, Typography } from "antd";
+import PageTableScope from "@/Pages/Components/Table";
+import { Typography } from "antd";
 import dayjs from "dayjs";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 const Table = (props) => {
   const columns: ColumnsType = [
     {
@@ -74,9 +72,6 @@ const Table = (props) => {
     },
   ]);
   let [stop] = useStopPropagation();
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
   let [editingKey, setEditingKey] = useState("");
   let isEditing = (record) => record.key === editingKey;
 
@@ -91,40 +86,21 @@ const Table = (props) => {
       props?.onDelete(crt);
     });
   }
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = pagitions.current;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
+
+  function moreCb(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div
-          style={{
-            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
-          }}
-          className="bg-white overflow-auto rounded-[0_0_var(--border-radius)_var(--border-radius)]"
-        >
-          <TableComp
-            className="_reset-table__btn"
-            dataSource={dataList}
-            line={tableContentLine}
-            columns={columns}
-          />
-        </div>
-        {isShowMoreBtn() ? <MoreBtn /> : null}
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagitions.current}
+      style={props.style}
+      className="_reset-table__btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

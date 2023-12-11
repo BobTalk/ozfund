@@ -1,12 +1,9 @@
-import { forwardRef, useLayoutEffect, useRef, useState } from "react";
-import TableComp from "@/Components/Table";
+import { forwardRef, useRef, useState } from "react";
 import type { ColumnsType } from "@/Components/Table";
-import { EditOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider } from "antd";
+import { Button } from "antd";
 import { Typography } from "antd";
 import Icon from "@/Components/Icon";
-import MoreBtn from "@/Components/MoreBtn";
-import { getTableShowLine } from "@/utils/base";
+import PageTableScope from "@/Pages/Components/Table";
 const TableConfig = (props) => {
   let [dataList, setData] = useState([
     {
@@ -129,45 +126,20 @@ const TableConfig = (props) => {
   async function submitCb(e, crt, index) {
     props?.onEditor?.(e, crt, index);
   }
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = pagitions.current;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
+  function moreCb(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div
-          style={{
-            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
-          }}
-          className="overflow-auto bg-white rounded-[0_0_var(--border-radius)_var(--border-radius)]"
-        >
-          <TableComp
-            className="mt-[var(--gap15)] _reset-table__btn"
-            themeObj={{
-              headerBorderRadius: 0,
-            }}
-            bordered={false}
-            dataSource={dataList}
-            columns={columns}
-            line={tableContentLine}
-            pagination={false}
-          />
-        </div>
-        <MoreBtn />
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={pagitions.current}
+      style={props.style}
+      className="_reset-table__btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

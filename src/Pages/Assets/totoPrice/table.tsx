@@ -1,10 +1,7 @@
 import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
-import { ConfigProvider, Switch, Typography } from "antd";
-import dayjs from "dayjs";
+import { ConfigProvider } from "antd";
 import { useState } from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useStopPropagation } from "@/Hooks/StopPropagation";
 import MoreBtn from "@/Components/MoreBtn";
 const TableAllocation = (props) => {
   const columns: ColumnsType = [

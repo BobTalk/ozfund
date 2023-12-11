@@ -1,10 +1,9 @@
-import TableComp from "@/Components/Table";
 import type { ColumnsType } from "@/Components/Table";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { FindListInterface } from "@/api";
 import { EyeFilled } from "@ant-design/icons";
-import { ConfigProvider, Typography, message } from "antd";
-import { getTableShowLine, timeFormate } from "@/utils/base";
+import { Typography, message } from "antd";
+import { timeFormate } from "@/utils/base";
 import { userAcountStateEnum } from "@/Enum";
 import {
   forwardRef,
@@ -13,8 +12,8 @@ import {
   useRef,
   useState,
 } from "react";
-import MoreBtn from "@/Components/MoreBtn";
 import { uniqBy } from "lodash";
+import PageTableScope from "@/Pages/Components/Table";
 const Table = (props, ref) => {
   const columns: ColumnsType = [
     {
@@ -53,7 +52,7 @@ const Table = (props, ref) => {
       dataIndex: "operation",
       width: 200,
       align: "left",
-      render: (_, record, index) => {
+      render: (_, record) => {
         return (
           <Typography.Link disabled={!props.childrenPermison}>
             <div
@@ -75,9 +74,6 @@ const Table = (props, ref) => {
     pageSize: 10,
     pageNo: 1,
   });
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
   function lookCb(e, crt) {
     stop(e, () => {
       props?.onLook(crt);
@@ -120,14 +116,7 @@ const Table = (props, ref) => {
     getPermissionList(conditions, isRestData);
   }
   const isShowMoreBtn = () => paginationInfo.pageNo < paginationInfo.pageTotal;
-  useLayoutEffect(() => {
-    let { pageNo, pageTotal } = paginationInfo;
-    timer.current && clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      let btnH = pageNo < pageTotal ? 63 : 0;
-      setTableContentLine(getTableShowLine(contentRefs.current, btnH));
-    }, 500);
-  }, [dataList]);
+
   useLayoutEffect(() => {
     getPermissionList();
   }, [JSON.stringify(paginationInfo)]);
@@ -139,31 +128,15 @@ const Table = (props, ref) => {
     []
   );
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          borderRadius: 2,
-          controlHeight: 36,
-        },
-      }}
-    >
-      <div ref={contentRefs} style={props.style} className="mt-[var(--gap15)]">
-        <div
-          style={{
-            maxHeight: isShowMoreBtn() ? `calc(100% - .63rem)` : "100%",
-          }}
-          className="bg-white rounded-[var(--border-radius)]"
-        >
-          <TableComp
-            className="_reset-table__btn"
-            dataSource={dataList}
-            line={tableContentLine}
-            columns={columns}
-          />
-        </div>
-        {isShowMoreBtn() ? <MoreBtn onMore={moreCb} /> : null}
-      </div>
-    </ConfigProvider>
+    <PageTableScope
+      pagitions={paginationInfo.current}
+      style={props.style}
+      className="_reset-table__btn"
+      isShowMoreBtn={isShowMoreBtn()}
+      dataList={dataList}
+      columns={columns}
+      moreLoad={moreCb}
+    />
   );
 };
 

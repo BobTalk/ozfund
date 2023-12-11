@@ -6,12 +6,12 @@ import { number } from "echarts";
 import { useLayoutEffect, useRef, useState } from "react";
 
 const PageTableScope = ({
-  pagitions={pageNo:number,pageTotal:number},
-  style={},
-  isShowMoreBtn=false,
-  dataList=[],
-  columns=[],
-  className="",
+  pagitions,
+  style = {},
+  isShowMoreBtn = false,
+  dataList = [],
+  columns = [],
+  className = "",
   moreLoad = () => {},
 }) => {
   let { pageNo, pageTotal } = pagitions || {};
