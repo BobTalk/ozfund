@@ -2,7 +2,6 @@ import MoreBtn from "@/Components/MoreBtn";
 import TableComp from "@/Components/Table";
 import { getTableShowLine } from "@/utils/base";
 import { ConfigProvider } from "antd";
-import { number } from "echarts";
 import { useLayoutEffect, useRef, useState } from "react";
 
 const PageTableScope = ({
