@@ -101,7 +101,7 @@ const TableConfig = (props) => {
             onClick={(e) => submitCb(e, record, index)}
           >
             <Button
-              className="bg-[rgba(3,133,242,0.1)] border-[rgba(3,133,242,0.1)] text-[#0385F2]"
+              className="btn bg-[rgba(3,133,242,0.1)] border-[rgba(3,133,242,0.1)] text-[#0385F2]"
               icon={
                 <Icon name="h-icon-qianming" style={{ fontSize: "16px" }} />
               }

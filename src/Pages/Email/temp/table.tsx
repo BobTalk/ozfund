@@ -169,7 +169,7 @@ const TableProcess = (props, ref) => {
     <PageTableScope
       pagitions={pagination.current}
       style={props.style}
-      className="_reset-table__no-btn"
+      className="_reset-table__btn"
       isShowMoreBtn={isShowMoreBtn()}
       dataList={dataList}
       columns={columns}
