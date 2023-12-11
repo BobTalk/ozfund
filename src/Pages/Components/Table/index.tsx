@@ -1,3 +1,6 @@
+/**
+ * @summary 页面table公共部分
+ */
 import MoreBtn from "@/Components/MoreBtn";
 import TableComp from "@/Components/Table";
 import { getTableShowLine } from "@/utils/base";

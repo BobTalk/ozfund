@@ -21,6 +21,7 @@
       }
     }
   }
+
   :global(.ant-menu-submenu-vertical.ant-menu-submenu-active) {
     &:hover {
       :global(.ant-menu-submenu-title) {
@@ -34,4 +35,7 @@
     color: var(--blue);
   }
 
+  :global(.ant-menu-item:not(.ant-menu-item-disabled):focus-visible) {
+    outline: none;
+  }
 }
