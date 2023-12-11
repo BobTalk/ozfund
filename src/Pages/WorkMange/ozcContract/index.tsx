@@ -34,6 +34,7 @@ const OzcContract = () => {
       return activePath.includes(item.key);
     });
     findRouter.length && breadByPath(findRouter[0]?.key);
+    findRouter.length && navigate(findRouter[0]?.key);
     if (findRouter.length !== childrenRouter.length) {
       setChildrenRouter(findRouter);
     }
@@ -47,7 +48,7 @@ const OzcContract = () => {
     <>
       <Tabs
         ref={tabsRefs}
-        defaultActiveKey={pathname}
+        defaultActiveKey={childrenRouter?.[0]?.["key"]}
         onTabClick={tabClickCb}
         className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
         list={childrenRouter}

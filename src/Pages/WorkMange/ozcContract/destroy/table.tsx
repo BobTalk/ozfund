@@ -122,7 +122,7 @@ const Table = (props) => {
             columns={columns}
           />
         </div>
-        <MoreBtn />
+        {isShowMoreBtn() ? <MoreBtn /> : null}
       </div>
     </ConfigProvider>
   );

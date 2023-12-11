@@ -40,6 +40,7 @@ const TableComp = (props: TableCompPropsType) => {
     columns,
     pagination,
     border,
+    loading,
     components: comp,
     className,
     line = 10,
@@ -66,7 +67,7 @@ const TableComp = (props: TableCompPropsType) => {
           components={comp}
           virtual={false}
           bordered={border}
-          loading={false}
+          loading={loading}
           scroll={{ y: 55 * line }}
           pagination={pagination}
           dataSource={dataSource}
@@ -90,5 +91,6 @@ TableComp.defaultProps = {
   paginationThemeObj: {},
   components: {},
   virtual: false,
+  loading:false
 };
 export default TableComp;
