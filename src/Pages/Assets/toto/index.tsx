@@ -20,6 +20,7 @@ const Toto = () => {
     },
   ]);
   function tabClickCb(key: string) {
+    if (!key) return;
     breadByPath(key);
     navigate(key, { state });
   }
@@ -34,8 +35,7 @@ const Toto = () => {
     let findRouter = childrenRouter.filter((item) => {
       return activePath.includes(item.key);
     });
-    findRouter.length && breadByPath(findRouter[0]?.key);
-    navigate(findRouter[0]?.key, { state });
+    tabClickCb(findRouter[0]?.key);
     setChildrenRouter(findRouter);
   }
   useLayoutEffect(() => {

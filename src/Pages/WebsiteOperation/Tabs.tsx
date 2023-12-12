@@ -21,6 +21,7 @@ const TabsScope = (props) => {
     },
   ]);
   function tabClickCb(key) {
+    if(!key) return
     breadByPath(key);
     navigate(key, { state: { ...state, language: props.language } });
   }
@@ -35,10 +36,7 @@ const TabsScope = (props) => {
     let findRouter = childrenRouter.filter((item) => {
       return activePath.includes(item.key);
     });
-    findRouter.length && breadByPath(findRouter[0]?.key);
-    navigate(findRouter[0]?.key, {
-      state: { ...state, language: props.language },
-    });
+    tabClickCb(findRouter[0]?.key)
     setChildrenRouter(findRouter);
   }
   useLayoutEffect(() => {

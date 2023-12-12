@@ -120,14 +120,15 @@ const formatEnum = (enumData) => {
   }))
 }
 
-const breadSite = (key:string) => {
+const breadSite = (key: string) => {
   let activeKey = activePathToName[key];
   let activeP = activePath[key];
   if (activeKey?.length > 1) {
     return activeKey.map((item, idx, arr) => {
-      return idx === arr.length - 1 || !idx
-        ? { title: item }
-        : { title: item, href: activeP[idx] };
+      return { title: item }
+      //  idx === arr.length - 1 || !idx
+      //   ? { title: item }
+      //   : { title: item, href: activeP[idx] };
     });
   } else {
     return [{ title: activePathToName?.[key]?.[0] ?? "--" }]
@@ -137,15 +138,15 @@ function timeJoin(time, isPre = false) {
   if (!time) return null
   return isPre ? time + " 23:59:59" : time + " 00:00:00"
 }
-function getTableShowLine(el, btnHeight, lineHeight=55){
+function getTableShowLine(el, btnHeight, lineHeight = 55) {
   return Math.round((el?.clientHeight - 64 - btnHeight) / lineHeight)
 }
- const formatBalance = (rawBalance: string) => {
+const formatBalance = (rawBalance: string) => {
   const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2)
   return balance
 }
 
- const formatChainAsNum = (chainIdHex: string) => {
+const formatChainAsNum = (chainIdHex: string) => {
   const chainIdNum = parseInt(chainIdHex)
   return chainIdNum
 }
