@@ -378,29 +378,29 @@ export const SwitchProbelmInterface = (params) => {
   })
 }
 // /contract/addAdmin?address= 添加管理员
-export const AddManageInterface=(params)=>{
-  return _http.getReq({
-    url:`${contractPrefix}removeAdmin`,
-    params
+export const AddManageInterface=(data)=>{
+  return _http.postReq({
+    url:`${contractPrefix}addAdmin`,
+    data
   })
 }
 // /contract/removeAdmin?address= 移除管理员
 export const RemoveManageInterface=(params)=>{
-  return _http.getReq({
+  return _http.deleteReq({
     url:`${contractPrefix}removeAdmin`,
     params
   })
 }
 // /contract/addSuperAdmin?address= 添加超级管理员
-export const AddSuperManageInterface=(params)=>{
-  return _http.getReq({
+export const AddSuperManageInterface=(data)=>{
+  return _http.postReq({
     url:`${contractPrefix}addSuperAdmin`,
-    params
+    data
   })
 }
 // /contract/removeSuperAdmin?address= 移除超级管理员
 export const RemoveSuperManageInterface=(params)=>{
-  return _http.getReq({
+  return _http.deleteReq({
     url:`${contractPrefix}removeSuperAdmin`,
     params
   })

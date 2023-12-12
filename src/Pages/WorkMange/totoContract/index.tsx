@@ -5,13 +5,14 @@ import {
   SaveOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Button, ConfigProvider, Form, Input, InputNumber, Switch } from "antd";
+import { Button, ConfigProvider, Form, Input, InputNumber, Switch, message } from "antd";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
+import { SwitchExchaneInterface } from "@/api";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -19,9 +20,15 @@ const TodoContract = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
+  let [totoSell,setTotoSell]=useState<boolean>(false)
   function configCb(e, crt) {
-    stop(e, () => {
-      if(crt.flag === 'switch') return
+    stop(e, async () => {
+      if(crt.flag === 'switch'){
+       let  {status, message:tipInfo} = await SwitchExchaneInterface({})
+       message[status?'success':'error'](tipInfo)
+       setTotoSell(!totoSell)
+        return
+      }
       moduleContent.current = crt.flag;
       moduleTitle.current = crt.title;
       setModalOpen(!modalOpen);
@@ -40,7 +47,7 @@ const TodoContract = () => {
   }, []);
   return (
     <>
-      <HeaderModule ref={headerRefs} onConfig={configCb} />
+      <HeaderModule ref={headerRefs} totoSell={totoSell} onConfig={configCb} />
       <Contentmodule headerH={headerHeight} onSave={saveCb} />
       <ModalScopeComp
         content={moduleContent.current}
@@ -56,13 +63,12 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
   function operationCb(e, crt) {
     props?.onConfig?.(e, crt);
   }
-
   let [moduleList] = useState([
     {
       id: 1,
       flag: "switch",
       title: "开启/关闭TOTO出售",
-      operateNode: <Switch defaultChecked />,
+      operateNode: <Switch defaultChecked={props.totoSell}/>,
     },
     {
       id: 2,

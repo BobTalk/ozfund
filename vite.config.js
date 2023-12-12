@@ -73,6 +73,11 @@ export default defineConfig({
         target: "http://192.168.50.162:8080",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/root/, '')
+      },
+      "/contract": {
+        target: "http://192.168.50.162:8080",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/contract/, '')
       }
     }
   }
