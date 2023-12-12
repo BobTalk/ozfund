@@ -1,13 +1,13 @@
 import Tabs from "@/Components/Tabs";
 import { breadSite, getSession } from "@/utils/base";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import store from "@/store";
 import Denied from "../Denied";
 const TabsScope = (props) => {
   let tabsRefs = useRef<any>();
   let { pathname, state } = useLocation();
-  console.log('pathname: ', pathname);
+  console.log("pathname: ", pathname);
   let commonUrlPrefix = `/ozfund/website-operation/${props.language}`;
   let navigate = useNavigate();
   let [tabsHeight, setTabsHeight] = useState(0);
@@ -41,9 +41,11 @@ const TabsScope = (props) => {
     });
     setChildrenRouter(findRouter);
   }
+  useLayoutEffect(() => {
+    findChildRouterPermiss();
+  }, []);
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();
-    findChildRouterPermiss();
     setTabsHeight(height);
     // tabClickCb(pathname)
   }, []);
@@ -53,7 +55,7 @@ const TabsScope = (props) => {
         <>
           <Tabs
             ref={tabsRefs}
-            defaultActiveKey={childrenRouter[0]?.['key']}
+            defaultActiveKey={childrenRouter[0]?.["key"]}
             onTabClick={tabClickCb}
             className="bg-white pt-[2px] px-[var(--gap20)] rounded-[var(--border-radius)]"
             list={childrenRouter}

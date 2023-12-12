@@ -1,5 +1,5 @@
 import Tabs from "@/Components/Tabs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import store from "@/store";
 import { breadSite, getSession } from "@/utils/base";
@@ -38,9 +38,11 @@ const Toto = () => {
     navigate(findRouter[0]?.key, { state });
     setChildrenRouter(findRouter);
   }
+  useLayoutEffect(() => {
+    findChildRouterPermiss();
+  }, []);
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();
-    findChildRouterPermiss();
     setTabsHeight(height);
   }, []);
   return (
