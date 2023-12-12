@@ -1,3 +1,3 @@
-interface Window {
+declare interface Window {
   [key: string]: any
 }

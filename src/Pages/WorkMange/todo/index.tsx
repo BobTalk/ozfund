@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import TableConfig from "./table";
 import linkIcon from "@/assets/images/link.svg";
 import { useStopPropagation } from "@/Hooks/StopPropagation.js";
@@ -6,16 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { formatBalance } from "@/utils/base";
-import { DownOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
+import { VerticalAlignBottomOutlined } from "@ant-design/icons";
 
 const Todo = () => {
   const [hasProvider, setHasProvider] = useState<boolean | null>(null);
   const initialState = { accounts: [], balance: "", chainId: "" };
   const [wallet, setWallet] = useState(initialState);
-
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [isConnecting, setIsConnecting] = useState(false);
 
   let [stop] = useStopPropagation();
   let topModuleRefs = useRef<any>();
@@ -77,20 +74,27 @@ const Todo = () => {
   };
 
   const handleConnect = async () => {
-    setIsConnecting(true);
+    // setIsConnecting(true);
     await (window as any).ethereum
       .request({
         method: "eth_requestAccounts",
       })
       .then((accounts: []) => {
-        setError(false);
+        // setError(false);
         updateWallet(accounts);
       })
       .catch((err: any) => {
-        setError(true);
-        setErrorMessage(err.message);
+        if (err.code == 4001) {
+          message.error("用户拒绝连接");
+        }
+        if (err.code === -32002) {
+          // 用户在申请连接时既没有取消也没有同意钱包的绑定需要手动打开小狐狸钱包的插件进行绑定
+          message.error("手动打开小狐狸钱包的插件进行绑定");
+        }
+        // setError(true);
+        // setErrorMessage(err.message);
       });
-    setIsConnecting(false);
+    // setIsConnecting(false);
   };
   function installCb() {
     window.open("https://metamask.io", "_blank");
