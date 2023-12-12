@@ -140,7 +140,18 @@ function timeJoin(time, isPre = false) {
 function getTableShowLine(el, btnHeight, lineHeight=55){
   return Math.round((el?.clientHeight - 64 - btnHeight) / lineHeight)
 }
+ const formatBalance = (rawBalance: string) => {
+  const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2)
+  return balance
+}
+
+ const formatChainAsNum = (chainIdHex: string) => {
+  const chainIdNum = parseInt(chainIdHex)
+  return chainIdNum
+}
 export {
+  formatBalance,
+  formatChainAsNum,
   timeJoin,
   getTableShowLine,
   breadSite,

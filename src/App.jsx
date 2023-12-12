@@ -9,7 +9,7 @@ function App() {
         <RouterConfigComp />
       </Router>
     </ErrorBoundary>
+
   )
 }
-
 export default App
