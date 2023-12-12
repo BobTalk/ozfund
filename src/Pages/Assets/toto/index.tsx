@@ -6,7 +6,7 @@ import { breadSite, getSession } from "@/utils/base";
 const Toto = () => {
   let commonUrlPrefix = "/ozfund/assets/toto";
   let tabsRefs = useRef<any>();
-  let { pathname,state } = useLocation();
+  let { pathname, state } = useLocation();
   let navigate = useNavigate();
   let [tabsHeight, setTabsHeight] = useState(0);
   let [childrenRouter, setChildrenRouter] = useState([
@@ -35,9 +35,8 @@ const Toto = () => {
       return activePath.includes(item.key);
     });
     findRouter.length && breadByPath(findRouter[0]?.key);
-    if (findRouter.length !== childrenRouter.length) {
-      setChildrenRouter(findRouter);
-    }
+    navigate(findRouter[0]?.key, { state });
+    setChildrenRouter(findRouter);
   }
   useEffect(() => {
     let { height } = tabsRefs.current.getBoundingClientRect();
