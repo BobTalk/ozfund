@@ -121,3 +121,7 @@ export enum transactionTypeEnum {
   添加超级管理员,
   删除超级管理员,
 }
+export enum manageTypeEnum{
+  管理员=1,
+  超级管理员
+}

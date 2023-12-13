@@ -1,15 +1,17 @@
+import { manageTypeEnum } from "@/Enum";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import ModalComp from "@/Pages/ModalComp";
 import {
   AddManageInterface,
   AddSuperManageInterface,
+  GetContractSystemInterface,
   RemoveManageInterface,
 } from "@/api";
 import closeIcon from "@/assets/images/close.svg";
 import plusIcon from "@/assets/images/plus.svg";
 import { Button, Form, Input, message } from "antd";
 import { cloneDeep } from "lodash";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 const MangeSite = () => {
   let [mangeOpen, setMangeOpen] = useState(false);
   let [isAddManage, setIsAddManage] = useState(false);
@@ -17,66 +19,22 @@ const MangeSite = () => {
   let [addmanage, setAddmanage] = useState({
     address: "",
   });
-  let [manageList, setmanageList] = useState([
-    {
-      id: 1,
-      name: "超级管理员A",
-      type: "superManage",
-      address: "",
-    },
-    {
-      id: 2,
-      name: "超级管理员B",
-      type: "superManage",
-      address: "",
-    },
-    {
-      id: 3,
-      name: "管理员A",
-      type: "manage",
-      address: "",
-    },
-    {
-      id: 4,
-      name: "管理员B",
-      type: "manage",
-      address: "",
-    },
-    {
-      id: 5,
-      name: "管理员C",
-      type: "manage",
-      address: "",
-    },
-  ]);
+  let [manageList, setmanageList] = useState([]);
   let [stop] = useStopPropagation();
-  function addManageResFormat(status, tipInfo, address = "") {
+  function addManageResFormat(status, tipInfo) {
     message[status ? "success" : "error"](tipInfo);
-    if (status) {
-      let crtId = crtManageInfo.current.id;
-      let idx = manageList.findIndex((item) => item.id === crtId);
-      let cloneList = cloneDeep(manageList);
-
-      address
-        ? cloneList.splice(idx, 1, {
-            ...crtManageInfo.current,
-            address,
-          })
-        : cloneList.splice(idx, 1);
-      setMangeOpen(!mangeOpen);
-      setmanageList(cloneList);
-    }
+    setMangeOpen(!mangeOpen);
   }
   async function submitDeleteManageCb() {
     let { address } = crtManageInfo.current;
-    if (crtManageInfo.current.type === "superManage") {
+    if (crtManageInfo.current.type === 2) {
       let res = await AddSuperManageInterface({
         address,
       });
       let { status, message: tipInfo } = res;
       addManageResFormat(status, tipInfo);
     }
-    if (crtManageInfo.current.type === "manage") {
+    if (crtManageInfo.current.type === 1) {
       let { status, message: tipInfo } = await RemoveManageInterface({
         address,
       });
@@ -90,11 +48,11 @@ const MangeSite = () => {
         address,
       });
       let { status, message: tipInfo } = res;
-      addManageResFormat(status, tipInfo, address);
+      addManageResFormat(status, tipInfo);
     }
     if (crtManageInfo.current.type === "manage") {
       let { status, message: tipInfo } = await AddManageInterface({ address });
-      addManageResFormat(status, tipInfo, address);
+      addManageResFormat(status, tipInfo);
     }
   }
   function manageCb() {
@@ -115,15 +73,25 @@ const MangeSite = () => {
       (item.address ? deleteCb : addCb)(item, index);
     });
   }
+  async function getManageList() {
+    let { data = [] } = await GetContractSystemInterface();
+    setmanageList(data);
+  }
+  useLayoutEffect(() => {
+    getManageList();
+  }, []);
   return (
     <>
       <ul className="h-full bg-[var(--white)] rounded-[var(--border-radius)] py-[var(--gap20)]">
-        {manageList.map((item, index) => (
+        {manageList.map((item: any, index) => (
           <li
-            key={item.id}
+            key={item.address}
             className="grid items-center ml-[.4rem] py-[var(--gap20)] border-b border-b-[var(--border-color)] border-dashed pr-[var(--gap20)] grid-cols-[20%_1fr_max-content] gap-[var(--gap15)] text-[14px] text-[#333]"
           >
-            <span>{item.name}</span>
+            <span>
+              {manageTypeEnum[item.type]}
+              {item.note}
+            </span>
             <span>{item.address || "暂无"}</span>
             <span
               onClick={(e) => operationCb(e, item, index)}
@@ -145,7 +113,7 @@ const MangeSite = () => {
         ))}
       </ul>
       <ModalComp
-        title={`${crtManageInfo.current?.flag}${crtManageInfo.current?.name}`}
+        title={`${crtManageInfo.current?.flag}${manageTypeEnum[crtManageInfo.current?.type]}${crtManageInfo.current?.note}`}
         showFooter={!isAddManage}
         footer={{
           paddingInline: ".28rem",

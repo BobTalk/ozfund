@@ -484,11 +484,10 @@ export const GetTodoTaskInterface=(data={})=>{
     data
   })
 }
-// contract/findContractAdmin获取合约管理员
-export const GetContractSystemInterface=(params)=>{
+// contract/findContractAdmin获取管理员设置
+export const GetContractSystemInterface=()=>{
   return _http.getReq({
     url:`${contractPrefix}findContractAdmin`,
-    params
   })
 }
 // contract/findPoolAutoAddress 获取矿池空托地址
