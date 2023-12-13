@@ -93,12 +93,12 @@ export enum countryCodeEnum {
   "台湾" = "886",
 }
 export enum poolIdEnum {
-  team = 1,
-  supporter = 2, // 支持者
-  foundation = 3, // 基金会
-  pledge = 4, // 质押
-  ozbet = 5,
-  ozbetVip = 6,
+  OZ团队成员占比 = 1,
+  长期支持者占比 = 2, // 支持者
+  OZ基金会占比 = 3, // 基金会
+  流动性占比 = 4, // 质押
+  用户OZC投注主矿池挖矿 = 5,
+  VIP用户OZC投注VIP矿池挖矿 = 6,
 }
 
 export enum transactionTypeEnum {

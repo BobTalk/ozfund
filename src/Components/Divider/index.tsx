@@ -18,24 +18,28 @@ const DividerComp = (props: DividerCompType) => {
       }}
     >
       <div className="flex w-full">
-        <div className={props.right ? "w-1/2" : "w-full"}>
-          <Divider
-            dashed={props.dashed}
-            orientation="left"
-            orientationMargin="0"
-          >
-            {props.left}
-          </Divider>
-        </div>
-        <div className={props.left ? "w-1/2" : "w-full"}>
-          <Divider
-            dashed={props.dashed}
-            orientation="right"
-            orientationMargin={props.orientationMargin}
-          >
-            {props.right}
-          </Divider>
-        </div>
+        {props.left ? (
+          <div className={props.right ? "w-1/2" : "w-full"}>
+            <Divider
+              dashed={props.dashed}
+              orientation="left"
+              orientationMargin="0"
+            >
+              {props.left}
+            </Divider>
+          </div>
+        ) : null}
+        {props.right ? (
+          <div className={props.left ? "w-1/2" : "w-full"}>
+            <Divider
+              dashed={props.dashed}
+              orientation="right"
+              orientationMargin={props.orientationMargin}
+            >
+              {props.right}
+            </Divider>
+          </div>
+        ) : null}
       </div>
     </ConfigProvider>
   );

@@ -21,7 +21,7 @@ const SplitComp = (props: splitCompType) => {
         <li
           className={mergeClassName(
             "grid items-center",
-            `${props.listClassName ?? "grid-cols-[2rem_1fr] gap-[var(--gap30)]"}`
+            `${props.listClassName ?? "grid-cols-[2rem_1fr]"}`
           )}
           key={item.id}
         >
@@ -34,7 +34,7 @@ const SplitComp = (props: splitCompType) => {
             left={
               item.percentage ? (
                 <span className="text-[14px] text-[#666]">
-                  {item.percentage}%
+                  {item.percentage}
                 </span>
               ) : null
             }

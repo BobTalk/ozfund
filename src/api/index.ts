@@ -379,157 +379,157 @@ export const SwitchProbelmInterface = (params) => {
   })
 }
 // /contract/addAdmin?address= 添加管理员
-export const AddManageInterface=(data)=>{
+export const AddManageInterface = (data) => {
   return _http.postReq({
-    url:`${contractPrefix}addAdmin`,
+    url: `${contractPrefix}addAdmin`,
     data
   })
 }
 // /contract/removeAdmin?address= 移除管理员
-export const RemoveManageInterface=(params)=>{
+export const RemoveManageInterface = (params) => {
   return _http.deleteReq({
-    url:`${contractPrefix}removeAdmin`,
+    url: `${contractPrefix}removeAdmin`,
     params
   })
 }
 // /contract/addSuperAdmin?address= 添加超级管理员
-export const AddSuperManageInterface=(params)=>{
+export const AddSuperManageInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}addSuperAdmin`,
+    url: `${contractPrefix}addSuperAdmin`,
     params
   })
 }
 // /contract/removeSuperAdmin?address= 移除超级管理员
-export const RemoveSuperManageInterface=(params)=>{
+export const RemoveSuperManageInterface = (params) => {
   return _http.deleteReq({
-    url:`${contractPrefix}removeSuperAdmin`,
+    url: `${contractPrefix}removeSuperAdmin`,
     params
   })
 }
 // /contract/confirgurePoolAutoAddress?address=&poolId= 配置矿池自动空投地址
-export const AutoAirdropInterface=(params)=>{
+export const AutoAirdropInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}confirgurePoolAutoAddress`,
+    url: `${contractPrefix}confirgurePoolAutoAddress`,
     params
   })
 }
 // /contract/distribute {poolId [address amount]} 批量转账
-export const TransferAccountsInterface=(data)=>{
+export const TransferAccountsInterface = (data) => {
   return _http.postReq({
-    url:`${contractPrefix}distribute`,
+    url: `${contractPrefix}distribute`,
     data
   })
 }
 // /contract/withdrawToken {contractAddress tokenContractAddress  spenderAddress amount} 提取合约token
-export const WithdrawTokenInterface=(data)=>{
+export const WithdrawTokenInterface = (data) => {
   return _http.postReq({
-    url:`${contractPrefix}withdrawToken`,
+    url: `${contractPrefix}withdrawToken`,
     data
   })
 }
 // /contract/dischargeStake?address= 解押
-export const DischargeStakeInterface=(params)=>{
+export const DischargeStakeInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}dischargeStake`,
+    url: `${contractPrefix}dischargeStake`,
     params
   })
 }
 // /contract/switchExchane 开关交易
-export const SwitchExchaneInterface=(params)=>{
+export const SwitchExchaneInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}switchExchane`,
+    url: `${contractPrefix}switchExchane`,
     params
   })
 }
 // /contract/mint?address=&amount= 增发
-export const AddPublishInterface=(params)=>{
+export const AddPublishInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}mint`,
+    url: `${contractPrefix}mint`,
     params
   })
 }
 // /contract/freezeAddress?address= 冻结地址
-export const FreezeAddressInterface=(params)=>{
+export const FreezeAddressInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}freezeAddress`,
+    url: `${contractPrefix}freezeAddress`,
     params
   })
 }
 // /contract/burnFreezeAddressCoin?address= 销毁冻结地址资产
-export const DestroyFreezeAddressInterface=(params)=>{
+export const DestroyFreezeAddressInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}burnFreezeAddressCoin`,
+    url: `${contractPrefix}burnFreezeAddressCoin`,
     params
   })
 }
 // /contract/allowSupportedAddress?address=&name= 新增可兑换代币
-export const AddExchangeTokensInterface=(params)=>{
+export const AddExchangeTokensInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}allowSupportedAddress`,
+    url: `${contractPrefix}allowSupportedAddress`,
     params
   })
 }
 // /contract/removeAllowSupportedAddress?address= 移除可兑换代币
-export const RemoveExchangeTokensInterface=(params)=>{
+export const RemoveExchangeTokensInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}removeAllowSupportedAddress`,
+    url: `${contractPrefix}removeAllowSupportedAddress`,
     params
   })
 }
 
 // contract/findTransactionList 获取代办事务
-export const GetTodoTaskInterface=(data={})=>{
+export const GetTodoTaskInterface = (data = {}) => {
   return _http.postReq({
-    url:`${contractPrefix}findTransactionList`,
+    url: `${contractPrefix}findTransactionList`,
     data
   })
 }
 // contract/findContractAdmin获取管理员设置
-export const GetContractSystemInterface=()=>{
+export const GetContractSystemInterface = () => {
   return _http.getReq({
-    url:`${contractPrefix}findContractAdmin`,
+    url: `${contractPrefix}findContractAdmin`,
   })
 }
 // contract/findPoolAutoAddress 获取矿池空托地址
-export const GetAirDropAddressInterface=(params)=>{
+export const GetAirDropAddressInterface = () => {
   return _http.getReq({
-    url:`${contractPrefix}findPoolAutoAddress`,
-    params
+    url: `${contractPrefix}findPoolAutoAddress`,
+
   })
 }
 // contract/findPoolProduceProportion 获取矿池生产比例
-export const GetProductionRatioInterface=(params)=>{
+export const GetProductionRatioInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}findPoolProduceProportion`,
+    url: `${contractPrefix}findPoolProduceProportion`,
     params
   })
 }
 // contract/findContractSetting 获取Toto合约设置
-export const GetTotoConfigInterface=(params)=>{
+export const GetTotoConfigInterface = (params) => {
   return _http.getReq({
-    url:`${contractPrefix}findPoolProduceProportion`,
+    url: `${contractPrefix}findPoolProduceProportion`,
     params
   })
 }
 // toto_exchange  toto交易开启状态  1开启 0关闭
-export const SwitchTotoBussisInterface=(params)=>{
+export const SwitchTotoBussisInterface = (params) => {
   return _http.getReq({
-    url:`${totoPrefix}toto_exchange`,
+    url: `${totoPrefix}toto_exchange`,
     params
   })
 }
 
 // toto_owner  toto调度地址
-export const DispatchAddrInterface=(params)=>{
+export const DispatchAddrInterface = (params) => {
   return _http.getReq({
-    url:`${totoPrefix}toto_owner`,
+    url: `${totoPrefix}toto_owner`,
     params
   })
 }
 // toto_produce_limit toto生产总量(生产总量限制)
-export const ProductionVolumeInterface=(params)=>{
+export const ProductionVolumeInterface = (params) => {
   return _http.getReq({
-    url:`${totoPrefix}toto_produce_limit`,
+    url: `${totoPrefix}toto_produce_limit`,
     params
   })
 }

@@ -8,45 +8,11 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import { poolIdEnum } from "@/Enum";
 import { getSession } from "@/utils/base";
+import { GetAirDropAddressInterface } from "@/api";
 
 const AddressAutoAirdrop = () => {
-  let [listInfo] = useState([
-    {
-      id: "1",
-      title: "长期支持者占比",
-      percentage: 15,
-      poolId: poolIdEnum['supporter']
-    },
-    {
-      id: "2",
-      title: "OZ基金会占比",
-      percentage: 30,
-      poolId: poolIdEnum['foundation']
-    },
-    {
-      id: "3",
-      title: "OZ团队成员占比",
-      percentage: 20,
-      poolId: poolIdEnum['team']
-    },
-    {
-      id: "4",
-      title: "流动性占比",
-      percentage: 5,
-      poolId: poolIdEnum['team']
-    },
-    {
-      id: "5",
-      title: "用户OZC投注主矿池挖矿",
-      percentage: 20,
-    },
-    {
-      id: "6",
-      title: "VIP用户OZC投注VIP矿池挖矿",
-      percentage: 10,
-    },
-  ]);
-  let [stop] =  useStopPropagation()
+  let [listInfo, setListInfo] = useState([]);
+  let [stop] = useStopPropagation();
   let [editorAddrOpen, setEditorAddrOpen] = useState<boolean>(false);
   let crtInfo = useRef<any>();
   let [formInitVal, setFormInitVal] = useState({
@@ -57,27 +23,26 @@ const AddressAutoAirdrop = () => {
     setEditorAddrOpen(!editorAddrOpen);
   }
   function cancelCb(e) {
-     stop(e, () => {
+    stop(e, () => {
       setEditorAddrOpen(!editorAddrOpen);
-     });
-   }
-   function updateAddrCb(values){
-    console.log('values: ', values);
-   }
-   async function EthereumChain(){
-   let res =  await (window as any).ethereum.request({
-     "method": "wallet_switchEthereumChain",
-     "params": [
-       {
-         "chainId": getSession('chainId')
-        }
-      ]
     });
-    console.log('res: ', res);
-   }
-   useLayoutEffect(()=>{
-    EthereumChain()
-   },[])
+  }
+  function updateAddrCb(values) {
+    console.log("values: ", values);
+  }
+  async function EthereumChain() {
+    let { data = [] } = await GetAirDropAddressInterface();
+    setListInfo(() =>
+      data.map((item, index) => ({
+        id: index,
+        title: poolIdEnum[item.pool],
+        percentage: item.autoAddress || "暂无",
+      }))
+    );
+  }
+  useLayoutEffect(() => {
+    EthereumChain();
+  }, []);
   return (
     <>
       <SplitComp
@@ -149,7 +114,7 @@ const AddressAutoAirdrop = () => {
                 <Input allowClear placeholder="请输入新地址" />
               </FormItem>
               <FormItem>
-                <ModalFooter onCancel={(e) => cancelCb(e)}/>
+                <ModalFooter onCancel={(e) => cancelCb(e)} />
               </FormItem>
             </Form>
           </Modal>
