@@ -1,41 +1,14 @@
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import type { ColumnsType } from "@/Components/Table";
 import { Button } from "antd";
 import { Typography } from "antd";
 import Icon from "@/Components/Icon";
 import PageTableScope from "@/Pages/Components/Table";
+import { GetTodoTaskInterface } from "@/api";
+import { timeFormate } from "@/utils/base";
+import { transactionTypeEnum } from "@/Enum";
 const TableConfig = (props) => {
-  let [dataList, setData] = useState([
-    {
-      key: "table1",
-      assetsType: "USDT",
-      walletProtocol: "USDT-ERC20",
-      createTime: "2023.7.17 15:22:20",
-      tradeType: "充币",
-      num: 189,
-      payAddr: "0x32983464f44",
-      tradeId: "0x32983464f440x32983464f44",
-      tradeConfirmNum: 87,
-      triggerQuantity: 87,
-      supplementaryMinerFees: 89,
-    },
-    {
-      key: "table12",
-      assetsType: "USDT",
-      walletProtocol: "USDT-ERC20",
-      createTime: "2023.7.17 15:22:20",
-      tradeType: "充币",
-      num: 189,
-      payAddr: "0x32983464f44",
-      tradeId: "0x32983464f440x32983464f44",
-      tradeConfirmNum: 87,
-      triggerQuantity: 87,
-      supplementaryMinerFees: 89,
-    },
-  ]);
-  let timer = useRef(null);
-  let contentRefs = useRef<any>();
-  let [tableContentLine, setTableContentLine] = useState<number>(10);
+  let [dataList, setDataList] = useState([]);
 
   let columns: ColumnsType = [
     {
@@ -53,11 +26,12 @@ const TableConfig = (props) => {
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
+      render: (_) => timeFormate(_),
     },
 
     {
       title: "事务发起人",
-      dataIndex: "tradeConfirmNum",
+      dataIndex: "adminId",
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
@@ -65,24 +39,26 @@ const TableConfig = (props) => {
 
     {
       title: "事务类型",
-      dataIndex: "tradeConfirmNum",
+      dataIndex: "transactionType",
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
+      render: (_) => transactionTypeEnum[_],
     },
     {
       title: "事务详情",
-      dataIndex: "triggerQuantity",
+      dataIndex: "transactionDetail",
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
     },
     {
       title: "签名人",
-      dataIndex: "supplementaryMinerFees",
+      dataIndex: "signAdmins",
       responsive: ["xl"],
       ellipsis: true,
       align: "left",
+      render: (_) => _ || "--",
     },
 
     {
@@ -127,9 +103,27 @@ const TableConfig = (props) => {
     props?.onEditor?.(e, crt, index);
   }
   function moreCb(): void {
-    throw new Error("Function not implemented.");
+    pagitions.current.pageNo += 1;
+    getTableList(pagitions.current, true);
   }
-
+  async function getTableList(pgt = pagitions.current, isMergeData = false) {
+    let { data, pageNo, pageTotal, pageSize } = await GetTodoTaskInterface(pgt);
+    pagitions.current = {
+      pageNo,
+      pageTotal,
+      pageSize,
+    };
+    if (isMergeData) {
+      setDataList((list) =>
+        list.concat(data?.map((item) => ((item.key = item.id), item)))
+      );
+    } else {
+      setDataList(data?.map((item) => ((item.key = item.id), item)));
+    }
+  }
+  useLayoutEffect(() => {
+    getTableList();
+  }, []);
   return (
     <PageTableScope
       pagitions={pagitions.current}

@@ -1,9 +1,9 @@
 import _http from "../Https";
 let env = process.env.NODE_ENV == 'development' ? '/' : '/api/'
 let rootPathPrefix = `${env}root/`
-const adminPrefix = `${env}admin`
-const contractPrefix = `${env}contract`
-const totoPrefix = `${env}toto`
+const adminPrefix = `${env}admin/`
+const contractPrefix = `${env}contract/`
+const totoPrefix = `${env}toto/`
 export const GetAccessKeyInterface = () => {
   return _http.getReq({
     url: `${adminPrefix}/getAccessKey`
@@ -393,10 +393,10 @@ export const RemoveManageInterface=(params)=>{
   })
 }
 // /contract/addSuperAdmin?address= 添加超级管理员
-export const AddSuperManageInterface=(data)=>{
-  return _http.postReq({
+export const AddSuperManageInterface=(params)=>{
+  return _http.getReq({
     url:`${contractPrefix}addSuperAdmin`,
-    data
+    params
   })
 }
 // /contract/removeSuperAdmin?address= 移除超级管理员
@@ -478,10 +478,10 @@ export const RemoveExchangeTokensInterface=(params)=>{
 }
 
 // contract/findTransactionList 获取代办事务
-export const GetTodoTaskInterface=(params)=>{
-  return _http.getReq({
+export const GetTodoTaskInterface=(data={})=>{
+  return _http.postReq({
     url:`${contractPrefix}findTransactionList`,
-    params
+    data
   })
 }
 // contract/findContractAdmin获取合约管理员

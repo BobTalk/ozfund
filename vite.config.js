@@ -77,7 +77,7 @@ export default defineConfig({
       "/contract": {
         target: "http://192.168.50.162:8080",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/contract/, '')
+        // rewrite: (path) => path.replace(/^\/contract/, '')
       },
       "/toto": {
         target: "http://192.168.50.162:8080",

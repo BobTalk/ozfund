@@ -5,7 +5,7 @@ import { useStopPropagation } from "@/Hooks/StopPropagation.js";
 import { useEffect, useRef, useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
 import detectEthereumProvider from "@metamask/detect-provider";
-import { formatBalance, setSession } from "@/utils/base";
+import { formatBalance, getSession, setSession } from "@/utils/base";
 import { VerticalAlignBottomOutlined } from "@ant-design/icons";
 
 const Todo = () => {
@@ -70,8 +70,11 @@ const Todo = () => {
     const chainId = await (window as any).ethereum!.request({
       method: "eth_chainId",
     });
+
     // 以太链ID
     setSession("chainId",chainId)
+    // 账户地址
+    setSession('ethAddress', accounts[0])
     setWallet({ accounts, balance, chainId });
   };
 
@@ -152,12 +155,12 @@ const Todo = () => {
       >
         <>
           <p className="flex items-center justify-between  text-[14px] mt-[var(--gap20)]">
-            <span className="text-[#C5CAD0]">管理员A</span>
-            <span className="text-[#333]">weeweesssssssssssssss</span>
+            <span className="text-[#C5CAD0]">管理员</span>
+            <span className="text-[#333]">{getSession('ethAddress')}</span>
           </p>
           <p className="flex items-center justify-between text-[14px] mt-[var(--gap20)]">
             <span className="text-[#C5CAD0]">员工ID</span>
-            <span className="text-[#333]">Alex.yu</span>
+            <span className="text-[#333]">{getSession('userInfo').adminId}</span>
           </p>
         </>
       </ModalComp>
