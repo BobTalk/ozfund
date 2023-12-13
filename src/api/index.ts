@@ -3,6 +3,7 @@ let env = process.env.NODE_ENV == 'development' ? '/' : '/api/'
 let rootPathPrefix = `${env}root/`
 const adminPrefix = `${env}admin`
 const contractPrefix = `${env}contract`
+const totoPrefix = `${env}toto`
 export const GetAccessKeyInterface = () => {
   return _http.getReq({
     url: `${adminPrefix}/getAccessKey`
@@ -472,6 +473,64 @@ export const AddExchangeTokensInterface=(params)=>{
 export const RemoveExchangeTokensInterface=(params)=>{
   return _http.getReq({
     url:`${contractPrefix}removeAllowSupportedAddress`,
+    params
+  })
+}
+
+// contract/findTransactionList 获取代办事务
+export const GetTodoTaskInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}findTransactionList`,
+    params
+  })
+}
+// contract/findContractAdmin获取合约管理员
+export const GetContractSystemInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}findContractAdmin`,
+    params
+  })
+}
+// contract/findPoolAutoAddress 获取矿池空托地址
+export const GetAirDropAddressInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}findPoolAutoAddress`,
+    params
+  })
+}
+// contract/findPoolProduceProportion 获取矿池生产比例
+export const GetProductionRatioInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}findPoolProduceProportion`,
+    params
+  })
+}
+// contract/findContractSetting 获取Toto合约设置
+export const GetTotoConfigInterface=(params)=>{
+  return _http.getReq({
+    url:`${contractPrefix}findPoolProduceProportion`,
+    params
+  })
+}
+// toto_exchange  toto交易开启状态  1开启 0关闭
+export const SwitchTotoBussisInterface=(params)=>{
+  return _http.getReq({
+    url:`${totoPrefix}toto_exchange`,
+    params
+  })
+}
+
+// toto_owner  toto调度地址
+export const DispatchAddrInterface=(params)=>{
+  return _http.getReq({
+    url:`${totoPrefix}toto_owner`,
+    params
+  })
+}
+// toto_produce_limit toto生产总量(生产总量限制)
+export const ProductionVolumeInterface=(params)=>{
+  return _http.getReq({
+    url:`${totoPrefix}toto_produce_limit`,
     params
   })
 }

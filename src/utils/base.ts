@@ -122,7 +122,7 @@ const formatEnum = (enumData) => {
 
 const breadSite = (key: string) => {
   let activeKey = activePathToName[key];
-  let activeP = activePath[key];
+  // let activeP = activePath[key];
   if (activeKey?.length > 1) {
     return activeKey.map((item, idx, arr) => {
       return { title: item }

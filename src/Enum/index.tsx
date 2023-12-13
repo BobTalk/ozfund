@@ -78,7 +78,7 @@ export enum languageEnum {
 export enum language1Enum {
   "简体中文" = 1,
   "繁体中文" = 2,
-  'English' = 3,
+  "English" = 3,
   "しろうと" = 4,
 }
 
@@ -91,4 +91,12 @@ export enum countryCodeEnum {
   "越南" = "84",
   "缅甸" = "95",
   "台湾" = "886",
+}
+export enum poolIdEnum {
+  team = 1,
+  supporter = 2, // 支持者
+  foundation = 3, // 基金会
+  pledge = 4, // 质押
+  ozbet = 5,
+  ozbetVip = 6,
 }

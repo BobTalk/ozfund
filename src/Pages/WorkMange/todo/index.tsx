@@ -5,7 +5,7 @@ import { useStopPropagation } from "@/Hooks/StopPropagation.js";
 import { useEffect, useRef, useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
 import detectEthereumProvider from "@metamask/detect-provider";
-import { formatBalance } from "@/utils/base";
+import { formatBalance, setSession } from "@/utils/base";
 import { VerticalAlignBottomOutlined } from "@ant-design/icons";
 
 const Todo = () => {
@@ -70,6 +70,8 @@ const Todo = () => {
     const chainId = await (window as any).ethereum!.request({
       method: "eth_chainId",
     });
+    // 以太链ID
+    setSession("chainId",chainId)
     setWallet({ accounts, balance, chainId });
   };
 
@@ -116,7 +118,7 @@ const Todo = () => {
             Install MetaMask
           </Button>
         )}
-        {(window as any).ethereum?.isMetaMask && wallet.accounts.length < 1 && (
+        {(window as any).ethereum?.isMetaMask && wallet.accounts.length < 1 ? (
           <Button
             onClick={handleConnect}
             className="flex items-center h-[.35rem]"
@@ -125,7 +127,7 @@ const Todo = () => {
           >
             连接钱包
           </Button>
-        )}
+        ):<Button type="link">钱包已链接</Button>}
       </div>
       <TableConfig
         ref={tableRefs}

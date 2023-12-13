@@ -6,7 +6,7 @@ import store from "@/store";
 const BusinessMange = () => {
   const commonUrlPrefix = "/ozfund/work-mange/business-mange";
   let navigate = useNavigate();
-  let { pathname, state } = useLocation();
+  let { state } = useLocation();
   let tabsRefs = useRef<any>();
   let [tabsHeight, setTabsHeight] = useState<number>();
   let [childrenRouter, setChildrenRouter] = useState([
