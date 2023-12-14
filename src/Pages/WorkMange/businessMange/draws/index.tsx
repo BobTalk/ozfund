@@ -1,25 +1,49 @@
 import { ModalTitle } from "@/Components/Modal";
 import SplitComp from "../common";
 import { EditOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
+import { useRef, useState } from "react";
+import { Button, ConfigProvider, Form, InputNumber, Select, message } from "antd";
+import Icon from "@/Components/Icon";
+import { WithdrawTokenInterface } from "@/api";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 const DrawsContractMoney = () => {
+  let [stop] = useStopPropagation();
   let [listInfo] = useState([
     {
       id: "1",
       title: "OZC",
+      contractAddress: "OZC",
     },
     {
       id: "2",
       title: "TOTO",
+      contractAddress: "TOTO",
     },
     {
       id: "3",
       title: "质押",
+      contractAddress: "质押",
     },
   ]);
+  let [crtInfo, setCrtInfo] = useState<any>({});
+  let [form] = Form.useForm<any>();
   function editorCb(crt) {
-    console.log("crt: ", crt);
+    setCrtInfo(crt);
+  }
+  async function submitToken({ tokenContractAddress, spenderAddress, amount }) {
+    let { status,message:tipInfo } = await WithdrawTokenInterface({
+      contractAddress: crtInfo.contractAddress, // 合约地址,
+      tokenContractAddress, // token合约地址
+      spenderAddress, // 提取地址
+      amount, //  提取数量
+    });
+    message[status?"success":'error'](tipInfo)
+    if(status){cancelToken(undefined)}
+  }
+  function cancelToken(e) {
+    stop(e, () => {
+      setCrtInfo({});
+    });
   }
   return (
     <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
@@ -31,56 +55,135 @@ const DrawsContractMoney = () => {
         list={listInfo}
         opertion={
           <>
-            <EditOutlined />
+            <Icon name="h-icon-draw" />
             <span className=" ml-[.1rem] font-normal">提取</span>
           </>
         }
       />
-      <TitleComp title="OZC" />
-      <ConfigProvider
-        theme={{
-          components: {
-            Input: {
-              paddingBlock: 6,
-            },
-            InputNumber: {
-              paddingBlock: 6,
-            },
-            Form: {
-              labelColor: "#666",
-            },
-          },
-          token: {
-            controlHeight: 36,
-            borderRadius: 2,
-          },
-        }}
-      >
-        <Form
-          layout="vertical"
-          className="grid grid-cols-2 gap-x-[var(--gap20)] py-[var(--gap20)] pr-[var(--gap20)] pl-[var(--gap30)]"
-        >
-          <Form.Item label="选择Token" className="mb-[var(--gap15)]">
-            <Select placeholder="选择Token" options={[]} />
-          </Form.Item>
-          <Form.Item label="数量" className="mb-[var(--gap15)]">
-            <InputNumber className="w-full" placeholder="输入数量" />
-          </Form.Item>
-          <Form.Item label="提取地址" className="mb-[var(--gap15)]">
-            <Select placeholder="输入地址" options={[]} />
-          </Form.Item>
-          <Form.Item label="提取数量" className="mb-[var(--gap15)]">
-            <InputNumber className="w-full" placeholder="输入数量" />
-          </Form.Item>
-          <Form.Item className="mb-0" />
-          <Form.Item className="flex justify-end mb-0">
-            <Button className="w-[.75rem] text-[#999]">取消</Button>
-            <Button className="w-[.75rem] ml-[.1rem]" type="primary">
-              确认
-            </Button>
-          </Form.Item>
-        </Form>
-      </ConfigProvider>
+      {crtInfo.title ? (
+        <>
+          <TitleComp title={crtInfo.title} />
+          <ConfigProvider
+            theme={{
+              components: {
+                Input: {
+                  paddingBlock: 6,
+                },
+                InputNumber: {
+                  paddingBlock: 6,
+                },
+                Form: {
+                  labelColor: "#666",
+                },
+              },
+              token: {
+                controlHeight: 36,
+                borderRadius: 2,
+              },
+            }}
+          >
+            <Form
+              form={form}
+              onFinish={submitToken}
+              layout="vertical"
+              className="grid clear_required grid-cols-2 gap-x-[var(--gap20)] py-[var(--gap20)] pr-[var(--gap20)] pl-[var(--gap30)]"
+            >
+              <Form.Item
+                name="tokenContractAddress"
+                label="选择Token"
+                rules={[
+                  {
+                    required: true,
+                    message: "",
+                  },
+                ]}
+                className="mb-[var(--gap15)]"
+              >
+                <Select
+                  placeholder="选择Token"
+                  options={[
+                    {
+                      label: "USDT",
+                      value: "USDT",
+                    },
+                    {
+                      label: "OZCoin",
+                      value: "OZCoin",
+                    },
+                    {
+                      label: "TOTO",
+                      value: "TOTO",
+                    },
+                  ]}
+                />
+              </Form.Item>
+              <Form.Item
+                name="num"
+                rules={[
+                  {
+                    required: true,
+                    message: "",
+                  },
+                ]}
+                label="数量"
+                className="mb-[var(--gap15)]"
+              >
+                <InputNumber className="w-full" placeholder="输入数量" />
+              </Form.Item>
+              <Form.Item
+                name="spenderAddress"
+                rules={[
+                  {
+                    required: true,
+                    message: "",
+                  },
+                ]}
+                label="提取地址"
+                className="mb-[var(--gap15)]"
+              >
+                <Select
+                  placeholder="输入地址"
+                  options={[
+                    {
+                      label: "A",
+                      value: "A",
+                    },
+                  ]}
+                />
+              </Form.Item>
+              <Form.Item
+                name="amount"
+                rules={[
+                  {
+                    required: true,
+                    message: "",
+                  },
+                ]}
+                label="提取数量"
+                className="mb-[var(--gap15)]"
+              >
+                <InputNumber className="w-full" placeholder="输入数量" />
+              </Form.Item>
+              <Form.Item className="mb-0" />
+              <Form.Item className="flex justify-end mb-0">
+                <Button
+                  className="w-[.75rem] text-[#999]"
+                  onClick={cancelToken}
+                >
+                  取消
+                </Button>
+                <Button
+                  className="w-[.75rem] ml-[.1rem]"
+                  htmlType="submit"
+                  type="primary"
+                >
+                  确认
+                </Button>
+              </Form.Item>
+            </Form>
+          </ConfigProvider>
+        </>
+      ) : null}
     </div>
   );
 };
