@@ -413,7 +413,7 @@ export const AutoAirdropInterface = (params) => {
     params
   })
 }
-// /contract/distribute {poolId [address amount]} 批量转账
+// /contract/distribute {poolId [{address amount}]} 批量转账
 export const TransferAccountsInterface = (data) => {
   return _http.postReq({
     url: `${contractPrefix}distribute`,

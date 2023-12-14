@@ -36,10 +36,10 @@ const ModalScope = (props: any) => {
 };
 const ModalTitle = (props) => {
   return props.showTitleIcon ? (
-    <span className={mergeClassName("flex items-center font-normal", props.classTitleName)}>
+    <div className={mergeClassName("flex items-center font-normal", props.classTitleName)}>
       <i className={mergeClassName(styleScope["icon"], props.classIconName)}></i>
       {props.title}
-    </span>
+    </div>
   ) : (
     <>{props.title}</>
   );
