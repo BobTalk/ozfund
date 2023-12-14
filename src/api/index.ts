@@ -408,7 +408,7 @@ export const RemoveSuperManageInterface = (params) => {
 }
 // /contract/confirgurePoolAutoAddress?address=&poolId= 配置矿池自动空投地址
 export const AutoAirdropInterface = (params) => {
-  return _http.getReq({
+  return _http.putReq({
     url: `${contractPrefix}confirgurePoolAutoAddress`,
     params
   })
