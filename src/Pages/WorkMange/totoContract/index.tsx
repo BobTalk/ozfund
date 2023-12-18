@@ -5,14 +5,33 @@ import {
   SaveOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Button, ConfigProvider, Form, Input, InputNumber, Switch, message } from "antd";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import {
+  Button,
+  ConfigProvider,
+  Form,
+  Input,
+  InputNumber,
+  Switch,
+  message,
+} from "antd";
+import {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import styleScope from "./index.module.less";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import Icon from "@/Components/Icon";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
-import { SwitchExchaneInterface } from "@/api";
+import {
+  AddPublishInterface,
+  GetTotoConfigInterface,
+  SwitchExchaneInterface,
+} from "@/api";
+import { forIn } from "lodash";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -20,14 +39,16 @@ const TodoContract = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
-  let [totoSell,setTotoSell]=useState<boolean>(false)
+  let [totoSell, setTotoSell] = useState<boolean>(false);
+  let [dispatchAddr, setDispatchAddr] = useState();
+  let [pubulishNum, setPubulishNum] = useState();
   function configCb(e, crt) {
     stop(e, async () => {
-      if(crt.flag === 'switch'){
-       let  {status, message:tipInfo} = await SwitchExchaneInterface({})
-       message[status?'success':'error'](tipInfo)
-       setTotoSell(!totoSell)
-        return
+      if (crt.flag === "switch") {
+        let { status, message: tipInfo } = await SwitchExchaneInterface({});
+        message[status ? "success" : "error"](tipInfo);
+        setTotoSell(!totoSell);
+        return;
       }
       moduleContent.current = crt.flag;
       moduleTitle.current = crt.title;
@@ -41,41 +62,68 @@ const TodoContract = () => {
       setModalOpen(!modalOpen);
     });
   }
+  function submitInfoCb(values) {
+    console.log("values: ", values);
+  }
+  async function getAddress() {
+    let { status, data } = await GetTotoConfigInterface();
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      if (item.keyname == "toto_exchange") {
+        // toto_exchange  toto交易开启状态  1开启 0关闭
+        setTotoSell(item.value == 1 ? true : false);
+      }
+      if (item.keyname == "toto_owner") {
+        // toto调度地址
+        setDispatchAddr(item.value);
+      }
+      if (item.keyname == "toto_produce_limit") {
+        // toto生产总量
+        setPubulishNum(item.value);
+      }
+    }
+  }
+  useLayoutEffect(() => {
+    getAddress();
+  }, []);
   useEffect(() => {
     let { height } = headerRefs?.current?.getBoundingClientRect?.() ?? 0;
     setHeaderHeight(height);
   }, []);
   return (
     <>
-      <HeaderModule ref={headerRefs} totoSell={totoSell} onConfig={configCb} />
+      <HeaderModule
+        ref={headerRefs}
+        pubulishNum={pubulishNum}
+        dispatchAddr={dispatchAddr}
+        totoSell={totoSell}
+        onConfig={configCb}
+      />
       <Contentmodule headerH={headerHeight} onSave={saveCb} />
       <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalOpen}
         onCancel={() => setModalOpen(!modalOpen)}
-        onOk={(values) => setModalOpen(!modalOpen)}
+        onOk={submitInfoCb}
       />
     </>
   );
 };
 const HeaderModule = forwardRef((props: any, ref: any) => {
-  function operationCb(e, crt) {
-    props?.onConfig?.(e, crt);
-  }
   let [moduleList] = useState([
     {
       id: 1,
       flag: "switch",
       title: "开启/关闭TOTO出售",
-      operateNode: <Switch defaultChecked={props.totoSell}/>,
+      operateNode: <Switch defaultChecked={props.totoSell} />,
     },
     {
       id: 2,
       flag: PublishTotal,
       title: "设置TOTO发行总量",
       label: "当前发行总量",
-      value: 10000,
+      value: "pubulishNum",
       operateNode: (
         <Button icon={<SettingOutlined />} type="primary">
           设置
@@ -97,7 +145,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
       flag: DispatchAddress,
       title: "更改TOTO调度地址",
       label: "当前调度地址",
-      value: "dkjahiuhf35hahd8",
+      value: "dispatchAddr",
       operateNode: (
         <Button icon={<EditFilled />} type="primary">
           修改
@@ -105,6 +153,10 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
       ),
     },
   ]);
+  function operationCb(e, crt) {
+    props?.onConfig?.(e, crt);
+  }
+
   function liStyleFn(idx) {
     let strClassName =
       "w-[3.02rem] h-[1.4rem] bg-[var(--gray1)] rounded-[var(--border-radius)] pb-[var(--gap20)] px-[var(--gap30)]";
@@ -126,7 +178,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
           {item.label ? (
             <p className="text-[#666] text-[14px] mt-[.12rem]">
               <span>{item.label}：</span>
-              <span>{item.value}</span>
+              <span>{props[item.value]}</span>
             </p>
           ) : null}
           <div
@@ -317,13 +369,13 @@ const PublishTotal = (props) => {
 const AddToto = (props) => {
   let [stop] = useStopPropagation();
   let [form] = Form.useForm();
-  let [formInitVal] = useState({
-    publishNum: "",
-    address: "",
-  });
-  function submitCb(values) {
-    console.log("values: ", values);
-    props?.onOk(values);
+  async function submitCb({ address, amount }) {
+    let { status, message: tipInfo } = await AddPublishInterface({
+      address,
+      amount,
+    });
+    message[status ? "success" : "error"](tipInfo);
+    props?.onCancel?.(false);
   }
   function cancelCb(e) {
     stop(e, () => {
@@ -340,8 +392,8 @@ const AddToto = (props) => {
     >
       <Form
         layout="vertical"
+        className="clear_required"
         onFinish={submitCb}
-        initialValues={formInitVal}
         form={form}
       >
         <Form.Item
@@ -349,16 +401,28 @@ const AddToto = (props) => {
           label={
             <span className="text-[var(--border-color)]">输入增发地址</span>
           }
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           name="address"
         >
           <Input size="large" placeholder="请输入地址" />
         </Form.Item>
         <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "",
+            },
+          ]}
           className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={
             <span className="text-[var(--border-color)]">输入增发数量</span>
           }
-          name="publishNum"
+          name="amount"
         >
           <InputNumber
             size="large"

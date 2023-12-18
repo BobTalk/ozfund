@@ -105,141 +105,138 @@ const BatchTransferAccounts = () => {
           </>
         }
       />
-      <TitleComp
-        className="pb-[var(--gap15)]"
-        title={
-          <div className="flex flex-1 items-center justify-between pr-[var(--gap30)]">
-            <span>Ozfund投注挖矿</span>
-            <ConfigProvider
-              theme={{
-                token: {
-                  colorTextLightSolid: "#0385f3",
-                  colorPrimaryHover: "#e6f2fd",
-                  colorPrimaryActive: "#e6f2fd",
-                  colorLinkActive: "#0385f3",
-                },
-              }}
-            >
-              <Button
-                onClick={(e) =>
-                  addAmountCb(e, batchTransferAccountsList.length)
-                }
-                className="bg-[#e6f2fd] text-[#0385f3]"
-                type="primary"
-                icon={<PlusOutlined />}
-              >
-                添加
-              </Button>
-            </ConfigProvider>
-          </div>
-        }
-      />
-      <ConfigProvider
-        theme={{
-          components: {
-            Input: {
-              paddingBlock: 6,
-              controlHeight: 35,
-            },
-            InputNumber: {
-              paddingBlock: 6,
-              controlHeight: 35,
-            },
-          },
-          token: {
-            controlHeight: 35,
-            borderRadius: 2,
-          },
-        }}
-      >
-        <ul className="mt-[var(--gap20)] px-[var(--gap30)] pb-[var(--gap30)]">
+      {batchTransferAccountsList.length ? (
+        <>
+          <TitleComp
+            className="pb-[var(--gap15)]"
+            title={
+              <div className="flex flex-1 items-center justify-between pr-[var(--gap30)]">
+                <span>Ozfund投注挖矿</span>
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorTextLightSolid: "#0385f3",
+                      colorPrimaryHover: "#e6f2fd",
+                      colorPrimaryActive: "#e6f2fd",
+                      colorLinkActive: "#0385f3",
+                    },
+                  }}
+                >
+                  <Button
+                    onClick={(e) =>
+                      addAmountCb(e, batchTransferAccountsList.length)
+                    }
+                    className="bg-[#e6f2fd] text-[#0385f3]"
+                    type="primary"
+                    icon={<PlusOutlined />}
+                  >
+                    添加
+                  </Button>
+                </ConfigProvider>
+              </div>
+            }
+          />
           <ConfigProvider
             theme={{
               components: {
+                Input: {
+                  paddingBlock: 6,
+                  controlHeight: 35,
+                },
+                InputNumber: {
+                  paddingBlock: 6,
+                  controlHeight: 35,
+                },
                 Form: {
                   itemMarginBottom: 15,
                 },
               },
+              token: {
+                controlHeight: 35,
+                borderRadius: 2,
+              },
             }}
           >
-            <Form
-              form={form}
-              onFinish={submitBatchAmount}
-              className="clear_required"
-            >
-              {batchTransferAccountsList.map((item) => (
-                <li className="flex gap-x-[var(--gap20)] not-first-of-type:mt-[var(--gap15)]">
-                  <Form.Item
-                    rules={[
-                      {
-                        required: true,
-                        message: "",
-                      },
-                    ]}
-                    name={`address_${item.site}`}
-                    className="flex-1"
-                  >
-                    <Input
-                      className="w-full"
-                      defaultValue={item[`address_${item.site}`]}
-                      placeholder="输入地址"
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    rules={[
-                      {
-                        required: true,
-                        message: "",
-                      },
-                    ]}
-                    name={`amount_${item.site}`}
-                    className="flex-1"
-                  >
-                    <InputNumber
-                      className="w-full"
-                      defaultValue={item[`amount_${item.site}`]}
-                      placeholder="输入数量"
-                    />
-                  </Form.Item>
-                  <div
-                    onClick={(e) => deleteAcount(e, item.site)}
-                    className="grid cursor-pointer place-items-center w-[.4rem] h-[.36rem] rounded-[.02rem] bg-[var(--border-color)] opacity-20"
-                  >
-                    <Icon
-                      style={{
-                        cursor: "pointer",
-                        fontSize: ".24rem",
-                        color: "#333",
-                      }}
-                      name="h-icon-close"
-                    />
-                  </div>
-                </li>
-              ))}
-
-              {batchTransferAccountsList.length ? (
-                <Form.Item>
-                  <li className="flex justify-end mt-[var(--gap20)] gap-[.1rem]">
-                    <Button
-                      onClick={resultTransferAccounts}
-                      className="w-[1rem] text-[#999]"
+            <ul className="mt-[var(--gap20)] px-[var(--gap30)] pb-[var(--gap30)]">
+              <Form
+                form={form}
+                onFinish={submitBatchAmount}
+                className="clear_required"
+              >
+                {batchTransferAccountsList.map((item) => (
+                  <li className="flex gap-x-[var(--gap20)] not-first-of-type:mt-[var(--gap15)]">
+                    <Form.Item
+                      rules={[
+                        {
+                          required: true,
+                          message: "",
+                        },
+                      ]}
+                      name={`address_${item.site}`}
+                      className="flex-1"
                     >
-                      取消
-                    </Button>
-                    <Button
-                      className="w-[1rem]"
-                      type="primary"
-                      htmlType="submit"
+                      <Input
+                        className="w-full"
+                        defaultValue={item[`address_${item.site}`]}
+                        placeholder="输入地址"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      rules={[
+                        {
+                          required: true,
+                          message: "",
+                        },
+                      ]}
+                      name={`amount_${item.site}`}
+                      className="flex-1"
                     >
-                      发起转账
-                    </Button>
+                      <InputNumber
+                        className="w-full"
+                        defaultValue={item[`amount_${item.site}`]}
+                        placeholder="输入数量"
+                      />
+                    </Form.Item>
+                    <div
+                      onClick={(e) => deleteAcount(e, item.site)}
+                      className="grid cursor-pointer place-items-center w-[.4rem] h-[.36rem] rounded-[.02rem] bg-[var(--border-color)] opacity-20"
+                    >
+                      <Icon
+                        style={{
+                          cursor: "pointer",
+                          fontSize: ".24rem",
+                          color: "#333",
+                        }}
+                        name="h-icon-close"
+                      />
+                    </div>
                   </li>
-                </Form.Item>
-              ) : null}
-            </Form>
+                ))}
+
+                {batchTransferAccountsList.length ? (
+                  <Form.Item>
+                    <li className="flex justify-end mt-[var(--gap20)] gap-[.1rem]">
+                      <Button
+                        onClick={resultTransferAccounts}
+                        className="w-[1rem] text-[#999]"
+                      >
+                        取消
+                      </Button>
+                      <Button
+                        className="w-[1rem]"
+                        type="primary"
+                        htmlType="submit"
+                      >
+                        发起转账
+                      </Button>
+                    </li>
+                  </Form.Item>
+                ) : null}
+              </Form>
+            </ul>
           </ConfigProvider>
-        </ul>
-      </ConfigProvider>
+        </>
+      ) : null}
     </div>
   );
 };

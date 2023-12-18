@@ -505,31 +505,30 @@ export const GetProductionRatioInterface = (params) => {
   })
 }
 // contract/findContractSetting 获取Toto合约设置
-export const GetTotoConfigInterface = (params) => {
+export const GetTotoConfigInterface = () => {
   return _http.getReq({
-    url: `${contractPrefix}findPoolProduceProportion`,
-    params
+    url: `${contractPrefix}findContractSetting`,
   })
 }
-// toto_exchange  toto交易开启状态  1开启 0关闭
-export const SwitchTotoBussisInterface = (params) => {
-  return _http.getReq({
-    url: `${totoPrefix}toto_exchange`,
-    params
-  })
-}
+// // toto_exchange  toto交易开启状态  1开启 0关闭
+// export const SwitchTotoBussisInterface = (params) => {
+//   return _http.getReq({
+//     url: `${totoPrefix}toto_exchange`,
+//     params
+//   })
+// }
 
-// toto_owner  toto调度地址
-export const DispatchAddrInterface = (params) => {
-  return _http.getReq({
-    url: `${totoPrefix}toto_owner`,
-    params
-  })
-}
-// toto_produce_limit toto生产总量(生产总量限制)
-export const ProductionVolumeInterface = (params) => {
-  return _http.getReq({
-    url: `${totoPrefix}toto_produce_limit`,
-    params
-  })
-}
+// // toto_owner  toto调度地址
+// export const DispatchAddrInterface = (params) => {
+//   return _http.getReq({
+//     url: `${totoPrefix}toto_owner`,
+//     params
+//   })
+// }
+// // toto_produce_limit toto生产总量(生产总量限制)
+// export const ProductionVolumeInterface = (params) => {
+//   return _http.getReq({
+//     url: `${totoPrefix}toto_produce_limit`,
+//     params
+//   })
+// }
