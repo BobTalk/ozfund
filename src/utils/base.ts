@@ -1,9 +1,8 @@
 import dayjs from "dayjs";
-import { activePath, activePathToName } from "@/Pages/Layout/activeRouterConfig";
+import { activePathToName } from "@/Pages/Layout/activeRouterConfig";
 const AseKey = 'abcopekiYHJFMGTO';
 // const { AES, enc, mode, pad, DES } = require('crypto-js')
 import { AES, enc, mode, pad, DES } from 'crypto-js'
-import { number } from "echarts";
 const SessionStorage = window.sessionStorage
 const mergeClassName = (...arg: string[]) => {
   let param = arg.filter(item => !['undefined', 'null'].includes(item)).filter(Boolean)

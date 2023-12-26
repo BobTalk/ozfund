@@ -1,0 +1,310 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "name": "spender",
+            "type": "address"
+          },{
+            "name": "amount",
+            "type": "uint"
+          }
+        ],
+        "name": "transferInfo",
+        "type": "tuple[]"
+      },
+      {
+        "name": "poolName",
+        "type": "string"
+      }
+    ],
+    "name": "permitApprove",
+    "outputs": [
+
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },{
+  "constant": false,
+  "inputs": [],
+  "name": "switchExchange",
+  "outputs": [
+
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+  },{
+    "constant": false,
+      "inputs": [
+        {
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "name": "contractAddress",
+          "type": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "exchange",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+  },{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "productionLimitV",
+      "type": "uint256"
+    }
+  ],
+  "name": "setProductionLimit",
+  "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "productionAmount",
+      "type": "uint256"
+    }
+  ],
+  "name": "setNextProduction",
+  "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "ozGroupProportion",
+      "type": "uint256"
+    },
+    {
+      "name": "ozSupportProportion",
+      "type": "uint256"
+    },{
+      "name": "ozFundProportion",
+      "type": "uint256"
+    },{
+      "name": "stakeProportion",
+      "type": "uint256"
+    },{
+      "name": "ozbetProportion",
+      "type": "uint256"
+    },{
+      "name": "ozbetVipProportion",
+      "type": "uint256"
+    }
+  ],
+  "name": "setPoolDistributeProportion",
+  "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "poolId",
+      "type": "uint256"
+    },{
+      "components": [
+        {
+          "name": "spender",
+          "type": "address"
+        },{
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferInfo",
+      "type": "tuple[]"
+    }
+  ],
+  "name": "distribute",
+  "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "newOwner",
+      "type": "address"
+    }
+  ],
+  "name": "setContractOwner",
+  "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "poolId",
+      "type": "uint256"
+    },
+    {
+      "name": "autoAirDropAddress",
+      "type": "address"
+    }
+  ],
+  "name": "configurePoolAutoAddress",
+  "outputs": [
+    {
+      "name": "",
+      "type": "bool"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+      "inputs": [
+        {
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "produce",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+  },{
+    "constant": false,
+    "inputs": [
+      {
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "settleStake",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },{
+    "constant": false,
+    "inputs": [
+
+    ],
+    "name": "ozcoinStake",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },{
+    "constant": false,
+    "inputs": [
+      {
+        "name": "contractAddress",
+        "type": "address"
+      },
+      {
+        "name": "targetAddress",
+        "type": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawErc20",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },{
+    "constant": false,
+    "inputs": [
+      {
+        "name": "contractAddress",
+        "type": "address"
+      },
+      {
+        "name": "targetAddress",
+        "type": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawStake",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

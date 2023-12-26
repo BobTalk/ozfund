@@ -39,10 +39,12 @@ const TodoContract = () => {
   let [modalOpen, setModalOpen] = useState(false);
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
+  let moduleData = useRef<any>();
   let [totoSell, setTotoSell] = useState<boolean>(false);
   let [dispatchAddr, setDispatchAddr] = useState();
   let [pubulishNum, setPubulishNum] = useState();
   function configCb(e, crt) {
+    console.log("crt: ", crt);
     stop(e, async () => {
       if (crt.flag === "switch") {
         let { status, message: tipInfo } = await SwitchExchaneInterface({});
@@ -50,6 +52,10 @@ const TodoContract = () => {
         setTotoSell(!totoSell);
         return;
       }
+      moduleData.current = {
+        pubulishNum,
+        dispatchAddr,
+      };
       moduleContent.current = crt.flag;
       moduleTitle.current = crt.title;
       setModalOpen(!modalOpen);
@@ -103,6 +109,7 @@ const TodoContract = () => {
       <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
+        data={moduleData.current}
         modalOpen={modalOpen}
         onCancel={() => setModalOpen(!modalOpen)}
         onOk={submitInfoCb}
@@ -313,6 +320,7 @@ const TitleComp = ({ title }) => {
 };
 // TOTO发行总量
 const PublishTotal = (props) => {
+  console.log("props: ", props);
   let [stop] = useStopPropagation();
   let [form] = Form.useForm();
   let [formInitVal] = useState({
@@ -330,7 +338,7 @@ const PublishTotal = (props) => {
     <>
       <p className="flex justify-between mx-[var(--gap30)] text-[14px] py-[var(--gap20)] border-b border-b-[#e6e6e6]">
         <span className="text-[var(--border-color)]">当前发行总量</span>
-        <span className="text-[#333]">100000</span>
+        <span className="text-[#333]">{props?.data?.pubulishNum ?? 0}</span>
       </p>
       <ConfigProvider
         theme={{
@@ -568,7 +576,7 @@ const DispatchAddress = (props) => {
     <>
       <p className="flex justify-between mx-[var(--gap30)] text-[14px] py-[var(--gap20)] border-b border-b-[#e6e6e6]">
         <span className="text-[var(--border-color)]">当前调度地址</span>
-        <span className="text-[#333]">100000</span>
+        <span className="text-[#333]">{props?.data?.dispatchAddr ?? "--"}</span>
       </p>
       <ConfigProvider
         theme={{

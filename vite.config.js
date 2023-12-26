@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import { resolve } from "path";
 import vitePluginImp from 'vite-plugin-imp'
 import WindiCSS from 'vite-plugin-windicss'
-
 import viteCompression from "vite-plugin-compression"
 export default defineConfig({
   plugins: [
@@ -40,6 +39,7 @@ export default defineConfig({
         // 资源出口路径(如：图片、css等)
         assetFileNames: function (assetInfo) {
           const name = assetInfo.name;
+          console.log('name: ', name);
           if (/.css$/.test(name)) {
             return "static/css/[name]-[hash].[ext]";
           } else if (/.[jpe?g|png|gif]$/.test(name)) {

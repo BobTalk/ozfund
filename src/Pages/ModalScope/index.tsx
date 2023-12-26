@@ -24,7 +24,7 @@ const ModalScopeComp = forwardRef((props: any, ref: any) => {
       }}
       title={props.title}
     >
-      <CompName onCancel={cancelCb} onOk={okCb} />
+      <CompName onCancel={cancelCb} onOk={okCb} data={props?.data} />
     </ModalScope>
   ) : null;
 });

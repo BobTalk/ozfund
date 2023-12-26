@@ -1,0 +1,132 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "targetAddress",
+        "type": "address"
+      },{
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "submitTransaction",
+    "outputs": [
+      {
+        "name": "transactionId",
+        "type": "uint"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "transactionId",
+      "type": "uint256"
+    }
+  ],
+  "name": "viewTransaction",
+  "outputs": [
+    {
+      "components": [
+        {
+          "name": "targetAddress",
+          "type": "address"
+        },{
+          "name": "data",
+          "type": "bytes"
+        },{
+          "name": "transactionType",
+          "type": "uint8"
+        },{
+          "name": "status",
+          "type": "uint8"
+        }
+      ],
+      "name": "Transaction",
+      "type": "tuple"
+    }
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "transactionId",
+      "type": "uint256"
+    }
+  ],
+  "name": "confirmTransaction",
+  "outputs": [
+
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "admin",
+      "type": "address"
+    }
+  ],
+  "name": "addAdmin",
+  "outputs": [
+
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "admin",
+      "type": "address"
+    }
+  ],
+  "name": "removeAdmin",
+  "outputs": [
+
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "superAdmin",
+      "type": "address"
+    }
+  ],
+  "name": "addSuperAdmin",
+  "outputs": [
+
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+},{
+  "constant": false,
+  "inputs": [
+    {
+      "name": "superAdmin",
+      "type": "address"
+    }
+  ],
+  "name": "removeSuperAdmin",
+  "outputs": [
+
+  ],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+}
+]

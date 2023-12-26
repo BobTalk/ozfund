@@ -1,7 +1,9 @@
 {
+  "typeRoots":["node_modules/@types", "src/types"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "target": "ES2015",
     "moduleResolution": "node",
     "module": "ESNext",
@@ -13,5 +15,5 @@
     "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src", "images.d.ts", "style.d.ts", "**/*.tsx"]
+  "include": ["src", "images.d.ts", "style.d.ts","vite-env.d.ts", "**/*.tsx"]
 }

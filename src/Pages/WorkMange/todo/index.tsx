@@ -2,13 +2,14 @@ import { Button, message } from "antd";
 import TableConfig from "./table";
 import linkIcon from "@/assets/images/link.svg";
 import { useStopPropagation } from "@/Hooks/StopPropagation.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { formatBalance, getSession, setSession } from "@/utils/base";
 import { VerticalAlignBottomOutlined } from "@ant-design/icons";
-
+import { useWallatInfo } from "@/Hooks/Web";
 const Todo = () => {
+  let { signature } = useWallatInfo();
   const [hasProvider, setHasProvider] = useState<boolean | null>(null);
   const initialState = { accounts: [], balance: "", chainId: "" };
   const [wallet, setWallet] = useState(initialState);
@@ -17,10 +18,22 @@ const Todo = () => {
   let [stop] = useStopPropagation();
   let topModuleRefs = useRef<any>();
   let tableRefs = useRef<any>();
+  let crtInfo = useRef<any>({});
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [signatureOpen, setSignatureOpen] = useState(false);
-  function signatureCb(e, crt, index) {
+
+  function signatureCb(e, crt={}, index) {
     stop(e, () => {
+      crtInfo.current = crt
+      setSignatureOpen(!signatureOpen);
+    });
+  }
+  function signatureSubmitCb() {
+    signature({
+      accountAddress: getSession("ethAddress"),
+      chainId: getSession("chainId"),
+      id:crtInfo?.current?.id
+    }).then(() => {
       setSignatureOpen(!signatureOpen);
     });
   }
@@ -72,12 +85,16 @@ const Todo = () => {
     });
 
     // 以太链ID
-    setSession("chainId",chainId)
+    setSession("chainId", chainId);
+    console.log('以太链IDchainId: ', chainId);
     // 账户地址
-    setSession('ethAddress', accounts[0])
+    setSession("ethAddress", accounts[0]);
     setWallet({ accounts, balance, chainId });
   };
-
+  function getHeaderH() {
+    let { height } = topModuleRefs.current.getBoundingClientRect();
+    setFilterModuleHeight(height);
+  }
   const handleConnect = async () => {
     // setIsConnecting(true);
     await (window as any).ethereum
@@ -104,6 +121,11 @@ const Todo = () => {
   function installCb() {
     window.open("https://metamask.io", "_blank");
   }
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      getHeaderH();
+    }, 1000);
+  }, []);
   // const disableConnect = Boolean(wallet) && isConnecting;
   return (
     <>
@@ -130,7 +152,9 @@ const Todo = () => {
           >
             连接钱包
           </Button>
-        ):<Button type="link">钱包已链接</Button>}
+        ) : (
+          <Button type="link">钱包已链接</Button>
+        )}
       </div>
       <TableConfig
         ref={tableRefs}
@@ -150,17 +174,19 @@ const Todo = () => {
           paddingInline: ".28rem",
           paddingBlock: "var(--gap20)",
         }}
-        onOk={signatureCb}
+        onOk={signatureSubmitCb}
         onCancel={signatureCb}
       >
         <>
           <p className="flex items-center justify-between  text-[14px] mt-[var(--gap20)]">
             <span className="text-[#C5CAD0]">管理员</span>
-            <span className="text-[#333]">{getSession('ethAddress')}</span>
+            <span className="text-[#333]">{getSession("ethAddress")}</span>
           </p>
           <p className="flex items-center justify-between text-[14px] mt-[var(--gap20)]">
             <span className="text-[#C5CAD0]">员工ID</span>
-            <span className="text-[#333]">{getSession('userInfo').adminId}</span>
+            <span className="text-[#333]">
+              {getSession("userInfo").adminId}
+            </span>
           </p>
         </>
       </ModalComp>
