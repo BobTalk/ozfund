@@ -5,6 +5,7 @@ import OzcoinExpandAbi from "@/assets/json/ozcoinExpandAbi.json";
 import TotoExpandAbi from "@/assets/json/totoExpandAbi.json";
 import OzcoinStakeExpandAbi from "@/assets/json/ozcoinStakeExpandAbi.json";
 import MultiSigWalletAbi from "@/assets/json/multiSigWalletAbi.json";
+import ContractAbi from "@/assets/json/contractAbi.json";
 // const MultiSigWalletAddress = "0x11CACE84a9408dAD3885f89eEb9B73949e12040E"
 // const OZCoinAddress = "0x08E73707Be9Ad704EeF948D21e3996787C1e9E74"
 // const TotoAddress = "0x1DE70DBfa3f7E24EF7B0eb671c62D67E369f3Fae"
@@ -68,6 +69,7 @@ export const useWallatInfo = () => {
   let decompressionAddress = ({ accountAddress, chainId, address = '' }) => decompressionAddressFn({ accountAddress, chainId, address })
   // 批量转账
   let batchAccount = ({ accountAddress, chainId, poolId, list = [] }) => batchAccountFn({ accountAddress, chainId, poolId, list })
+  let getAmountByToken = ({ accountAddress, token }) => getAmountByTokenFn({ accountAddress, token })
   return {
     Web3,
     signature,
@@ -89,8 +91,50 @@ export const useWallatInfo = () => {
     addTokenExchange,
     removeTokenExchange,
     decompressionAddress,
-    batchAccount
+    batchAccount,
+    getAmountByToken
   }
+}
+async function getAmountByTokenFn({ accountAddress, token }) {
+  token = token.toLocaleLowerCase()
+  let tContractAddress;
+  let abi;
+  switch (token) {
+    case "ozcoin":
+      tContractAddress = OZCoinAddress;
+      break;
+    case "toto":
+      tContractAddress = TotoAddress
+      break;
+    default:
+      tContractAddress = BUSDAddress
+  }
+  switch (token) {
+    case "ozcoin":
+      let { ozcoinExpandAbi } = initAbi()
+      abi = ozcoinExpandAbi
+      break
+    case "toto":
+      let { totoExpandAbi } = initAbi()
+      abi = totoExpandAbi
+      break;
+    default:
+      let { contractAbi } = initAbi()
+      abi = contractAbi
+  }
+  // web3.eth.getBalance(accountAddress).then(res=>console.log(res)); // 查询以太币余额
+  // 定义合约
+  let myContract = new web3.eth.Contract(abi, tContractAddress, {
+    from: accountAddress, // default from address
+    gasPrice: '10000000000' // default gas price in wei, 10 gwei in this case
+  });
+  myContract.methods.balanceOf(tContractAddress).call({ from: accountAddress }, function (error, result) {
+    if (!error) {
+      console.log(result);
+    } else {
+      console.log(error);
+    }
+  });
 }
 function batchAccountFn({ accountAddress, chainId, poolId, list }) {
   let transferInfos = [];
@@ -347,6 +391,7 @@ function initAbi(): any {
   obj.totoExpandAbi = TotoExpandAbi;
   obj.ozcoinStakeExpandAbi = OzcoinStakeExpandAbi;
   obj.multiSigWalletAbi = MultiSigWalletAbi;
+  obj.contractAbi = ContractAbi
   return obj
 }
 function genTransactionFunction(targetAddress, transactionFunctionData, accountAddress) {

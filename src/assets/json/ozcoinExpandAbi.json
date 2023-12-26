@@ -1,5 +1,24 @@
 [
   {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "name": "balance",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -52,29 +71,30 @@
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
-  },{
-  "constant": false,
-  "inputs": [
-    {
-      "name": "spender",
-      "type": "address"
-    },
-    {
-      "name": "amount",
-      "type": "uint256"
-    }
-  ],
-  "name": "mint",
-  "outputs": [
-    {
-      "name": "",
-      "type": "bool"
-    }
-  ],
-  "payable": false,
-  "stateMutability": "nonpayable",
-  "type": "function"
-},
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "mint",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
   {
     "constant": false,
     "inputs": [
@@ -165,7 +185,8 @@
       {
         "name": "freezeAddr",
         "type": "address"
-      },{
+      },
+      {
         "name": "_value",
         "type": "uint256"
       }
@@ -224,9 +245,7 @@
       }
     ],
     "name": "permitApprove",
-    "outputs": [
-
-    ],
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"

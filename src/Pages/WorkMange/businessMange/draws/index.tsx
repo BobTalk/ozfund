@@ -1,12 +1,14 @@
 import { ModalTitle } from "@/Components/Modal";
 import SplitComp from "../common";
-import { EditOutlined } from "@ant-design/icons";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button, ConfigProvider, Form, InputNumber, Select, message } from "antd";
 import Icon from "@/Components/Icon";
 import { WithdrawTokenInterface } from "@/api";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { useWallatInfo } from "@/Hooks/Web";
+import { getSession } from "@/utils/base";
 const DrawsContractMoney = () => {
+  let {extractingTokensFromContracts,getAmountByToken} = useWallatInfo()
   let [stop] = useStopPropagation();
   let [listInfo] = useState([
     {
@@ -26,7 +28,10 @@ const DrawsContractMoney = () => {
     },
   ]);
   let [crtInfo, setCrtInfo] = useState<any>({});
-  let [form] = Form.useForm<any>();
+  let [form] = Form.useForm<{num:null,tokenContractAddress:any,spenderAddress:any,amount:number}>();
+  let formInitVal = useState<any>({
+    num:0
+  })
   function editorCb(crt) {
     setCrtInfo(crt);
   }
@@ -38,12 +43,28 @@ const DrawsContractMoney = () => {
       amount, //  提取数量
     });
     message[status?"success":'error'](tipInfo)
-    if(status){cancelToken(undefined)}
+    if(status){
+      cancelToken(undefined)
+      extractingTokensFromContracts({
+        accountAddress:getSession('ethAddress'),
+         chainId:getSession('chainId'),
+         objVal:{
+        select: "Toto",
+        tokenSelect: "Toto",
+        number: 0
+      }}).then(res=>console.log(res))
+    }
   }
   function cancelToken(e) {
     stop(e, () => {
       setCrtInfo({});
     });
+  }
+  function changeTokenCb(value){
+    getAmountByToken({
+      accountAddress:getSession('ethAddress'),
+      token: value
+    })
   }
   return (
     <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">
@@ -85,6 +106,7 @@ const DrawsContractMoney = () => {
             <Form
               form={form}
               onFinish={submitToken}
+              initialValues={formInitVal}
               layout="vertical"
               className="grid clear_required grid-cols-2 gap-x-[var(--gap20)] py-[var(--gap20)] pr-[var(--gap20)] pl-[var(--gap30)]"
             >
@@ -100,6 +122,7 @@ const DrawsContractMoney = () => {
                 className="mb-[var(--gap15)]"
               >
                 <Select
+                onChange={changeTokenCb}
                   placeholder="选择Token"
                   options={[
                     {
@@ -128,7 +151,7 @@ const DrawsContractMoney = () => {
                 label="数量"
                 className="mb-[var(--gap15)]"
               >
-                <InputNumber className="w-full" placeholder="输入数量" />
+                <InputNumber disabled defaultValue={formInitVal['num']} className="w-full" placeholder="输入数量" />
               </Form.Item>
               <Form.Item
                 name="spenderAddress"
