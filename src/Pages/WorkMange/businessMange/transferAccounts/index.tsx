@@ -13,12 +13,14 @@ import {
 import Icon from "@/Components/Icon";
 import { poolIdEnum } from "@/Enum";
 import { GetAirDropAddressInterface, TransferAccountsInterface } from "@/api";
-import { mergeClassName } from "@/utils/base";
+import { getSession, mergeClassName } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { cloneDeep } from "lodash";
+import { useWallatInfo } from "@/Hooks/Web";
 
 const BatchTransferAccounts = () => {
   let [listInfo, setListInfo] = useState([]);
+  let { batchAccount } = useWallatInfo();
   let poolIdNum = useRef<number>();
   let [form] = Form.useForm<any>();
   let [stop] = useStopPropagation();
@@ -68,6 +70,12 @@ const BatchTransferAccounts = () => {
     message[status ? "success" : "error"](tipInof);
     if (status) {
       resultTransferAccounts();
+      batchAccount({
+        accountAddress: getSession("ethAddress"),
+        chainId: getSession("chainId"),
+        list: transferInfo,
+        poolId:poolIdNum.current
+      });
     }
   }
   function resultTransferAccounts() {

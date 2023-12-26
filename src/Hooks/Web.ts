@@ -10,7 +10,7 @@ import MultiSigWalletAbi from "@/assets/json/multiSigWalletAbi.json";
 // const TotoAddress = "0x1DE70DBfa3f7E24EF7B0eb671c62D67E369f3Fae"
 // const OZCoinTotoStakeAddress = "0xe64b6b14d82742DfC2A0292b6BAaA3C11Aba95F2"
 // const BUSDAddress = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
-let {VITE_MultiSigWalletAddress: MultiSigWalletAddress, VITE_OZCoinAddress:OZCoinAddress, VITE_TotoAddress:TotoAddress, VITE_BUSDAddress:BUSDAddress,VITE_OZCoinTotoStakeAddress:OZCoinTotoStakeAddress} = import.meta.env
+let { VITE_MultiSigWalletAddress: MultiSigWalletAddress, VITE_OZCoinAddress: OZCoinAddress, VITE_TotoAddress: TotoAddress, VITE_BUSDAddress: BUSDAddress, VITE_OZCoinTotoStakeAddress: OZCoinTotoStakeAddress } = import.meta.env
 let ethereum = (window as any).ethereum;
 let web3 = new Web3(ethereum);
 export const useWallatInfo = () => {
@@ -64,7 +64,10 @@ export const useWallatInfo = () => {
   let addTokenExchange = ({ accountAddress, chainId, address = '' }) => addTokenExchangeFn({ accountAddress, chainId, address })
   // OZC新增某代币兑换
   let removeTokenExchange = ({ accountAddress, chainId, address = '' }) => removeTokenExchangeFn({ accountAddress, chainId, address })
-  let decompressionAddress = ({ accountAddress, chainId, address = '' })=>decompressionAddressFn({ accountAddress, chainId, address })
+  // TOTO解押
+  let decompressionAddress = ({ accountAddress, chainId, address = '' }) => decompressionAddressFn({ accountAddress, chainId, address })
+  // 批量转账
+  let batchAccount = ({ accountAddress, chainId, poolId, list = [] }) => batchAccountFn({ accountAddress, chainId, poolId, list })
   return {
     Web3,
     signature,
@@ -85,15 +88,31 @@ export const useWallatInfo = () => {
     changeTotoSchedulingAddress,
     addTokenExchange,
     removeTokenExchange,
-    decompressionAddress
+    decompressionAddress,
+    batchAccount
   }
 }
-function decompressionAddressFn({ accountAddress, chainId, address }){
-  let {ozcoinStakeExpandAbi} = initAbi()
+function batchAccountFn({ accountAddress, chainId, poolId, list }) {
+  let transferInfos = [];
+  for (let index = 0; index < list.length; index++) {
+    let { address, amount } = list[index];
+    transferInfos.push([address, web3.utils.toWei(amount, "ether")])
+  }
+  let { totoExpandAbi } = initAbi()
+  let myContract = new web3.eth.Contract(totoExpandAbi, TotoAddress, {
+    from: accountAddress,
+  });
+  let submitTransactionFunctionData = genTransactionFunction(TotoAddress, myContract.methods.distribute(poolId, transferInfos).encodeABI(), accountAddress)
+  return new Promise(resolve => {
+    resolve(requestContractFunction(accountAddress, chainId, submitTransactionFunctionData))
+  })
+}
+function decompressionAddressFn({ accountAddress, chainId, address }) {
+  let { ozcoinStakeExpandAbi } = initAbi()
   let myContract = new web3.eth.Contract(ozcoinStakeExpandAbi, OZCoinTotoStakeAddress, {
     from: accountAddress, // default from address
   });
-  let submitTransactionFunctionData = genTransactionFunction(OZCoinTotoStakeAddress,myContract.methods.changeAccountStakeExpirationTimestamp(address).encodeABI(),accountAddress)
+  let submitTransactionFunctionData = genTransactionFunction(OZCoinTotoStakeAddress, myContract.methods.changeAccountStakeExpirationTimestamp(address).encodeABI(), accountAddress)
   return new Promise(resolve => {
     resolve(requestContractFunction(accountAddress, chainId, submitTransactionFunctionData))
   })
