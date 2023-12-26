@@ -1,16 +1,18 @@
 import { manageTypeEnum } from "@/Enum";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { useWallatInfo } from "@/Hooks/Web";
 import ModalComp from "@/Pages/ModalComp";
 import {
   AddManageInterface,
   AddSuperManageInterface,
   GetContractSystemInterface,
   RemoveManageInterface,
+  RemoveSuperManageInterface,
 } from "@/api";
 import closeIcon from "@/assets/images/close.svg";
 import plusIcon from "@/assets/images/plus.svg";
+import { getSession } from "@/utils/base";
 import { Button, Form, Input, message } from "antd";
-import { cloneDeep } from "lodash";
 import { useLayoutEffect, useRef, useState } from "react";
 const MangeSite = () => {
   let [mangeOpen, setMangeOpen] = useState(false);
@@ -21,37 +23,77 @@ const MangeSite = () => {
   });
   let [manageList, setmanageList] = useState([]);
   let [stop] = useStopPropagation();
+  let { removeManageSytem, removeSuperManageSytem, addSuperManageSytem, addManageSytem } = useWallatInfo();
   function addManageResFormat(status, tipInfo) {
     message[status ? "success" : "error"](tipInfo);
     setMangeOpen(!mangeOpen);
   }
+  // 删除
   async function submitDeleteManageCb() {
     let { address } = crtManageInfo.current;
     if (crtManageInfo.current.type === 2) {
-      let res = await AddSuperManageInterface({
+      let res = await RemoveSuperManageInterface({
         address,
       });
       let { status, message: tipInfo } = res;
+      if (status) {
+        removeSuperManageSytem({
+          accountAddress: getSession("ethAddress"),
+          chainId: getSession("chainId"),
+          manageName: address,
+        }).then(res => {
+          console.log('res: ', res);
+        });
+      }
       addManageResFormat(status, tipInfo);
     }
     if (crtManageInfo.current.type === 1) {
       let { status, message: tipInfo } = await RemoveManageInterface({
         address,
       });
+      if (status) {
+        removeManageSytem({
+          accountAddress: getSession("ethAddress"),
+          chainId: getSession("chainId"),
+          manageName: address,
+        }).then(res => {
+          console.log('res: ', res);
+        });
+      }
       addManageResFormat(status, tipInfo);
     }
   }
+  // 添加
   async function onFinish({ address }) {
-    console.log(crtManageInfo.current);
     if (crtManageInfo.current.type === "superManage") {
       let res = await AddSuperManageInterface({
         address,
       });
       let { status, message: tipInfo } = res;
+      if (status) {
+        if (status) {
+          addSuperManageSytem({
+            accountAddress: getSession("ethAddress"),
+            chainId: getSession("chainId"),
+            manageName: address,
+          }).then(res => {
+            console.log('res: ', res);
+          });
+        }
+      }
       addManageResFormat(status, tipInfo);
     }
     if (crtManageInfo.current.type === "manage") {
       let { status, message: tipInfo } = await AddManageInterface({ address });
+      if (status) {
+        addManageSytem({
+          accountAddress: getSession("ethAddress"),
+          chainId: getSession("chainId"),
+          manageName: address,
+        }).then(res => {
+          console.log('res: ', res);
+        });
+      }
       addManageResFormat(status, tipInfo);
     }
   }
@@ -113,7 +155,8 @@ const MangeSite = () => {
         ))}
       </ul>
       <ModalComp
-        title={`${crtManageInfo.current?.flag}${manageTypeEnum[crtManageInfo.current?.type]}${crtManageInfo.current?.note}`}
+        title={`${crtManageInfo.current?.flag}${manageTypeEnum[crtManageInfo.current?.type]
+          }${crtManageInfo.current?.note}`}
         showFooter={!isAddManage}
         footer={{
           paddingInline: ".28rem",

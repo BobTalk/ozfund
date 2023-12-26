@@ -5,11 +5,12 @@ import OzcoinExpandAbi from "@/assets/json/ozcoinExpandAbi.json";
 import TotoExpandAbi from "@/assets/json/totoExpandAbi.json";
 import OzcoinStakeExpandAbi from "@/assets/json/ozcoinStakeExpandAbi.json";
 import MultiSigWalletAbi from "@/assets/json/multiSigWalletAbi.json";
-const MultiSigWalletAddress = "0x11CACE84a9408dAD3885f89eEb9B73949e12040E"
-const OZCoinAddress = "0x08E73707Be9Ad704EeF948D21e3996787C1e9E74"
-const TotoAddress = "0x1DE70DBfa3f7E24EF7B0eb671c62D67E369f3Fae"
-const OZCoinTotoStakeAddress = "0xe64b6b14d82742DfC2A0292b6BAaA3C11Aba95F2"
-const BUSDAddress = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+// const MultiSigWalletAddress = "0x11CACE84a9408dAD3885f89eEb9B73949e12040E"
+// const OZCoinAddress = "0x08E73707Be9Ad704EeF948D21e3996787C1e9E74"
+// const TotoAddress = "0x1DE70DBfa3f7E24EF7B0eb671c62D67E369f3Fae"
+// const OZCoinTotoStakeAddress = "0xe64b6b14d82742DfC2A0292b6BAaA3C11Aba95F2"
+// const BUSDAddress = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+let {VITE_MultiSigWalletAddress: MultiSigWalletAddress, VITE_OZCoinAddress:OZCoinAddress, VITE_TotoAddress:TotoAddress, VITE_BUSDAddress:BUSDAddress,VITE_OZCoinTotoStakeAddress:OZCoinTotoStakeAddress} = import.meta.env
 let ethereum = (window as any).ethereum;
 let web3 = new Web3(ethereum);
 export const useWallatInfo = () => {
@@ -38,7 +39,7 @@ export const useWallatInfo = () => {
   } }) => extractingTokensFromContractsFn({ accountAddress, chainId, objVal })
   //  自动空投地址
   let automaticAirdropAddress = ({ accountAddress, chainId, objVal = {
-    id: 0, // 类型标识
+    id: '', // 类型标识
     address: ''
   } }) => automaticAirdropAddressFn({ accountAddress, chainId, objVal })
   // 添加管理员

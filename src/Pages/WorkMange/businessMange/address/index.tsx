@@ -9,10 +9,13 @@ import ModalFooter from "@/Components/ModalFooterBtn";
 import { poolIdEnum } from "@/Enum";
 import { AutoAirdropInterface, GetAirDropAddressInterface } from "@/api";
 import { cloneDeep } from "lodash";
+import { useWallatInfo } from "@/Hooks/Web";
+import { getSession } from "@/utils/base";
 
 const AddressAutoAirdrop = () => {
   let [listInfo, setListInfo] = useState([]);
   let [stop] = useStopPropagation();
+  let { automaticAirdropAddress } = useWallatInfo()
   let [editorAddrOpen, setEditorAddrOpen] = useState<boolean>(false);
   let crtInfo = useRef<any>();
   let [formInitVal, setFormInitVal] = useState({
@@ -34,16 +37,25 @@ const AddressAutoAirdrop = () => {
       poolId: poolIdEnum[crtInfo.current.title],
     });
     message[status ? "success" : "error"](tipInfo);
-    // if (status) {
-    //   let type = crtInfo.current.type;
-    //   let cloneList = cloneDeep(listInfo);
-    //   let idx = cloneList.findIndex((item) => item.type == type);
-    //   cloneList.splice(idx, 1, {
-    //     ...cloneList[idx],
-    //     percentage: address,
-    //   });
-    //   setListInfo(cloneList);
-    // }
+    if (status) {
+      //   let type = crtInfo.current.type;
+      //   let cloneList = cloneDeep(listInfo);
+      //   let idx = cloneList.findIndex((item) => item.type == type);
+      //   cloneList.splice(idx, 1, {
+      //     ...cloneList[idx],
+      //     percentage: address,
+      //   });
+      //   setListInfo(cloneList);
+      automaticAirdropAddress({
+        accountAddress: getSession('ethAddress'),
+        chainId: getSession('chainId'),
+        objVal: {
+          id: poolIdEnum[crtInfo.current.title],
+          address
+        }
+      }).then(res => console.log(res))
+    }
+
     setEditorAddrOpen(!editorAddrOpen);
   }
   async function EthereumChain() {
