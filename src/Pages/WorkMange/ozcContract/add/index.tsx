@@ -5,13 +5,18 @@ import { Button, ConfigProvider, Form, Input, InputNumber } from "antd";
 import { forwardRef, useRef, useState } from "react";
 import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
+import { useWallatInfo } from "@/Hooks/Web";
+import { getSession } from "@/utils/base";
+import { AddPublishInterface } from "@/api";
 
 const AddOzc = () => {
+  let {addPublishOzc} = useWallatInfo()
   let [stop] = useStopPropagation();
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
-  let [modalOpen, setModalOpen] = useState(false);
-  let [modalTipOpen, setModalTipOpen] = useState(false);
+  let [modalOpen, setModalOpen] = useState<boolean>(false);
+  let [addPublishRes, setAddPublishRes]=useState<boolean>(false)
+  let [modalTipOpen, setModalTipOpen] = useState<boolean>(false);
   function configCb(e, crt) {
     stop(e, () => {
       moduleContent.current = crt.flag;
@@ -19,17 +24,27 @@ const AddOzc = () => {
       setModalOpen(!modalOpen);
     });
   }
-  function submitCb(values) {
+  async function submitCb({publishNum,address}) {
+   let {status} =  await AddPublishInterface({
+     address,
+     amount:publishNum
+    })
+    setAddPublishRes(status)
     moduleContent.current = AddPublish;
     moduleTitle.current = "增发OZC";
     setModalOpen(!modalOpen);
     setModalTipOpen(!modalTipOpen);
+    addPublishOzc({
+      accountAddress:getSession('ethAddress'), 
+      chainId:getSession('chainId'), 
+      tatol:publishNum}).then(res => console.log(res))
   }
   return (
     <>
       <HeaderModule onConfig={configCb} />
       {/* 提示信息 */}
       <ModalScopeComp
+        data={{addPublish:addPublishRes}}
         content={moduleContent.current}
         title={moduleTitle.current}
         modalOpen={modalTipOpen}
@@ -92,6 +107,7 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
 });
 // 增发OZC
 const AddPublish = (props) => {
+  console.log('props: ', props);
   let [stop] = useStopPropagation();
   function submitCb(e) {
     stop(e, () => {
@@ -106,7 +122,7 @@ const AddPublish = (props) => {
         },
       }}
     >
-      {false ? (
+      {!props?.data?.addPublish ? (
         <>
           <Image
             className="flex flex-col items-center mt-[var(--gap20)] mb-[var(--gap30)]"
@@ -166,9 +182,14 @@ const AddOzcInfo = (props) => {
         layout="vertical"
         onFinish={submitCb}
         initialValues={formInitVal}
+        className="clear_required"
         form={form}
       >
         <Form.Item
+          rules={[{
+            required: true,
+            message: ''
+          }]}
           className="mb-[var(--gap15)] mx-[var(--gap30)] mt-[var(--gap20)]"
           label={
             <span className="text-[var(--border-color)]">输入增发地址</span>
@@ -178,6 +199,10 @@ const AddOzcInfo = (props) => {
           <Input size="large" placeholder="请输入地址" />
         </Form.Item>
         <Form.Item
+          rules={[{
+            required: true,
+            message: ''
+          }]}
           className="mb-[var(--gap20)] mx-[var(--gap30)]"
           label={
             <span className="text-[var(--border-color)]">输入增发数量</span>

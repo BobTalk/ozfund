@@ -441,7 +441,7 @@ export const SwitchExchaneInterface = (params) => {
     params
   })
 }
-// /contract/mint?address=&amount= 增发
+// /contract/mint?address=&amount= 增发ozc
 export const AddPublishInterface = (params) => {
   return _http.getReq({
     url: `${contractPrefix}mint`,
