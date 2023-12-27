@@ -194,7 +194,7 @@ function frezzAddressFn({ accountAddress, chainId, address }) {
     resolve(requestContractFunction(accountAddress, chainId, submitTransactionFunctionData))
   })
 }
-function addPublishTotoFn({ accountAddress, chainId, val }) {
+function addPublishTotoFn({ accountAddress, chainId, tatol:val }) {
   let { erc20ContractAbi } = initAbi()
   let myContract = new web3.eth.Contract(erc20ContractAbi, OZCoinAddress, {
     from: accountAddress, // default from address
@@ -205,8 +205,9 @@ function addPublishTotoFn({ accountAddress, chainId, val }) {
     resolve(requestContractFunction(accountAddress, chainId, submitTransactionFunctionData))
   })
 }
-function addPublishOzcFn({ accountAddress, chainId, val }) {
+function addPublishOzcFn({ accountAddress, chainId, tatol:val }) {
   let { erc20ContractAbi } = initAbi()
+  console.log('val: ', val);
   let mintUint = web3.utils.toWei(String(val), "ether");
   let myContract = new web3.eth.Contract(erc20ContractAbi, OZCoinAddress, {
     from: accountAddress, // default from address

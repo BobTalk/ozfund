@@ -37,7 +37,8 @@ const AddOzc = () => {
     addPublishOzc({
       accountAddress:getSession('ethAddress'), 
       chainId:getSession('chainId'), 
-      tatol:publishNum}).then(res => console.log(res))
+      tatol:publishNum
+    }).then(res => console.log(res))
   }
   return (
     <>
