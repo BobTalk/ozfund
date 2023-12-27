@@ -1,5 +1,7 @@
 import { ModalTitle } from "@/Components/Modal";
+import { useWallatInfo } from "@/Hooks/Web";
 import { DischargeStakeInterface } from "@/api";
+import { getSession } from "@/utils/base";
 import {
   Button,
   ConfigProvider,
@@ -10,12 +12,20 @@ import {
   message,
 } from "antd";
 const TotoReleaseCustody = () => {
+  let { decompressionAddress } = useWallatInfo()
   let [form] = Form.useForm();
   async function submitInfo({ address }) {
     let { status, message: tipInfo } = await DischargeStakeInterface({
       address,
     });
     message[status ? "success" : "error"](tipInfo);
+    if (status) {
+      decompressionAddress({
+        accountAddress: getSession('ethAddress'),
+        chainId: getSession('chainId'),
+        address
+      })
+    }
   }
   return (
     <div className="h-full overflow-y-auto bg-white rounded-[var(--border-radius)] mt-[var(--gap15)]">

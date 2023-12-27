@@ -113,7 +113,7 @@ async function getAmountByTokenFn({ accountAddress, token }) {
   // 定义合约
   let myContract = new web3.eth.Contract(abi, tContractAddress, {
     from: accountAddress, // default from address
-    // gasPrice: '10000000000' // default gas price in wei, 10 gwei in this case
+    gasPrice: '100000000' // default gas price in wei, 10 gwei in this case
   });
   myContract.methods.balanceOf(accountAddress).call();
 }
