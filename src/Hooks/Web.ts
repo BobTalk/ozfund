@@ -52,9 +52,9 @@ export const useWallatInfo = () => {
   // 移除超级管理员
   let removeSuperManageSytem = ({ accountAddress, chainId, manageName = '' }) => removeSuperManageSytemFn({ accountAddress, chainId, manageName })
   // 增发ozc
-  let addPublishOzc = ({ accountAddress, chainId, val = 0 }) => addPublishOzcFn({ accountAddress, chainId, val })
+  let addPublishOzc = ({ accountAddress, chainId, tatol = 0 }) => addPublishOzcFn({ accountAddress, chainId, tatol })
   // 增发toto
-  let addPublishToto = ({ accountAddress, chainId, val = 0 }) => addPublishTotoFn({ accountAddress, chainId, val })
+  let addPublishToto = ({ accountAddress, chainId, tatol = 0 }) => addPublishTotoFn({ accountAddress, chainId, tatol })
   // 冻结地址
   let frezzAddress = ({ accountAddress, chainId, address = '' }) => frezzAddressFn({ accountAddress, chainId, address })
   // 销毁地址

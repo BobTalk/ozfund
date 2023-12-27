@@ -1,7 +1,6 @@
 import { ModalTitle } from "@/Components/Modal";
 import {
   EditFilled,
-  EditOutlined,
   SaveOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -31,7 +30,8 @@ import {
   GetTotoConfigInterface,
   SwitchExchaneInterface,
 } from "@/api";
-import { forIn } from "lodash";
+import { useWallatInfo } from "@/Hooks/Web";
+import { getSession } from "@/utils/base";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -43,12 +43,22 @@ const TodoContract = () => {
   let [totoSell, setTotoSell] = useState<boolean>(false);
   let [dispatchAddr, setDispatchAddr] = useState();
   let [pubulishNum, setPubulishNum] = useState();
+  let { openOrCloseTotoSell, changeTotoSchedulingAddress, setTotoPubulishTotal } = useWallatInfo()
+  let accountAddress = getSession('ethAddress')
+  let chainId = getSession('chainId')
   function configCb(e, crt) {
     console.log("crt: ", crt);
     stop(e, async () => {
       if (crt.flag === "switch") {
         let { status, message: tipInfo } = await SwitchExchaneInterface({});
         message[status ? "success" : "error"](tipInfo);
+        if (status) {
+          openOrCloseTotoSell({
+            accountAddress,
+            chainId,
+            sellFlag: !totoSell
+          })
+        }
         setTotoSell(!totoSell);
         return;
       }
@@ -68,8 +78,22 @@ const TodoContract = () => {
       setModalOpen(!modalOpen);
     });
   }
-  function submitInfoCb(values) {
-    console.log("values: ", values);
+  function submitInfoCb({ values: { address = '', publishNum = 0 }, flag }) {
+    if (flag == 'dispatch') {
+      changeTotoSchedulingAddress({
+        accountAddress,
+        chainId,
+        address
+      }).then(res => console.log(res))
+    }
+    if (flag == 'publish') {
+      setTotoPubulishTotal({
+        accountAddress,
+        chainId,
+        total: publishNum
+      }).then(res => console.log(res))
+    }
+    setModalOpen(!modalOpen);
   }
   async function getAddress() {
     let { status, data } = await GetTotoConfigInterface();
@@ -327,7 +351,7 @@ const PublishTotal = (props) => {
     publishNum: "",
   });
   function submitCb(values) {
-    props?.onOk(values);
+    props?.onOk({ values, flag: 'publish' });
   }
   function cancelCb(e) {
     stop(e, () => {
@@ -349,13 +373,19 @@ const PublishTotal = (props) => {
       >
         <Form
           layout="vertical"
-          className="mt-[var(--gap20)]"
+          className="clear_required mt-[var(--gap20)]"
           onFinish={submitCb}
           initialValues={formInitVal}
           form={form}
         >
           <Form.Item
             className="mb-[var(--gap20)] mx-[var(--gap30)]"
+            rules={[
+              {
+                required: true,
+                message:''
+              }
+            ]}
             label={<span className="text-[var(--border-color)]">输入数量</span>}
             name="publishNum"
           >
@@ -373,9 +403,12 @@ const PublishTotal = (props) => {
     </>
   );
 };
-// 添加TOTO
+// 增发TOTO
 const AddToto = (props) => {
+  let accountAddress = getSession('ethAddress')
+  let chainId = getSession('chainId')
   let [stop] = useStopPropagation();
+  let {addPublishToto} = useWallatInfo()
   let [form] = Form.useForm();
   async function submitCb({ address, amount }) {
     let { status, message: tipInfo } = await AddPublishInterface({
@@ -384,6 +417,7 @@ const AddToto = (props) => {
     });
     message[status ? "success" : "error"](tipInfo);
     props?.onCancel?.(false);
+    status&&addPublishToto({accountAddress, chainId, tatol:amount}).then(res=>console.log(res))
   }
   function cancelCb(e) {
     stop(e, () => {
@@ -556,6 +590,7 @@ const AddToto = (props) => {
 //     </ConfigProvider>
 //   );
 // });
+
 // TOTO调度地址
 const DispatchAddress = (props) => {
   let [stop] = useStopPropagation();
@@ -564,8 +599,7 @@ const DispatchAddress = (props) => {
     address: "",
   });
   function submitCb(values) {
-    console.log("values: ", values);
-    props?.onOk(values);
+    props?.onOk({ values, flag: 'dispatch' });
   }
   function cancelCb(e) {
     stop(e, () => {
@@ -588,18 +622,24 @@ const DispatchAddress = (props) => {
         <Form
           onFinish={submitCb}
           layout="vertical"
-          className="mt-[var(--gap20)]"
+          className="clear_required mt-[var(--gap20)]"
           initialValues={formInitVal}
           form={form}
         >
           <Form.Item
+          rules={[
+            {
+              required: true,
+              message:''
+            }
+          ]}
             className="mb-[var(--gap20)] mx-[var(--gap30)]"
             label={
               <span className="text-[var(--border-color)]">输入新调度地址</span>
             }
             name="address"
           >
-            <Input size="large" className="w-full" placeholder="请输入数量" />
+            <Input size="large" className="w-full" placeholder="请输入新调度地址" />
           </Form.Item>
           <Form.Item className="mb-0">
             <ModalFooter onCancel={(e) => cancelCb(e)} />
