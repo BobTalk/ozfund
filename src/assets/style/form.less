@@ -67,12 +67,23 @@
     }
   }
 }
+.ant-form-item-label{
+  display: flex;
+
+  height: .22rem !important;
+  margin-bottom: .08rem !important;
+  padding: 0 !important;
+  align-items: center;
+}
 
 .clear_required {
   .ant-form-item-required {
     &::before {
       content: "" !important;
       margin-inline-end: 0 !important;
+    }
+    &::after{
+      display: none !important;
     }
   }
 }

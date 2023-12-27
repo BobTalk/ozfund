@@ -69,10 +69,15 @@ export const useWallatInfo = () => {
   let decompressionAddress = ({ accountAddress, chainId, address = '' }) => decompressionAddressFn({ accountAddress, chainId, address })
   // 批量转账
   let batchAccount = ({ accountAddress, chainId, poolId, list = [] }) => batchAccountFn({ accountAddress, chainId, poolId, list })
+  // 通过Token获取代币数量
   let getAmountByToken = ({ accountAddress, token }) => getAmountByTokenFn({ accountAddress, token })
+// 通过地址获取ozc数量
+  let getAmountByAddress = ({ address }) => getAmountByAddressFn({ address })
+
   return {
     Web3,
     signature,
+    getAmountByAddress,
     openOrCloseTotoSell,
     setTotoPubulishTotal,
     setTotoPubulish,
@@ -95,6 +100,19 @@ export const useWallatInfo = () => {
     getAmountByToken
   }
 }
+
+function getAmountByAddressFn({address }){
+  if(!address)return Promise.reject("地址不存在")
+  // 定义合约
+  let {erc20ContractAbi} = initAbi()
+  let myContract = new web3.eth.Contract(erc20ContractAbi, OZCoinAddress,{
+    from: address
+  });
+  return myContract.methods.balanceOf(address).call().then(res=>{
+   return web3.utils.toWei(String(res), "ether")
+  })
+  // console.log('res: ', res);
+}
 async function getAmountByTokenFn({ accountAddress, token }) {
   token = token.toLocaleLowerCase()
   let abi = initAbi().erc20ContractAbi;
@@ -113,9 +131,17 @@ async function getAmountByTokenFn({ accountAddress, token }) {
   // 定义合约
   let myContract = new web3.eth.Contract(abi, tContractAddress, {
     from: accountAddress, // default from address
+    gasLimit: 70000,
     gasPrice: '100000000' // default gas price in wei, 10 gwei in this case
   });
-  myContract.methods.balanceOf(accountAddress).call();
+  myContract.methods.balanceOf(accountAddress).call({ from: accountAddress }, function(error, result) {
+    if (!error) {
+      let ubalance = state.web3.utils.fromWei(String(result), 'ether');
+      console.log(ubalance, 'ubalance')
+    } else {
+      console.log(error, '获取金额错误');
+    }
+  });
 }
 function batchAccountFn({ accountAddress, chainId, poolId, list }) {
   let transferInfos = [];

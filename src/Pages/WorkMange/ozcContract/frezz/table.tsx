@@ -49,7 +49,8 @@ const Table = (props) => {
   function moreCb(): void {
     throw new Error("Function not implemented.");
   }
-
+function getTableList(){
+}
   return (
     <PageTableScope
       pagitions={pagitions.current}
