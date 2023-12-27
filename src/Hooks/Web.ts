@@ -63,7 +63,7 @@ export const useWallatInfo = () => {
   let changeTotoSchedulingAddress = ({ accountAddress, chainId, address = '' }) => changeTotoSchedulingAddressFn({ accountAddress, chainId, address })
   // OZC新增某代币兑换
   let addTokenExchange = ({ accountAddress, chainId, address = '' }) => addTokenExchangeFn({ accountAddress, chainId, address })
-  // OZC新增某代币兑换
+  // OZC移除某代币兑换
   let removeTokenExchange = ({ accountAddress, chainId, address = '' }) => removeTokenExchangeFn({ accountAddress, chainId, address })
   // TOTO解押
   let decompressionAddress = ({ accountAddress, chainId, address = '' }) => decompressionAddressFn({ accountAddress, chainId, address })

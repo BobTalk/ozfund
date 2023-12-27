@@ -16,6 +16,7 @@ import {
 import {
   forwardRef,
   useEffect,
+  useImperativeHandle,
   useLayoutEffect,
   useRef,
   useState,
@@ -27,11 +28,14 @@ import ModalFooter from "@/Components/ModalFooterBtn";
 import ModalScopeComp from "@/Pages/ModalScope";
 import {
   AddPublishInterface,
+  GetProductionRatioInterface,
   GetTotoConfigInterface,
   SwitchExchaneInterface,
 } from "@/api";
 import { useWallatInfo } from "@/Hooks/Web";
 import { getSession } from "@/utils/base";
+import { poolIdEnum } from "@/Enum";
+import { cloneDeep } from "lodash";
 const TodoContract = () => {
   let [stop] = useStopPropagation();
   let headerRefs = useRef<any>();
@@ -40,14 +44,14 @@ const TodoContract = () => {
   let moduleContent = useRef<any>();
   let moduleTitle = useRef<any>();
   let moduleData = useRef<any>();
+  let contentRefs = useRef<any>();
   let [totoSell, setTotoSell] = useState<boolean>(false);
   let [dispatchAddr, setDispatchAddr] = useState();
   let [pubulishNum, setPubulishNum] = useState();
-  let { openOrCloseTotoSell, changeTotoSchedulingAddress, setTotoPubulishTotal } = useWallatInfo()
+  let { openOrCloseTotoSell, changeTotoSchedulingAddress, setTotoPubulishTotal, productionAllocationRatio } = useWallatInfo()
   let accountAddress = getSession('ethAddress')
   let chainId = getSession('chainId')
   function configCb(e, crt) {
-    console.log("crt: ", crt);
     stop(e, async () => {
       if (crt.flag === "switch") {
         let { status, message: tipInfo } = await SwitchExchaneInterface({});
@@ -71,11 +75,40 @@ const TodoContract = () => {
       setModalOpen(!modalOpen);
     });
   }
-  function saveCb(e) {
+  function saveCb(e, list, cb) {
+    let obj = {
+      team: 0,
+      support: 0,
+      fund: 0,
+      pledge: 0,
+      mining: 0,
+      vipMining: 0
+    }
+    let map = {
+      1: 'team',
+      2: 'support',
+      3: 'fund',
+      4: 'pledge',
+      5: 'mining',
+      6: 'vipMining'
+    }
+    for (const iterator of list) {
+      obj[map[iterator['pool']]] = iterator['proportion']
+    }
     stop(e, () => {
-      moduleContent.current = TipMessage;
-      moduleTitle.current = "提示信息";
-      setModalOpen(!modalOpen);
+      let result = Object.values(list).reduce((prv: number, next: any) => (prv += +next.proportion, prv), 0)
+      if (result !== 100) {
+        moduleContent.current = TipMessage;
+        moduleTitle.current = "提示信息";
+        setModalOpen(!modalOpen);
+      } else {
+        cb()
+        productionAllocationRatio({
+          accountAddress,
+          chainId,
+          objVal: obj
+        }).then(res => console.log(res))
+      }
     });
   }
   function submitInfoCb({ values: { address = '', publishNum = 0 }, flag }) {
@@ -129,7 +162,7 @@ const TodoContract = () => {
         totoSell={totoSell}
         onConfig={configCb}
       />
-      <Contentmodule headerH={headerHeight} onSave={saveCb} />
+      <Contentmodule headerH={headerHeight} ref={contentRefs} onSave={saveCb} />
       <ModalScopeComp
         content={moduleContent.current}
         title={moduleTitle.current}
@@ -223,55 +256,56 @@ const HeaderModule = forwardRef((props: any, ref: any) => {
     </ul>
   );
 });
-const Contentmodule = (props) => {
+const Contentmodule = forwardRef((props: any, ref) => {
   let BtnName = useRef<string>("编辑");
-  let [listInfo] = useState([
-    {
-      id: "1",
-      title: "长期支持者占比",
-    },
-    {
-      id: "2",
-      title: "OZ基金会占比",
-    },
-    {
-      id: "3",
-      title: "OZ团队成员占比",
-    },
-    {
-      id: "4",
-      title: "流动性占比",
-    },
-    {
-      id: "5",
-      title: "用户OZC投注主矿池挖矿",
-    },
-    {
-      id: "6",
-      title: "VIP用户OZC投注VIP矿池挖矿",
-    },
-  ]);
-  let [listValues] = useState({
-    percentage0: 15,
-    percentage1: 30,
-    percentage2: 20,
-    percentage3: 5,
-    percentage4: 20,
-    percentage5: 10,
-  });
+  let [form] = Form.useForm()
+  let [listInfo, setListInfo] = useState([]);
   let [editorPercentage, setEditorPercentage] = useState(false);
   function editorCb(e) {
-    setEditorPercentage(!editorPercentage);
-
+    setFormField(listInfo)
     if (BtnName.current == "保存") {
-      props?.onSave?.(e);
+      props?.onSave?.(e, listInfo, cb);
+    } else {
+      cb()
     }
+  }
+  function setFormField(listInfo) {
+    for (let iterator of listInfo) {
+      let key = `proportion_` + iterator['pool']
+      form.setFieldValue([key], iterator['proportion'])
+    }
+  }
+  function cb() {
+    setEditorPercentage(!editorPercentage);
     BtnName.current = BtnName.current == "编辑" ? "保存" : "编辑";
   }
   function formFieldChangeCb(changedValues, allValues) {
-    console.log("allValues: ", allValues);
-    console.log("changedValues: ", changedValues);
+    let key = Object.keys(changedValues)
+    let value = Object.values(changedValues)
+    let [name, index] = key[0].split("_")
+    let updateItemIndex = listInfo.findIndex(item => item.pool == index)
+    setListInfo(info => {
+      let newVal = cloneDeep(info)
+      newVal.splice(updateItemIndex, 1, {
+        ...newVal[updateItemIndex],
+        proportion: value[0]
+      })
+      return newVal
+    })
   }
+  function getInfo() {
+    GetProductionRatioInterface({}).then(res => {
+      setListInfo(res.data ?? [])
+      setFormField(res.data ?? [])
+    })
+  }
+  const getListInfo = () => listInfo
+  useImperativeHandle(ref, () => ({
+    getListInfo
+  }), [listInfo])
+  useEffect(() => {
+    getInfo()
+  }, [])
   return (
     <div
       style={{
@@ -282,7 +316,7 @@ const Contentmodule = (props) => {
       <TitleComp
         title={
           <div className="flex flex-1 items-center justify-between pr-[var(--gap20)]">
-            <span>提取合约中代币</span>
+            <span>生产分配比例</span>
             <Button
               onClick={editorCb}
               className="bg-[#e6f2fd] text-[var(--blue)] hover:text-[#FFF]"
@@ -297,23 +331,23 @@ const Contentmodule = (props) => {
         }
       />
       <Form
-        initialValues={listValues}
+        form={form}
         onValuesChange={formFieldChangeCb}
         labelAlign="left"
         className={styleScope["_reset-form"]}
       >
         {listInfo.map((item, index) => (
           <Form.Item
-            name={`percentage` + index}
+            name={`proportion_` + item['pool']}
             label={
-              <span className="text-[#333] w-[1.9rem]">{item.title}：</span>
+              <span className="text-[#333] w-[1.9rem]">{poolIdEnum[item['pool']]}：</span>
             }
-            key={item.id}
+            key={item['pool']}
             className="text-[14px] mb-[.14rem]"
           >
             {!editorPercentage ? (
               <span className="text-[#666]">
-                {listValues["percentage" + index] ?? "--"}%
+                {item['proportion'] ?? "--"}%
               </span>
             ) : (
               <InputNumber
@@ -321,7 +355,7 @@ const Contentmodule = (props) => {
                 min={0}
                 addonAfter="%"
                 className="w-[1rem]"
-                defaultValue={listValues["percentage" + index]}
+                defaultValue={item['proportion'] ?? 0}
               />
             )}
           </Form.Item>
@@ -329,7 +363,7 @@ const Contentmodule = (props) => {
       </Form>
     </div>
   );
-};
+});
 const TitleComp = ({ title }) => {
   return (
     <>
@@ -344,7 +378,6 @@ const TitleComp = ({ title }) => {
 };
 // TOTO发行总量
 const PublishTotal = (props) => {
-  console.log("props: ", props);
   let [stop] = useStopPropagation();
   let [form] = Form.useForm();
   let [formInitVal] = useState({
@@ -383,7 +416,7 @@ const PublishTotal = (props) => {
             rules={[
               {
                 required: true,
-                message:''
+                message: ''
               }
             ]}
             label={<span className="text-[var(--border-color)]">输入数量</span>}
@@ -408,7 +441,7 @@ const AddToto = (props) => {
   let accountAddress = getSession('ethAddress')
   let chainId = getSession('chainId')
   let [stop] = useStopPropagation();
-  let {addPublishToto} = useWallatInfo()
+  let { addPublishToto } = useWallatInfo()
   let [form] = Form.useForm();
   async function submitCb({ address, amount }) {
     let { status, message: tipInfo } = await AddPublishInterface({
@@ -417,7 +450,7 @@ const AddToto = (props) => {
     });
     message[status ? "success" : "error"](tipInfo);
     props?.onCancel?.(false);
-    status&&addPublishToto({accountAddress, chainId, tatol:amount}).then(res=>console.log(res))
+    status && addPublishToto({ accountAddress, chainId, tatol: amount }).then(res => console.log(res))
   }
   function cancelCb(e) {
     stop(e, () => {
@@ -627,12 +660,12 @@ const DispatchAddress = (props) => {
           form={form}
         >
           <Form.Item
-          rules={[
-            {
-              required: true,
-              message:''
-            }
-          ]}
+            rules={[
+              {
+                required: true,
+                message: ''
+              }
+            ]}
             className="mb-[var(--gap20)] mx-[var(--gap30)]"
             label={
               <span className="text-[var(--border-color)]">输入新调度地址</span>
@@ -654,7 +687,7 @@ const TipMessage = (props) => {
   let [stop] = useStopPropagation();
   function submitCb(e) {
     stop(e, () => {
-      props?.onOk();
+      props?.onOk({ values: {}, flag: 'tipMessage' });
     });
   }
   return (

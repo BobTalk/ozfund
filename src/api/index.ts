@@ -497,7 +497,7 @@ export const GetAirDropAddressInterface = () => {
 
   })
 }
-// contract/findPoolProduceProportion 获取矿池生产比例
+// contract/findPoolProduceProportion 生产分配比例
 export const GetProductionRatioInterface = (params) => {
   return _http.getReq({
     url: `${contractPrefix}findPoolProduceProportion`,
