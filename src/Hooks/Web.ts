@@ -97,8 +97,8 @@ export const useWallatInfo = () => {
 }
 async function getAmountByTokenFn({ accountAddress, token }) {
   token = token.toLocaleLowerCase()
+  let abi = initAbi().erc20ContractAbi;
   let tContractAddress;
-  let abi;
   switch (token) {
     case "ozcoin":
       tContractAddress = OZCoinAddress;
@@ -109,32 +109,13 @@ async function getAmountByTokenFn({ accountAddress, token }) {
     default:
       tContractAddress = BUSDAddress
   }
-  switch (token) {
-    case "ozcoin":
-      let { ozcoinExpandAbi } = initAbi()
-      abi = ozcoinExpandAbi
-      break
-    case "toto":
-      let { totoExpandAbi } = initAbi()
-      abi = totoExpandAbi
-      break;
-    default:
-      let { contractAbi } = initAbi()
-      abi = contractAbi
-  }
   // web3.eth.getBalance(accountAddress).then(res=>console.log(res)); // 查询以太币余额
   // 定义合约
   let myContract = new web3.eth.Contract(abi, tContractAddress, {
     from: accountAddress, // default from address
-    gasPrice: '10000000000' // default gas price in wei, 10 gwei in this case
+    // gasPrice: '10000000000' // default gas price in wei, 10 gwei in this case
   });
-  myContract.methods.balanceOf(tContractAddress).call({ from: accountAddress }, function (error, result) {
-    if (!error) {
-      console.log(result);
-    } else {
-      console.log(error);
-    }
-  });
+  myContract.methods.balanceOf(accountAddress).call();
 }
 function batchAccountFn({ accountAddress, chainId, poolId, list }) {
   let transferInfos = [];

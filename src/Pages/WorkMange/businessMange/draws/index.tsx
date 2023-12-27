@@ -8,7 +8,7 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useWallatInfo } from "@/Hooks/Web";
 import { getSession } from "@/utils/base";
 const DrawsContractMoney = () => {
-  let {extractingTokensFromContracts,getAmountByToken} = useWallatInfo()
+  let { extractingTokensFromContracts, getAmountByToken } = useWallatInfo()
   let [stop] = useStopPropagation();
   let [listInfo] = useState([
     {
@@ -28,31 +28,30 @@ const DrawsContractMoney = () => {
     },
   ]);
   let [crtInfo, setCrtInfo] = useState<any>({});
-  let [form] = Form.useForm<{num:null,tokenContractAddress:any,spenderAddress:any,amount:number}>();
-  let formInitVal = useState<any>({
-    num:0
-  })
+  let [form] = Form.useForm<{ num: null, tokenContractAddress: any, spenderAddress: any, amount: number }>();
+
   function editorCb(crt) {
     setCrtInfo(crt);
   }
   async function submitToken({ tokenContractAddress, spenderAddress, amount }) {
-    let { status,message:tipInfo } = await WithdrawTokenInterface({
+    let { status, message: tipInfo } = await WithdrawTokenInterface({
       contractAddress: crtInfo.contractAddress, // 合约地址,
       tokenContractAddress, // token合约地址
       spenderAddress, // 提取地址
       amount, //  提取数量
     });
-    message[status?"success":'error'](tipInfo)
-    if(status){
+    message[status ? "success" : 'error'](tipInfo)
+    if (status) {
       cancelToken(undefined)
       extractingTokensFromContracts({
-        accountAddress:getSession('ethAddress'),
-         chainId:getSession('chainId'),
-         objVal:{
-        select: "Toto",
-        tokenSelect: "Toto",
-        number: 0
-      }}).then(res=>console.log(res))
+        accountAddress: getSession('ethAddress'),
+        chainId: getSession('chainId'),
+        objVal: {
+          select: tokenContractAddress,
+          tokenSelect: spenderAddress,
+          number: amount
+        }
+      }).then(res => console.log(res))
     }
   }
   function cancelToken(e) {
@@ -60,9 +59,10 @@ const DrawsContractMoney = () => {
       setCrtInfo({});
     });
   }
-  function changeTokenCb(value){
+  function changeTokenCb(value) {
+    form.setFieldValue('num', 0);
     getAmountByToken({
-      accountAddress:getSession('ethAddress'),
+      accountAddress: getSession('ethAddress'),
       token: value
     })
   }
@@ -106,7 +106,6 @@ const DrawsContractMoney = () => {
             <Form
               form={form}
               onFinish={submitToken}
-              initialValues={formInitVal}
               layout="vertical"
               className="grid clear_required grid-cols-2 gap-x-[var(--gap20)] py-[var(--gap20)] pr-[var(--gap20)] pl-[var(--gap30)]"
             >
@@ -122,7 +121,7 @@ const DrawsContractMoney = () => {
                 className="mb-[var(--gap15)]"
               >
                 <Select
-                onChange={changeTokenCb}
+                  onChange={changeTokenCb}
                   placeholder="选择Token"
                   options={[
                     {
@@ -151,7 +150,7 @@ const DrawsContractMoney = () => {
                 label="数量"
                 className="mb-[var(--gap15)]"
               >
-                <InputNumber disabled defaultValue={formInitVal['num']} className="w-full" placeholder="输入数量" />
+                <InputNumber disabled className="w-full" placeholder="输入数量" />
               </Form.Item>
               <Form.Item
                 name="spenderAddress"

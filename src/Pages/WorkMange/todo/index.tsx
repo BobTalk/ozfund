@@ -19,7 +19,7 @@ const Todo = () => {
   let topModuleRefs = useRef<any>();
   let tableRefs = useRef<any>();
   let crtInfo = useRef<any>({});
-  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
+  let [filterModuleHeight, setFilterModuleHeight] = useState<number>(60);
   let [signatureOpen, setSignatureOpen] = useState(false);
 
   function signatureCb(e, crt={}, index) {
@@ -92,7 +92,7 @@ const Todo = () => {
     setWallet({ accounts, balance, chainId });
   };
   function getHeaderH() {
-    let { height } = topModuleRefs.current.getBoundingClientRect();
+    let { height } = topModuleRefs?.current?.getBoundingClientRect();
     setFilterModuleHeight(height);
   }
   const handleConnect = async () => {
