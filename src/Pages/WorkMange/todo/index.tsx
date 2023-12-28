@@ -1,20 +1,34 @@
-import { Button, message } from "antd";
+import { Button } from "antd";
 import TableConfig from "./table";
 import linkIcon from "@/assets/images/link.svg";
 import { useStopPropagation } from "@/Hooks/StopPropagation.js";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ModalComp from "@/Pages/ModalComp";
-import detectEthereumProvider from "@metamask/detect-provider";
-import { formatBalance, getSession, setSession } from "@/utils/base";
-import { VerticalAlignBottomOutlined } from "@ant-design/icons";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { getSession, removeSession, setSession } from "@/utils/base";
 import { useWallatInfo } from "@/Hooks/Web";
+import { useAccount, useConnect, useDisconnect, } from "wagmi";
+import { getAccount } from '@wagmi/core'
 const Todo = () => {
+  let [walletConnectFlag,setWalletConnectFlag] = useState<boolean>(false)
   let { signature } = useWallatInfo();
-  const [hasProvider, setHasProvider] = useState<boolean | null>(null);
-  const initialState = { accounts: [], balance: "", chainId: "" };
-  const [wallet, setWallet] = useState(initialState);
-  // const [isConnecting, setIsConnecting] = useState(false);
+  const { connect } = useConnect({
+    connector: new MetaMaskConnector(),
+  });
 
+  const { address } = useAccount({
+    onConnect: ({address}) => {
+      setWalletConnectFlag(true)
+      setSession("ethAddress", address)
+    }
+  });
+  const { disconnect } = useDisconnect({
+    onSuccess: () => {
+      setWalletConnectFlag(false)
+      removeSession("chainId");
+      removeSession("ethAddress");
+    },
+  });
   let [stop] = useStopPropagation();
   let topModuleRefs = useRef<any>();
   let tableRefs = useRef<any>();
@@ -22,9 +36,9 @@ const Todo = () => {
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(60);
   let [signatureOpen, setSignatureOpen] = useState(false);
 
-  function signatureCb(e, crt={}, index) {
+  function signatureCb(e, crt = {}, index) {
     stop(e, () => {
-      crtInfo.current = crt
+      crtInfo.current = crt;
       setSignatureOpen(!signatureOpen);
     });
   }
@@ -32,94 +46,38 @@ const Todo = () => {
     signature({
       accountAddress: getSession("ethAddress"),
       chainId: getSession("chainId"),
-      id:crtInfo?.current?.id
+      id: crtInfo?.current?.id,
     }).then(() => {
       setSignatureOpen(!signatureOpen);
     });
   }
   useEffect(() => {
-    const refreshAccounts = (accounts: any): any => {
-      if (accounts.length > 0) {
-        updateWallet(accounts);
-      } else {
-        // if length 0, user is disconnected
-        setWallet(initialState);
-      }
-    };
-
-    const refreshChain = (chainId: any) => {
-      setWallet((wallet) => ({ ...wallet, chainId }));
-    };
-
-    const getProvider = async () => {
-      const provider = await detectEthereumProvider({ silent: true });
-      setHasProvider(Boolean(provider));
-      if (provider) {
-        const accounts = await (window as any).ethereum.request({
-          method: "eth_accounts",
-        });
-        refreshAccounts(accounts);
-        (window as any).ethereum.on("accountsChanged", refreshAccounts);
-        (window as any).ethereum.on("chainChanged", refreshChain);
-      }
-    };
-    getProvider();
-    return () => {
-      (window as any).ethereum?.removeListener(
-        "accountsChanged",
-        refreshAccounts
-      );
-      (window as any).ethereum?.removeListener("chainChanged", refreshChain);
-    };
+   let {isConnected} =  getAccount()
+   setWalletConnectFlag(isConnected)
   }, []);
 
-  const updateWallet = async (accounts: any) => {
-    const balance = formatBalance(
-      await (window as any).ethereum!.request({
-        method: "eth_getBalance",
-        params: [accounts[0], "latest"],
-      })
-    );
+  const getWalletInfo = async () => {
     const chainId = await (window as any).ethereum!.request({
       method: "eth_chainId",
     });
-
     // 以太链ID
+    console.log('chainId: ', chainId);
     setSession("chainId", chainId);
-    console.log('以太链IDchainId: ', chainId);
-    // 账户地址
-    setSession("ethAddress", accounts[0]);
-    setWallet({ accounts, balance, chainId });
   };
+  function walletCb(e) {
+    console.log('e: ', e);
+    stop(e, () => {
+      if (walletConnectFlag) {
+        disconnect();
+      } else {
+        connect();
+        getWalletInfo();
+      }
+    });
+  }
   function getHeaderH() {
     let { height } = topModuleRefs?.current?.getBoundingClientRect();
     setFilterModuleHeight(height);
-  }
-  const handleConnect = async () => {
-    // setIsConnecting(true);
-    await (window as any).ethereum
-      .request({
-        method: "eth_requestAccounts",
-      })
-      .then((accounts: []) => {
-        // setError(false);
-        updateWallet(accounts);
-      })
-      .catch((err: any) => {
-        if (err.code == 4001) {
-          message.error("用户拒绝连接");
-        }
-        if (err.code === -32002) {
-          // 用户在申请连接时既没有取消也没有同意钱包的绑定需要手动打开小狐狸钱包的插件进行绑定
-          message.error("手动打开小狐狸钱包的插件进行绑定");
-        }
-        // setError(true);
-        // setErrorMessage(err.message);
-      });
-    // setIsConnecting(false);
-  };
-  function installCb() {
-    window.open("https://metamask.io", "_blank");
   }
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -133,28 +91,14 @@ const Todo = () => {
         ref={topModuleRefs}
         className="flex justify-end bg-[var(--white)] px-[var(--gap20)] py-[var(--gap15)] rounded-[var(--border-radius)]"
       >
-        {!hasProvider && (
-          <Button
-            onClick={installCb}
-            className="flex items-center h-[.35rem]"
-            type="primary"
-            icon={<VerticalAlignBottomOutlined />}
-          >
-            Install MetaMask
-          </Button>
-        )}
-        {(window as any).ethereum?.isMetaMask && wallet.accounts.length < 1 ? (
-          <Button
-            onClick={handleConnect}
-            className="flex items-center h-[.35rem]"
-            type="primary"
-            icon={<img src={linkIcon} alt="" />}
-          >
-            连接钱包
-          </Button>
-        ) : (
-          <Button type="link">钱包已链接</Button>
-        )}
+        <Button
+          onClick={walletCb}
+          className="flex items-center h-[.35rem]"
+          type="primary"
+          icon={<img src={linkIcon} alt="" />}
+        >
+          {walletConnectFlag ? "断开连接" : "连接钱包"}
+        </Button>
       </div>
       <TableConfig
         ref={tableRefs}

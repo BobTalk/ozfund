@@ -30,6 +30,8 @@
     "react-quill": "^0.0.2",
     "react-router-dom": "^6.16.0",
     "redux": "^4.2.1",
+    "viem": "^1.21.1",
+    "wagmi": "^1.4.12",
     "web3": "^4.3.0"
   },
   "devDependencies": {

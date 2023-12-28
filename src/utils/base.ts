@@ -80,6 +80,9 @@ function setSession(name: string, value: any) {
 * @param {*} name 
 */
 function removeSession(name: string) {
+  if (!name.endsWith("_ozfund")) {
+    name = name + "_ozfund"
+  }
   return SessionStorage.removeItem(name)
 }
 /**
