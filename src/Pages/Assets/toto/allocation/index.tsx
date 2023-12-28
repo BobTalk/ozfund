@@ -1,4 +1,5 @@
 import { ModalTitle } from "@/Components/Modal";
+import TotoExpandAbi from "@/assets/json/totoExpandAbi.json";
 import TableAllocation from "./table";
 import {
   forwardRef,
@@ -7,15 +8,20 @@ import {
   useRef,
   useState,
 } from "react";
+import { useContractWrite } from "wagmi";
+import { getSession } from "@/utils/base";
+import { useWallatInfo } from "@/Hooks/Web";
 
 const Allocation = (props) => {
   let topModuleRefs = useRef<any>();
   let tableRefs = useRef<any>();
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
+ 
   useEffect(() => {
     let { height } = topModuleRefs.current.getFilterHeight();
     setFilterModuleHeight(height);
   }, []);
+  
   return (
     <>
       <TopModule ref={topModuleRefs} />
@@ -29,6 +35,8 @@ const Allocation = (props) => {
   );
 };
 const TopModule = forwardRef((props, ref) => {
+  let {tOTOCirculation,allocationStatistics} = useWallatInfo()
+  
   let tableHeaderList = [
     {
       title: "Oz开发者团队",
@@ -77,6 +85,15 @@ const TopModule = forwardRef((props, ref) => {
     }),
     []
   );
+  useEffect(()=>{
+    allocationStatistics({poolAddress:getSession('ethAddress')}).then(res =>{
+      console.log('res>>>>>>: ', res);
+    })
+    tOTOCirculation({accountAddress:getSession('ethAddress')}).then(res =>{
+      console.log('res<<<<: ', res);
+
+    })
+  },[])
   return (
     <div ref={filterHeight} className="bg-white rounded-[var(--border-radius)] pb-[var(--gap20)]">
       <ModalTitle

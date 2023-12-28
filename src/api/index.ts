@@ -510,6 +510,24 @@ export const GetTotoConfigInterface = () => {
     url: `${contractPrefix}findContractSetting`,
   })
 }
+export const GetTotoDistributeStatisticalInterface = (data) => {
+  return _http.postReq({
+    url: `${contractPrefix}findTotoDistributeStatistical`,
+    data
+  })
+}
+export const GetTotoAssetsStatisticalInterface = (data) => {
+  return _http.postReq({
+    url: `${contractPrefix}findTotoAssetsStatistical`,
+    data
+  })
+}
+export const GetOZCoinStatisticalInterface = (data) => {
+  return _http.postReq({
+    url: `${contractPrefix}findOZCoinStatistical`,
+    data
+  })
+}
 // // toto_exchange  toto交易开启状态  1开启 0关闭
 // export const SwitchTotoBussisInterface = (params) => {
 //   return _http.getReq({

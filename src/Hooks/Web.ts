@@ -73,7 +73,10 @@ export const useWallatInfo = () => {
   let getAmountByToken = ({ accountAddress, token }) => getAmountByTokenFn({ accountAddress, token })
 // 通过地址获取ozc数量
   let getAmountByAddress = ({ address }) => getAmountByAddressFn({ address })
-
+  // TOTO分配统计
+  let allocationStatistics = ({poolAddress})=>allocationStatisticsFn({poolAddress})
+  // TOTO发行量
+  let tOTOCirculation = ({ accountAddress })=>TOTOCirculationFn({ accountAddress })
   return {
     Web3,
     signature,
@@ -97,10 +100,33 @@ export const useWallatInfo = () => {
     removeTokenExchange,
     decompressionAddress,
     batchAccount,
-    getAmountByToken
+    getAmountByToken,
+    allocationStatistics,
+    tOTOCirculation
   }
 }
-
+function TOTOCirculationFn({ accountAddress }){
+  let {totoExpandAbi} = initAbi()
+  let myContract = new web3.eth.Contract(totoExpandAbi,TotoAddress,{
+  from:accountAddress
+  })
+ return new Promise(resolve=>{
+  myContract.methods.totalSupply().call().then(res => {
+    resolve(web3.utils.fromWei(String(res), "ether"))
+  })
+ })
+}
+function allocationStatisticsFn({poolAddress}){
+  let {totoExpandAbi} = initAbi()
+  let myContract = new web3.eth.Contract(totoExpandAbi,TotoAddress,{
+  from:poolAddress
+  })
+ return new Promise(resolve=>{
+  myContract.methods.balanceOf(poolAddress).call().then(res => {
+    resolve(web3.utils.fromWei(res, "wei"))
+  })
+ })
+}
 function getAmountByAddressFn({address }){
   if(!address)return Promise.reject("地址不存在")
   // 定义合约
@@ -109,7 +135,7 @@ function getAmountByAddressFn({address }){
     from: address
   });
   return myContract.methods.balanceOf(address).call().then(res=>{
-   return web3.utils.toWei(String(res), "ether")
+   return web3.utils.fromWei(res, "ether")
   })
   // console.log('res: ', res);
 }
@@ -133,7 +159,7 @@ async function getAmountByTokenFn({ accountAddress, token }) {
     from: accountAddress,
   });
   return myContract.methods.balanceOf(accountAddress).call().then(res=>{
-    return web3.utils.toWei(String(res), "ether")
+    return web3.utils.fromWei(res, "ether")
    })
 }
 function batchAccountFn({ accountAddress, chainId, poolId, list }) {
