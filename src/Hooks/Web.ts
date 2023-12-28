@@ -130,18 +130,11 @@ async function getAmountByTokenFn({ accountAddress, token }) {
   // web3.eth.getBalance(accountAddress).then(res=>console.log(res)); // 查询以太币余额
   // 定义合约
   let myContract = new web3.eth.Contract(abi, tContractAddress, {
-    from: accountAddress, // default from address
-    gasLimit: 70000,
-    gasPrice: '100000000' // default gas price in wei, 10 gwei in this case
+    from: accountAddress,
   });
-  myContract.methods.balanceOf(accountAddress).call({ from: accountAddress }, function(error, result) {
-    if (!error) {
-      let ubalance = state.web3.utils.fromWei(String(result), 'ether');
-      console.log(ubalance, 'ubalance')
-    } else {
-      console.log(error, '获取金额错误');
-    }
-  });
+  return myContract.methods.balanceOf(accountAddress).call().then(res=>{
+    return web3.utils.toWei(String(res), "ether")
+   })
 }
 function batchAccountFn({ accountAddress, chainId, poolId, list }) {
   let transferInfos = [];

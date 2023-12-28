@@ -7,7 +7,7 @@ import ModalComp from "@/Pages/ModalComp";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { getSession, removeSession, setSession } from "@/utils/base";
 import { useWallatInfo } from "@/Hooks/Web";
-import { useAccount, useConnect, useDisconnect, } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useNetwork, } from "wagmi";
 import { getAccount } from '@wagmi/core'
 const Todo = () => {
   let [walletConnectFlag,setWalletConnectFlag] = useState<boolean>(false)

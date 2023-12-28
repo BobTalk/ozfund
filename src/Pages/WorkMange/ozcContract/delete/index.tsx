@@ -1,5 +1,5 @@
 import { ModalTitle } from "@/Components/Modal";
-import { Button, ConfigProvider, Form, InputNumber, Select } from "antd";
+import { Button, ConfigProvider, Form, Input, message } from "antd";
 import {
   forwardRef,
   useEffect,
@@ -7,19 +7,28 @@ import {
   useRef,
   useState,
 } from "react";
-import TextArea from "antd/es/input/TextArea";
-import { mergeClassName } from "@/utils/base";
+import { getSession, mergeClassName } from "@/utils/base";
 import Table from "./table";
-import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { AddExchangeTokensInterface, RemoveExchangeTokensInterface } from "@/api";
+import { useWallatInfo } from "@/Hooks/Web";
 const Delete = () => {
-  let [modalOpen, setModalOpen] = useState(false);
   let topModuleRefs = useRef<any>();
   let tableRefs = useRef<any>();
+  let {addTokenExchange,removeTokenExchange} = useWallatInfo()
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
-  let moduleContent = useRef<any>();
-  function finishCb(values) {
-    moduleContent.current = FrezzModal;
-    setModalOpen(!modalOpen);
+  async function finishCb({tokenName:name, currencyType:address}) {
+   let {status, message:tipInfo} = await AddExchangeTokensInterface({
+    address,
+    name
+   })
+   message[status?'success':'error'](tipInfo)
+   status&&addTokenExchange({accountAddress:getSession('ethAddress'), chainId:getSession('chainId'), address}).then(res=>console.log(res))
+  }
+  async function submitDelete(crt){
+    let {address} = crt
+   let {status,message:tipInfo} =  await RemoveExchangeTokensInterface({address})
+   message[status?'success':'error'](tipInfo)
+   status && removeTokenExchange({accountAddress:getSession('ethAddress'), chainId:getSession('chainId'), address}).then(res=>console.log(res))
   }
   useEffect(() => {
     let { height } = topModuleRefs.current.getFilterHeight();
@@ -29,6 +38,7 @@ const Delete = () => {
     <div className="h-full">
       <TopModule ref={topModuleRefs} onFinish={finishCb} />
       <Table
+      onDelete={submitDelete}
         ref={tableRefs}
         style={{
           height: `calc(100% - ${filterModuleHeight}px - .15rem)`,
@@ -83,20 +93,26 @@ const TopModule = forwardRef((props: any, ref) => {
           initialValues={formInitVal}
           layout="vertical"
           onFinish={finishCb}
-          className="grid grid-cols-2 gap-x-[var(--gap20)] pt-[var(--gap20)] ml-[var(--gap30)] mr-[var(--gap20)]"
+          className="grid clear_required grid-cols-2 gap-x-[var(--gap20)] pt-[var(--gap20)] ml-[var(--gap30)] mr-[var(--gap20)]"
         >
-          <Form.Item name="tokenName" label={<LabelComp title="Token名称" />}>
-            <Select
+          <Form.Item rules={[{
+            required: true,
+            message: ''
+          }]} name="tokenName" label={<LabelComp title="Token名称" />}>
+            <Input
               className="w-full"
-              placeholder="选择Token名称"
-              options={[]}
+              placeholder="输入Token名称"
             />
           </Form.Item>
           <Form.Item
+            rules={[{
+              required: true,
+              message: ''
+            }]}
             name="currencyType"
-            label={<LabelComp title="加密货币种类" />}
+            label={<LabelComp title="代币地址" />}
           >
-            <InputNumber className="w-full" placeholder="输入加密货币种类" />
+            <Input className="w-full" placeholder="输入代币地址" />
           </Form.Item>
           <Form.Item />
           <Form.Item className="flex justify-end">
@@ -109,84 +125,6 @@ const TopModule = forwardRef((props: any, ref) => {
     </div>
   );
 });
-const FrezzModal = (props) => {
-  let [form] = Form.useForm();
-  let [stop] = useStopPropagation();
-  let [formInitVal] = useState({
-    note: "",
-  });
-  function finishCb(values) {
-    props?.onOk?.(values);
-  }
-  function cancelCb(e) {
-    stop(e, () => {
-      props.onCancel();
-    });
-  }
-  return (
-    <div className="bg-white rounded-[var(--border-radius)]">
-      <div className="py-[var(--gap30)] mx-[var(--gap30)] border-b border-b-[#e6e6e6]">
-        <p className="flex justify-between items-center text-[14px]">
-          <span className="text-[var(--border-color)]">地址</span>
-          <span className="text-[#333]">ahdsuaiiha3298akhdakchbdbca</span>
-        </p>
-        <p className="flex justify-between items-center mt-[var(--gap15)]">
-          <span className="text-[var(--border-color)]">数量</span>
-          <span className="text-[#333]">1000</span>
-        </p>
-      </div>
-      <ConfigProvider
-        theme={{
-          components: {
-            Form: {
-              itemMarginBottom: 20,
-            },
-            Button: {
-              borderRadius: 2,
-              paddingInline: 18,
-            },
-          },
-          token: {
-            borderRadius: 0,
-            controlHeight: 36,
-          },
-        }}
-      >
-        <Form
-          form={form}
-          initialValues={formInitVal}
-          layout="vertical"
-          onFinish={finishCb}
-          className="pt-[var(--gap20)] "
-        >
-          <Form.Item
-            className="ml-[var(--gap30)] mr-[var(--gap30)]"
-            name="note"
-            label={
-              <LabelComp title="备注" className="text-[var(--border-color)]" />
-            }
-          >
-            <TextArea
-              autoSize={{
-                minRows: 4,
-                maxRows: 6,
-              }}
-            />
-          </Form.Item>
-
-          <Form.Item className="flex justify-end mt-0 border-t border-t-[var(--border-color)] py-[var(--gap20)] mr-[var(--gap30)]">
-            <Button onClick={cancelCb} className="mr-[var(--gap10)]">
-              取消
-            </Button>
-            <Button type="primary" htmlType="submit">
-              确定
-            </Button>
-          </Form.Item>
-        </Form>
-      </ConfigProvider>
-    </div>
-  );
-};
 const LabelComp = ({ title, className = "" }) => {
   return (
     <span className={mergeClassName("text-[14px] text-[#666]", className)}>

@@ -1,5 +1,5 @@
 import type { ColumnsType } from "@/Components/Table";
-import { Typography } from "antd";
+import { Popconfirm, Typography } from "antd";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -29,13 +29,14 @@ const Table = (props) => {
         const editable = isEditing(record);
         return (
           <Typography.Link disabled={editable}>
+            <Popconfirm onConfirm={(e) => deleteCb(e, record)} placement="top" arrow={{pointAtCenter: true}} title='确定删除此数据?'>
             <div
-              onClick={(e) => deleteCb(e, record)}
               className="flex btn items-center justify-center h-[.3rem] w-[.76rem] bg-[#eeeff0] rounded-[4px] text-[#53585E]"
             >
               <Icon className="mr-[8px]" name="h-icon-delete" />
               <span>移除</span>
             </div>
+            </Popconfirm>
           </Typography.Link>
         );
       },

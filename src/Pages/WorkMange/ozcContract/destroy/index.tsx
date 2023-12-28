@@ -8,20 +8,31 @@ import {
   useRef,
   useState,
 } from "react";
-import { Button, ConfigProvider, Form, Input } from "antd";
+import { Button, ConfigProvider, Form, Input, message } from "antd";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import TextArea from "antd/es/input/TextArea";
-import { mergeClassName } from "@/utils/base";
+import { getSession, mergeClassName } from "@/utils/base";
 import ModalScopeComp from "@/Pages/ModalScope";
 import ModalFooter from "@/Components/ModalFooterBtn";
+import { DestroyFreezeAddressInterface } from "@/api";
+import { useWallatInfo } from "@/Hooks/Web";
 const Destory = () => {
   let [filterModuleHeight, setFilterModuleHeight] = useState<number>(0);
   let [modalOpen, setModalOpen] = useState(false);
+  let {destroyAddress} = useWallatInfo()
   let moduleContent = useRef<any>();
   let topModuleRefs = useRef<any>();
   let moduleTitle = useRef<any>("销毁地址");
-  function submitFrezzCb(values: any) {
-    console.log("submitDestroyCb: ", values);
+  async function submitFrezzCb({address='', note='', num=0}: any) {
+    let {status, messge:tipInfo} = await DestroyFreezeAddressInterface({
+      address:""
+    })
+    message[status?'success':'error'](tipInfo)
+    status&&destroyAddress({
+      accountAddress:getSession('ethAddress'), 
+      chainId:getSession('chainId'), 
+      objVal:{ address, num } 
+    }).then(res => console.log(res))
   }
   function deleteCb(crt) {
     console.log("crt: ", crt);
@@ -42,6 +53,7 @@ const Destory = () => {
         onDelete={deleteCb}
       />
       <ModalScopeComp
+        data={{a:1}}
         content={moduleContent.current}
         title={moduleTitle.current}
         footer={false}
@@ -90,7 +102,7 @@ const DestoryModal = (props) => {
     note: "",
   });
   function finishCb(values) {
-    props?.onOk?.(values);
+    props?.onOk?.({...values, ...props?.data});
   }
   function cancelCb(e) {
     stop(e, () => {
