@@ -11,6 +11,7 @@ import {
 import { useContractWrite } from "wagmi";
 import { getSession } from "@/utils/base";
 import { useWallatInfo } from "@/Hooks/Web";
+import dayjs from "dayjs";
 
 const Allocation = (props) => {
   let topModuleRefs = useRef<any>();
@@ -63,6 +64,7 @@ const TopModule = forwardRef((props, ref) => {
       attr: "devTeam5",
     },
   ];
+  let [pulishNum, setPulishNum]=useState<any>(0)
   let [tableContentList] = useState([
     {
       id: 1,
@@ -91,6 +93,7 @@ const TopModule = forwardRef((props, ref) => {
     })
     tOTOCirculation({accountAddress:getSession('ethAddress')}).then(res =>{
       console.log('res<<<<: ', res);
+      setPulishNum(res)
 
     })
   },[])
@@ -102,9 +105,9 @@ const TopModule = forwardRef((props, ref) => {
         classIconName="w-[.03rem] h-[.13rem]"
         title={
           <div className="flex flex-1 items-center justify-between">
-            <p className="text-[16px] text-[#333]">TOTO发行量：9999</p>
+            <p className="text-[16px] text-[#333]">TOTO发行量：{pulishNum}</p>
             <span className="text-[14px] text-[#666] mr-[var(--gap20)]">
-              2022.05.10
+              {dayjs(new Date()).format("YYYY.MM.DD")}
             </span>
           </div>
         }
