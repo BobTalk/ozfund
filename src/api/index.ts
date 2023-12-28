@@ -448,7 +448,7 @@ export const AddPublishInterface = (params) => {
     params
   })
 }
-// /contract/freezeAddress?address= 冻结地址
+// /contract/freezeAddress?address= &note=冻结地址
 export const FreezeAddressInterface = (params) => {
   return _http.getReq({
     url: `${contractPrefix}freezeAddress`,
